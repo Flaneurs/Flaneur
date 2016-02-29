@@ -11,15 +11,27 @@ Lorem ipsum dolor sit amet, modus populo mnesarchum mel at, qui placerat scripto
 Paragraph that describes your app and what it does
 
 ### Required User Stories
-- [ ] Allow user to OAuth with Facebook
-- [ ] Create flaneurs, either a photo or video with a caption, and drop it at your current location
+
+#### General
 - [ ] Passively pick up flaneurs and view them in your inbox
+
+#### Auth Screen
+- [ ] Allow user to OAuth with Facebook
+
+#### Map / Feed Screens
 - [ ] Allow user to see different flaneurs on a map view
 - [ ] Allow users to see flaneurs posted by friends and all app users in a feed
+ 
+#### Compose Screen
+- [ ] Create flaneurs, either a photo or video with a caption, and drop it at your current location
+ 
+#### Inbox Screen
 - [ ] Allow users to see their picked up flaneurs in an inbox
+ 
+#### Detail Screen
+- [ ] Allow user to view the content associated with their flaneurs
 - [ ] Allow users to comment on picked up flaneurs
-- [ ] Allow users to upvote/downvote their picked up flaneurs
-
+- [ ] Allow users to upvote/downvote their picked up flaneurs 
 
 ### Optional User Stories
 - [ ] Receieve notifications about flaneur subtypes you care about immediately
