@@ -1,4 +1,8 @@
-# Flaneur
+![Flan](/images/logo.png)
+> Flâneur (pronounced: [flɑnœʁ]), 
+> from the French noun flâneur, means "stroller", "lounger", "saunterer", or "loafer".
+> Flânerie refers to the act of strolling, with all of its accompanying associations.
+
 Location Based Content Sharing Platform
 
 ### Description
