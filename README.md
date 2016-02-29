@@ -41,3 +41,5 @@ Paragraph that describes your app and what it does
 | ![auth](/wireframes/wireframe_profile.jpg) | Profile | ??? | Lorem ipsum dolor sit amet, modus populo mnesarchum mel at, qui placerat scriptorem in, ferri melius vel ex.  | TODO |
 
 ### State Machine
+
+![transitions](/images/Transitions.png)
