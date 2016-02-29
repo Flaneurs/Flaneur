@@ -5,5 +5,5 @@ Location Based Content Sharing Platform
 
 | Screen  | Name | Archetype | Description | Transition |
 | ------------- | :---: | :---: | :---  | :---  |
-| ![auth](/wireframes/wireframe_auth.jpg) | Auth Screen | Login | Auth screen....... blah  | Map View |
+| ![auth](/wireframes/wireframe_auth.jpg =120x300) | Auth Screen | Login | Auth screen....... blah  | Map View |
 
