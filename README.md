@@ -7,11 +7,23 @@ Lorem ipsum dolor sit amet, modus populo mnesarchum mel at, qui placerat scripto
 Paragraph that describes your app and what it does
 
 ### Required User Stories
-- Thing 1
-- Thing 2
+- [ ] Allow user to OAuth with Facebook
+- [ ] Create flaneurs, either a photo or video with a caption, and drop it at your current location
+- [ ] Passively pick up flaneurs and view them in your inbox
+- [ ] Allow user to see different flaneurs on a map view
+- [ ] Allow users to see flaneurs posted by friends and all app users in a feed
+- [ ] Allow users to see their picked up flaneurs in an inbox
+- [ ] Allow users to comment on picked up flaneurs
+- [ ] Allow users to upvote/downvote their picked up flaneurs
+
 
 ### Optional User Stories
-- Thing 1
+- [ ] Receieve notifications about flaneur subtypes you care about immediately
+- [ ] Allow users to breakdown flaneur into different subtypes such as #history or #scenic or #artistic, and provide their own as well
+- [ ] Abilitiy to desiminate diffrent subtypes visually on the map and stream
+- [ ] Ability to archive flaneurs in inbox
+- [ ] Ability to delete flaneurs in inbox
+- [ ] Ability to view user profiles and see how many drops/picks up user has done, as well as view their timeline
 
 ### Wire Frames
 | Screen  | Name | Archetype | Description | Transition |
