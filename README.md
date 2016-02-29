@@ -24,20 +24,20 @@ Paragraph that describes your app and what it does
 ### Optional User Stories
 - [ ] Receieve notifications about flaneur subtypes you care about immediately
 - [ ] Allow users to breakdown flaneur into different subtypes such as #history or #scenic or #artistic, and provide their own as well
-- [ ] Abilitiy to desiminate diffrent subtypes visually on the map and stream
+- [ ] Ability to desiminate diffrent subtypes visually on the map and stream
 - [ ] Ability to archive flaneurs in inbox
 - [ ] Ability to delete flaneurs in inbox
 - [ ] Ability to view user profiles and see how many drops/picks up user has done, as well as view their timeline
 
 ### Wire Frames
-| Screen  | Name | Archetype | Description | Transition |
+| Screen  | Name | Archetype | Description |
 | ------------- | :---: | :---: | :---  | :---  |
-| ![auth](/wireframes/wireframe_auth.jpg) | Auth Screen | Login | Lorem ipsum dolor sit amet, modus populo mnesarchum mel at, qui placerat scriptorem in, ferri melius vel ex.  | Map View |
-| ![auth](/wireframes/wireframe_map.jpg) | Map Screen | ??? | Lorem ipsum dolor sit amet, modus populo mnesarchum mel at, qui placerat scriptorem in, ferri melius vel ex.  | TODO |
-| ![auth](/wireframes/wireframe_feed.jpg) | Stream | ??? | Lorem ipsum dolor sit amet, modus populo mnesarchum mel at, qui placerat scriptorem in, ferri melius vel ex.  | TODO |
-| ![auth](/wireframes/wireframe_compose.jpg) | Compose | ??? | Lorem ipsum dolor sit amet, modus populo mnesarchum mel at, qui placerat scriptorem in, ferri melius vel ex.  | TODO |
-| ![auth](/wireframes/wireframe_inbox.jpg) | Inbox | ??? | Lorem ipsum dolor sit amet, modus populo mnesarchum mel at, qui placerat scriptorem in, ferri melius vel ex.  | TODO |
-| ![auth](/wireframes/wireframe_detail.jpg) | Detail | ??? | Lorem ipsum dolor sit amet, modus populo mnesarchum mel at, qui placerat scriptorem in, ferri melius vel ex.  | TODO |
-| ![auth](/wireframes/wireframe_profile.jpg) | Profile | ??? | Lorem ipsum dolor sit amet, modus populo mnesarchum mel at, qui placerat scriptorem in, ferri melius vel ex.  | TODO |
+| ![auth](/wireframes/wireframe_auth.jpg) | Auth Screen | Login | Authenticate with OAuth 2.0 using Facebook to start using Flaneurs |
+| ![map](/wireframes/wireframe_map.jpg) | Map Screen | Map | View nearby Flans in a map |
+| ![stream](/wireframes/wireframe_feed.jpg) | Stream | Stream | View Flans in a list prioritized with the ability to filter by location, content and popularity  |
+| ![compose](/wireframes/wireframe_compose.jpg) | Compose | Creation | Create a Flan by uploading a photo or video with a caption and the users current location  |
+| ![inbox](/wireframes/wireframe_inbox.jpg) | Inbox | Stream | Consume picked up Flans |
+| ![detail](/wireframes/wireframe_detail.jpg) | Detail | Detail | View a picked up Flans and vote/comment on it |
+| ![profile](/wireframes/wireframe_profile.jpg) | Profile | Profile | View users stats such as dropped/picked up Flans and their activity timeline |
 
 ### State Machine
