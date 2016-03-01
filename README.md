@@ -13,32 +13,32 @@ We are interested in capturing and sharing the story of a city, the thoughts and
 ### Required User Stories
 
 #### General
-- [ ] Passively pick up flaneurs and view them in your inbox
+- [ ] Passively pick up Flâneurs and view them in your inbox
 
 #### Auth Screen
 - [ ] Allow user to OAuth with Facebook
 
 #### Map / Feed Screens
-- [ ] Allow user to see different flaneurs on a map view
-- [ ] Allow users to see flaneurs posted by friends and all app users in a feed
+- [ ] Allow user to see different Flâneurs on a map view
+- [ ] Allow users to see Flâneurs posted by friends and all app users in a feed
  
 #### Compose Screen
-- [ ] Create flaneurs, either a photo or video with a caption, and drop it at your current location
+- [ ] Create Flâneurs, either a photo or video with a caption, and drop it at your current location
  
 #### Inbox Screen
-- [ ] Allow users to see their picked up flaneurs in an inbox
+- [ ] Allow users to see their picked up Flâneurs in an inbox
  
 #### Detail Screen
-- [ ] Allow user to view the content associated with their flaneurs
-- [ ] Allow users to comment on picked up flaneurs
-- [ ] Allow users to upvote/downvote their picked up flaneurs 
+- [ ] Allow user to view the content associated with their Flâneurs
+- [ ] Allow users to comment on picked up Flâneurs
+- [ ] Allow users to upvote/downvote their picked up Flâneurs 
 
 ### Optional User Stories
 - [ ] Receieve notifications about flaneur subtypes you care about immediately
 - [ ] Allow users to breakdown flaneur into different subtypes such as #history or #scenic or #artistic, and provide their own as well
 - [ ] Abilitiy to desiminate diffrent subtypes visually on the map and stream
-- [ ] Ability to archive flaneurs in inbox
-- [ ] Ability to delete flaneurs in inbox
+- [ ] Ability to archive Flâneurs in inbox
+- [ ] Ability to delete Flâneurs in inbox
 - [ ] Ability to view user profiles and see how many drops/picks up user has done, as well as view their timeline
 
 ### Wire Frames
