@@ -27,4 +27,9 @@ dependencies {
     compile 'com.ocpsoft:ocpsoft-pretty-time:1.0.6'
     compile 'com.astuetz:pagerslidingtabstrip:1.0.1'
     compile 'com.jakewharton:butterknife:7.0.1'
+    compile 'com.android.support:recyclerview-v7:23.1.1'
+    compile 'com.github.bumptech.glide:glide:3.7.0'
+    compile 'jp.wasabeef:recyclerview-animators:2.2.0'
+    compile 'com.makeramen:roundedimageview:2.2.1'
+
 }

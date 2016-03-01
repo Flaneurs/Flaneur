@@ -10,9 +10,10 @@
         android:theme="@style/AppTheme" >
         <activity
             android:name=".activities.DiscoverActivity"
-            android:label="@string/discover_label">
+            android:label="@string/discover_label" >
         </activity>
-        <activity android:name=".activities.LoginActivity"
+        <activity
+            android:name=".activities.LoginActivity"
             android:label="@string/login_label" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -20,14 +21,19 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activities.InboxActivity"
-            android:label="@string/inbox_label">
+        <activity
+            android:name=".activities.InboxActivity"
+            android:label="@string/inbox_label" >
         </activity>
-        <activity android:name=".activities.ComposeActivity"
-            android:label="@string/compose_label">
+        <activity
+            android:name=".activities.ComposeActivity"
+            android:label="@string/compose_label" >
         </activity>
-        <activity android:name=".activities.ProfileActivity"
-            android:label="@string/profile_label">
+        <activity
+            android:name=".activities.ProfileActivity"
+            android:label="@string/profile_label" >
+        </activity>
+        <activity android:name=".activities.FlanDetailActivity" >
         </activity>
     </application>
 
