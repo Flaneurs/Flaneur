@@ -10,8 +10,7 @@
         android:theme="@style/AppTheme" >
         <activity
             android:name=".activities.DiscoverActivity"
-            android:label="@string/discover_label"
-            android:theme="@style/AppTheme.NoActionBar" >
+            android:label="@string/discover_label">
         </activity>
         <activity android:name=".activities.LoginActivity"
             android:label="@string/login_label" >
