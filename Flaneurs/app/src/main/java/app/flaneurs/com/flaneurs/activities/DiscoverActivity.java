@@ -3,22 +3,46 @@ package app.flaneurs.com.flaneurs.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.astuetz.PagerSlidingTabStrip;
+
 import app.flaneurs.com.flaneurs.R;
+import app.flaneurs.com.flaneurs.fragments.MapFragment;
+import app.flaneurs.com.flaneurs.fragments.StreamFragment;
+import butterknife.Bind;
+import butterknife.ButterKnife;
 
 public class DiscoverActivity extends AppCompatActivity {
+
+    @Bind(R.id.vpViewPager)
+    ViewPager viewPager;
+
+    @Bind(R.id.psTabs)
+    PagerSlidingTabStrip slidingTabStrip;
+
+    private MapFragment mMapFragment;
+    private StreamFragment mStreamFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_discover);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        ButterKnife.bind(this);
+
+        mMapFragment = new MapFragment();
+        mStreamFragment = new StreamFragment();
+        viewPager.setAdapter(new DiscoverPagerAdapter(getSupportFragmentManager(), mMapFragment, mStreamFragment));
+
+        slidingTabStrip.setViewPager(viewPager);
+
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -37,21 +61,6 @@ public class DiscoverActivity extends AppCompatActivity {
         return true;
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
    public void onProfileViewOnClick(MenuItem mi) {
         Intent i = new Intent(this, ProfileActivity.class);
         startActivity(i);
@@ -62,4 +71,38 @@ public class DiscoverActivity extends AppCompatActivity {
         startActivity(i);
     }
 
+    public class DiscoverPagerAdapter extends FragmentPagerAdapter {
+        private String[] pageTitles = {"Map", "List"};
+
+        Fragment mFragment1;
+        Fragment mFragment2;
+
+        public DiscoverPagerAdapter(FragmentManager fm, Fragment fragment1, Fragment fragment2) {
+            super(fm);
+
+            mFragment1 = fragment1;
+            mFragment2 = fragment2;
+        }
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+            return pageTitles[position];
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            switch (position) {
+                case 0:
+                    return mFragment1;
+                case 1:
+                    return mFragment2;
+            }
+            return null;
+        }
+
+        @Override
+        public int getCount() {
+            return pageTitles.length;
+        }
+    }
 }
