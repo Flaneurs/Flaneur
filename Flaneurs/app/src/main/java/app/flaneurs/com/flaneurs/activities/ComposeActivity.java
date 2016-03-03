@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 import android.widget.ImageView;
 
 import app.flaneurs.com.flaneurs.R;
@@ -26,5 +27,9 @@ public class ComposeActivity extends AppCompatActivity {
         String imageUri = intent.getStringExtra("BitmapImage");
         Bitmap bitmap = BitmapFactory.decodeFile(imageUri);
         ivPicturePreview.setImageBitmap(bitmap);
+    }
+    
+    public void onPostButtonClicked(View v) {
+       finish();
     }
 }
