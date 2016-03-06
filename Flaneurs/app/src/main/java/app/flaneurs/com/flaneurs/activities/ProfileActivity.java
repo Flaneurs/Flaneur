@@ -109,7 +109,7 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
     private void setupProfileView(User user) {
-        mMapFragment = new MapFragment();
+        mMapFragment = MapFragment.newInstance(false);
         StreamFragment.StreamConfiguration configuration = new StreamFragment.StreamConfiguration();
         configuration.setStreamType(StreamFragment.StreamType.User);
         configuration.setUser(user);

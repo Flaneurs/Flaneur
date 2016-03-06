@@ -25,9 +25,21 @@ public class MapFragment extends SupportMapFragment implements LocationProvider.
     private GoogleMap map;
     private LocationProvider mLocationProvider;
 
+    private boolean shouldTrackLocation;
+
+    public static MapFragment newInstance(boolean shouldTrackLocation) {
+        MapFragment mapFragment = new MapFragment();
+        Bundle args = new Bundle();
+        args.putBoolean("shouldTrackLocation", shouldTrackLocation);
+        mapFragment.setArguments(args);
+        return mapFragment;
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        shouldTrackLocation = getArguments().getBoolean("shouldTrackLocation");
         getMapAsync(new OnMapReadyCallback() {
             @Override
             public void onMapReady(GoogleMap googleMap) {
@@ -40,9 +52,11 @@ public class MapFragment extends SupportMapFragment implements LocationProvider.
         map = googleMap;
         if (map != null) {
             Log.d(TAG, "Map Fragment was loaded properly.");
-            MapFragmentPermissionsDispatcher.getMyLocationWithCheck(this);
+            if (shouldTrackLocation) {
+                MapFragmentPermissionsDispatcher.getMyLocationWithCheck(this);
+            }
         } else {
-            Toast.makeText(getContext(), "Error - Map was null!!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), "Error - Map was null!", Toast.LENGTH_SHORT).show();
             Log.d(TAG, "Map was null.");
         }
     }
