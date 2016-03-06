@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 
+import com.google.android.gms.maps.model.LatLng;
 import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseGeoPoint;
@@ -21,6 +22,7 @@ import java.util.Date;
 import java.util.Random;
 
 import app.flaneurs.com.flaneurs.R;
+import app.flaneurs.com.flaneurs.fragments.MapFragment;
 import app.flaneurs.com.flaneurs.models.Post;
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -55,6 +57,8 @@ public class ComposeActivity extends AppCompatActivity {
 
         mPicture = BitmapFactory.decodeFile(imageUri);
         ivPicturePreview.setImageBitmap(mPicture);
+
+        getSupportFragmentManager().beginTransaction().replace(R.id.flMap, MapFragment.newInstance(false, new LatLng(mLat, mLong), null)).commit();
     }
 
     public void onPostButtonClicked(View v) {

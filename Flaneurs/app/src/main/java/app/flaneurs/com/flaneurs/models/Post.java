@@ -15,16 +15,16 @@ import java.util.List;
 @ParseClassName("Post")
 public class Post extends ParseObject{
     public static final String KEY_POST_AUTHOR = "KEY_POST_AUTHOR";
-    private static final String KEY_POST_LOCATION = "KEY_POST_LOCATION";
+    public static final String KEY_POST_LOCATION = "KEY_POST_LOCATION";
     public static final String KEY_POST_DATE = "KEY_POST_DATE";
-    private static final String KEY_POST_TYPE = "KEY_POST_TYPE";
-    private static final String KEY_POST_MEDIAURL = "KEY_POST_MEDIAURL";
-    private static final String KEY_POST_CAPTION = "KEY_POST_CAPTION";
-    private static final String KEY_POST_VIEWCOUNT = "KEY_POST_VIEWCOUNT";
-    private static final String KEY_POST_UPVOTECOUNT = "KEY_POST_UPVOTECOUNT";
-    private static final String KEY_POST_DOWNVOTECOUNT = "KEY_POST_DOWNVOTECOUNT";
-    private static final String KEY_POST_COMMENTS = "KEY_POST_COMMENTS";
-    private static final String KEY_POST_IMAGE = "KEY_POST_IMAGE";
+    public static final String KEY_POST_TYPE = "KEY_POST_TYPE";
+    public static final String KEY_POST_MEDIAURL = "KEY_POST_MEDIAURL";
+    public static final String KEY_POST_CAPTION = "KEY_POST_CAPTION";
+    public static final String KEY_POST_VIEWCOUNT = "KEY_POST_VIEWCOUNT";
+    public static final String KEY_POST_UPVOTECOUNT = "KEY_POST_UPVOTECOUNT";
+    public static final String KEY_POST_DOWNVOTECOUNT = "KEY_POST_DOWNVOTECOUNT";
+    public static final String KEY_POST_COMMENTS = "KEY_POST_COMMENTS";
+    public static final String KEY_POST_IMAGE = "KEY_POST_IMAGE";
 
     public Post() {
 
