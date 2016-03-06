@@ -42,5 +42,5 @@ dependencies {
     apt 'com.github.hotchemi:permissionsdispatcher-processor:2.0.7'
     compile 'com.facebook.android:facebook-android-sdk:4.7.0'
     compile 'com.parse:parsefacebookutils-v4-android:1.10.3@aar'
-
+    compile 'org.ocpsoft.prettytime:prettytime:4.0.1.Final'
 }

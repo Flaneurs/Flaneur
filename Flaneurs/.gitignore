@@ -34,6 +34,11 @@ captures/
 # Android Studio .ideas folder
 .idea/workspace.xml
 .idea/libraries
+app/app.iml
 
 # OSX files
 .DS_Store
+
+# Secret.xml
+**/secret.xml
+

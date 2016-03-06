@@ -12,10 +12,13 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 import app.flaneurs.com.flaneurs.R;
+import app.flaneurs.com.flaneurs.utils.DividerItemDecoration;
 import app.flaneurs.com.flaneurs.activities.FlanDetailActivity;
 import app.flaneurs.com.flaneurs.adapters.FlanArrayAdapter;
+import app.flaneurs.com.flaneurs.models.Post;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import jp.wasabeef.recyclerview.adapters.AlphaInAnimationAdapter;
@@ -28,7 +31,7 @@ public class StreamFragment extends Fragment implements FlanArrayAdapter.IFlanIn
     @Bind(R.id.swipeContainer)
     SwipeRefreshLayout swipeContainer;
 
-    protected ArrayList<String> mFlans;
+    protected ArrayList<Post> mFlans;
     protected FlanArrayAdapter adapter;
     protected LinearLayoutManager layoutManager;
 
@@ -36,13 +39,29 @@ public class StreamFragment extends Fragment implements FlanArrayAdapter.IFlanIn
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mFlans = new ArrayList<>();
-        mFlans.add("Flan1");
-        mFlans.add("Flan2");
-        mFlans.add("Flan3");
-        mFlans.add("Flan4");
-        mFlans.add("Flan5");
-        mFlans.add("Flan6");
+        setupDatasource();
         adapter = new FlanArrayAdapter(mFlans, this);
+    }
+
+    private void setupDatasource() {
+        Post post = new Post();
+        post.setCaption("Flan1");
+        post.setCreatedTime(new Date());
+        post.setDownVoteCount(23);
+        post.setUpVoteCount(20);
+        mFlans.add(post);
+        post = new Post();
+        post.setCaption("Flan2");
+        post.setCreatedTime(new Date());
+        post.setDownVoteCount(13);
+        post.setUpVoteCount(2);
+        mFlans.add(post);
+        post = new Post();
+        post.setCaption("Flan3");
+        post.setCreatedTime(new Date());
+        post.setDownVoteCount(4);
+        post.setUpVoteCount(17);
+        mFlans.add(post);
     }
 
     @Override
@@ -57,6 +76,8 @@ public class StreamFragment extends Fragment implements FlanArrayAdapter.IFlanIn
         layoutManager = new LinearLayoutManager(getContext());
         lvFlans.setLayoutManager(layoutManager);
 
+        lvFlans.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL_LIST));
+
         AlphaInAnimationAdapter alphaAdapter = new AlphaInAnimationAdapter(adapter);
         alphaAdapter.setFirstOnly(false);
 
@@ -64,9 +85,8 @@ public class StreamFragment extends Fragment implements FlanArrayAdapter.IFlanIn
     }
 
     @Override
-    public void openDetailView(String flan) {
+    public void openDetailView(Post flan) {
         Intent i = new Intent(getActivity(), FlanDetailActivity.class);
-
         startActivity(i);
     }
 }
