@@ -69,9 +69,11 @@ public class InboxArrayAdapter extends RecyclerView.Adapter<InboxArrayAdapter.In
 
         PrettyTime pt = new PrettyTime();
         holder.tvCreationTime.setText(pt.format(flan.getCreatedTime()));
-        String address = Utils.getPrettyAddress(mContext, flan.getLocation().getLatitude(), flan.getLocation().getLongitude());
-        if (address != null) {
-            holder.tvLocation.setText(address);
+        if (flan.getLocation() != null) {
+            String address = Utils.getPrettyAddress(mContext, flan.getLocation().getLatitude(), flan.getLocation().getLongitude());
+            if (address != null) {
+                holder.tvLocation.setText(address);
+            }
         }
     }
 
