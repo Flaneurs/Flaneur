@@ -40,5 +40,5 @@ app/app.iml
 .DS_Store
 
 # Secret.xml
-*/secret.xml
+**/secret.xml
 
