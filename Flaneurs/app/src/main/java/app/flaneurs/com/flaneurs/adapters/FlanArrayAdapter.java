@@ -7,9 +7,14 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.ocpsoft.pretty.time.PrettyTime;
+import com.parse.ParseGeoPoint;
+import com.parse.ParseUser;
+
 import java.util.List;
 
 import app.flaneurs.com.flaneurs.R;
+import app.flaneurs.com.flaneurs.models.Post;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
@@ -19,10 +24,10 @@ import butterknife.ButterKnife;
 public class FlanArrayAdapter extends RecyclerView.Adapter<FlanArrayAdapter.FlanViewHolder> {
 
 
-    private List<String> mFlans; // TODO: make model object
+    private List<Post> mFlans; // TODO: make model object
     private IFlanInteractionListener mListener;
 
-    public FlanArrayAdapter(List<String> flans, IFlanInteractionListener listener) {
+    public FlanArrayAdapter(List<Post> flans, IFlanInteractionListener listener) {
         mFlans = flans;
         mListener = listener;
     }
@@ -34,17 +39,31 @@ public class FlanArrayAdapter extends RecyclerView.Adapter<FlanArrayAdapter.Flan
         return new FlanViewHolder(view, new FlanViewHolder.IMyViewHolderClicks() {
             @Override
             public void onFlanClicked(View caller, int position) {
-                String model = mFlans.get(position);
-                mListener.openDetailView(model);
+                Post flan = mFlans.get(position);
+                mListener.openDetailView(flan);
             }
         });
     }
 
     @Override
     public void onBindViewHolder(FlanViewHolder holder, int position) {
-        final String flan = mFlans.get(position);
+        final Post flan = mFlans.get(position);
 
-        holder.tvUsername.setText(flan);
+        ParseUser author = flan.getAuthor();
+        if (author != null) {
+            String username = author.getUsername();
+            holder.tvUsername.setText(username);
+        }
+        PrettyTime pt = new PrettyTime();
+        holder.tvCreationTime.setText(pt.format(flan.getCreatedTime()));
+        holder.tvDownvotes.setText(flan.getDownVoteCount() + " downvotes");
+        holder.tvUpvotes.setText(flan.getUpVoteCount() + " upvotes");
+        holder.tvViewCount.setText(flan.getViewCount() + " views");
+        ParseGeoPoint locationPoint = flan.getLocation();
+        if (locationPoint != null) {
+            String location = locationPoint.toString();
+            holder.tvLocation.setText(location);
+        }
     }
 
     @Override
@@ -59,7 +78,23 @@ public class FlanArrayAdapter extends RecyclerView.Adapter<FlanArrayAdapter.Flan
     @Bind(R.id.tvUsername)
     TextView tvUsername;
 
-    IMyViewHolderClicks mListener;
+        @Bind(R.id.tvStreamCreationTime)
+        TextView tvCreationTime;
+
+        @Bind(R.id.tvStreamLocation)
+        TextView tvLocation;
+
+        @Bind(R.id.tvStreamUpvotes)
+        TextView tvUpvotes;
+
+        @Bind(R.id.tvStreamDownvotes)
+        TextView tvDownvotes;
+
+        @Bind(R.id.tvStreamViewCount)
+        TextView tvViewCount;
+
+
+        IMyViewHolderClicks mListener;
 
     public FlanViewHolder(View itemView, IMyViewHolderClicks listener) {
         super(itemView);
@@ -79,6 +114,6 @@ public class FlanArrayAdapter extends RecyclerView.Adapter<FlanArrayAdapter.Flan
 }
 
     public interface IFlanInteractionListener {
-        void openDetailView(String flan);
+        void openDetailView(Post flan);
     }
 }

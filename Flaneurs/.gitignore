@@ -34,7 +34,7 @@ captures/
 # Android Studio .ideas folder
 .idea/workspace.xml
 .idea/libraries
-app.iml
+app/app.iml
 
 # OSX files
 .DS_Store
