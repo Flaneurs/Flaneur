@@ -215,9 +215,7 @@ public class StreamFragment extends Fragment implements FlanArrayAdapter.IFlanIn
     @Override
     public void openDetailView(Post flan) {
         Intent i = new Intent(getActivity(), FlanDetailActivity.class);
-
-        i.putExtra("postId", flan.getObjectId());
-
+        i.putExtra(FlanDetailActivity.POST_ID, flan.getObjectId());
         startActivity(i);
     }
 

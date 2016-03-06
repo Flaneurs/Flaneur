@@ -36,6 +36,8 @@ public class FlanDetailActivity extends AppCompatActivity {
 
     private Post mPost;
 
+    public final static String POST_ID = "POST_ID";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,7 +45,7 @@ public class FlanDetailActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         Bundle extras = getIntent().getExtras();
-        String objectId = extras.getString("postId");
+        String objectId = extras.getString(POST_ID);
 
         ParseQuery<Post> query = ParseQuery.getQuery(Post.class);
         // First try to find from the cache and only then go to network
