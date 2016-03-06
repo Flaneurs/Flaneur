@@ -39,7 +39,7 @@ public class MapFragment extends SupportMapFragment implements LocationProvider.
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        shouldTrackLocation = getArguments().getBoolean("shouldTrackLocation");
+        shouldTrackLocation = (getArguments() != null) ? getArguments().getBoolean("shouldTrackLocation") : false;
         getMapAsync(new OnMapReadyCallback() {
             @Override
             public void onMapReady(GoogleMap googleMap) {
