@@ -156,8 +156,11 @@ public class FlanArrayAdapter extends RecyclerView.Adapter<FlanArrayAdapter.Flan
 
         if (addresses != null) {
             Address bestMatch = (addresses.isEmpty() ? null : addresses.get(0));
-            return bestMatch.getAddressLine(0).toString();
+            if (bestMatch != null) {
+                String address = bestMatch.getAddressLine(0);
+                return address;
+            }
         }
-        return "";
+        return "This post is too old to have an address";
     }
 }

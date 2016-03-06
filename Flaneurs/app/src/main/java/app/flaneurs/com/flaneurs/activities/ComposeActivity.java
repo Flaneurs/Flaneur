@@ -3,6 +3,7 @@ package app.flaneurs.com.flaneurs.activities;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.location.Location;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -21,6 +22,7 @@ import java.util.Date;
 import java.util.Random;
 
 import app.flaneurs.com.flaneurs.R;
+import app.flaneurs.com.flaneurs.fragments.MapFragment;
 import app.flaneurs.com.flaneurs.models.Post;
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -56,7 +58,10 @@ public class ComposeActivity extends AppCompatActivity {
         double randomLat = 37 + (1) * r.nextDouble();
         double randomLong = 122 + (1) * r.nextDouble();
 
-        ParseGeoPoint latLong = new ParseGeoPoint(randomLat, randomLong);
+        MapFragment mapFragment = (MapFragment) getSupportFragmentManager().findFragmentById(R.id.mapFragment);
+
+        Location loc = mapFragment.getCurrentLocation();
+        ParseGeoPoint latLong = new ParseGeoPoint(loc.getLatitude(), loc.getLongitude());
         String caption = etCaption.getText().toString();
 
         newPost.setAuthor(ParseUser.getCurrentUser());
@@ -73,6 +78,7 @@ public class ComposeActivity extends AppCompatActivity {
         ParseFile file = new ParseFile("picture.jpg", bytearray);
         newPost.setImage(file);
 
+
         newPost.saveInBackground(new SaveCallback() {
             public void done(ParseException e) {
                 Log.v("DEBUG", "Saved!");
@@ -81,4 +87,6 @@ public class ComposeActivity extends AppCompatActivity {
 
         finish();
     }
+
+
 }
