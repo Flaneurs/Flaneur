@@ -37,3 +37,7 @@ captures/
 
 # OSX files
 .DS_Store
+
+# Secret.xml
+*/secret.xml
+
