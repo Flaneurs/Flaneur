@@ -10,9 +10,15 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
+
+import com.parse.FindCallback;
+import com.parse.ParseException;
+import com.parse.ParseQuery;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import app.flaneurs.com.flaneurs.R;
 import app.flaneurs.com.flaneurs.utils.DividerItemDecoration;
@@ -25,11 +31,14 @@ import jp.wasabeef.recyclerview.adapters.AlphaInAnimationAdapter;
 
 public class StreamFragment extends Fragment implements FlanArrayAdapter.IFlanInteractionListener{
 
-    @Bind(R.id.lvFlans)
-    RecyclerView lvFlans;
+    @Bind(R.id.rvFlans)
+    RecyclerView rvFlans;
 
     @Bind(R.id.swipeContainer)
     SwipeRefreshLayout swipeContainer;
+
+    @Bind(R.id.pbStreamLoading)
+    ProgressBar pbStreamLoading;
 
     protected ArrayList<Post> mFlans;
     protected FlanArrayAdapter adapter;
@@ -39,11 +48,10 @@ public class StreamFragment extends Fragment implements FlanArrayAdapter.IFlanIn
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mFlans = new ArrayList<>();
-        setupDatasource();
         adapter = new FlanArrayAdapter(mFlans, this);
     }
 
-    private void setupDatasource() {
+    private void setupFakeDatasource() {
         Post post = new Post();
         post.setCaption("Flan1");
         post.setCreatedTime(new Date());
@@ -64,24 +72,65 @@ public class StreamFragment extends Fragment implements FlanArrayAdapter.IFlanIn
         mFlans.add(post);
     }
 
+    private void grabDataFromParse() {
+        showLoadingDataState();
+        ParseQuery<Post> query = ParseQuery.getQuery("Post");
+        query.orderByDescending("KEY_POST_DATE");
+        query.findInBackground(new FindCallback<Post>() {
+            @Override
+            public void done(List<Post> objects, ParseException e) {
+                mFlans.addAll(objects);
+                adapter.notifyDataSetChanged();
+                hideLoadingDataState();
+            }
+        });
+    }
+
+    private void showLoadingDataState() {
+        setRecycleViewHidden(true);
+        setProgressBarHidden(false);
+    }
+
+    private void hideLoadingDataState() {
+        setRecycleViewHidden(false);
+        setProgressBarHidden(true);
+    }
+
+    private void setRecycleViewHidden(boolean hidden) {
+        if (hidden) {
+            rvFlans.setVisibility(View.GONE);
+        } else {
+            rvFlans.setVisibility(View.VISIBLE);
+        }
+    }
+
+    private void setProgressBarHidden(boolean hidden) {
+        if (hidden) {
+            pbStreamLoading.setVisibility(View.GONE);
+        } else {
+            pbStreamLoading.setVisibility(View.VISIBLE);
+        }
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_stream, container, false);
         ButterKnife.bind(this, v);
         setupRecyclerView();
+        grabDataFromParse();
         return v;
     }
 
     private void setupRecyclerView() {
         layoutManager = new LinearLayoutManager(getContext());
-        lvFlans.setLayoutManager(layoutManager);
+        rvFlans.setLayoutManager(layoutManager);
 
-        lvFlans.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL_LIST));
+        rvFlans.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL_LIST));
 
         AlphaInAnimationAdapter alphaAdapter = new AlphaInAnimationAdapter(adapter);
         alphaAdapter.setFirstOnly(false);
 
-        lvFlans.setAdapter(alphaAdapter);
+        rvFlans.setAdapter(alphaAdapter);
     }
 
     @Override

@@ -8,6 +8,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.ocpsoft.pretty.time.PrettyTime;
+import com.parse.ParseException;
 import com.parse.ParseGeoPoint;
 import com.parse.ParseUser;
 
@@ -51,6 +52,11 @@ public class FlanArrayAdapter extends RecyclerView.Adapter<FlanArrayAdapter.Flan
 
         ParseUser author = flan.getAuthor();
         if (author != null) {
+            try {
+                author.fetch();
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
             String username = author.getUsername();
             holder.tvUsername.setText(username);
         }
