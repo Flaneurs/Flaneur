@@ -51,34 +51,15 @@ public class StreamFragment extends Fragment implements FlanArrayAdapter.IFlanIn
         adapter = new FlanArrayAdapter(mFlans, this);
     }
 
-    private void setupFakeDatasource() {
-        Post post = new Post();
-        post.setCaption("Flan1");
-        post.setCreatedTime(new Date());
-        post.setDownVoteCount(23);
-        post.setUpVoteCount(20);
-        mFlans.add(post);
-        post = new Post();
-        post.setCaption("Flan2");
-        post.setCreatedTime(new Date());
-        post.setDownVoteCount(13);
-        post.setUpVoteCount(2);
-        mFlans.add(post);
-        post = new Post();
-        post.setCaption("Flan3");
-        post.setCreatedTime(new Date());
-        post.setDownVoteCount(4);
-        post.setUpVoteCount(17);
-        mFlans.add(post);
-    }
-
-    private void grabDataFromParse() {
-        showLoadingDataState();
+    private void grabDataFromParse(boolean hideProgressBar) {
+        showLoadingDataState(hideProgressBar);
         ParseQuery<Post> query = ParseQuery.getQuery("Post");
         query.orderByDescending("KEY_POST_DATE");
         query.findInBackground(new FindCallback<Post>() {
             @Override
             public void done(List<Post> objects, ParseException e) {
+                swipeContainer.setRefreshing(false);
+                mFlans.clear();
                 mFlans.addAll(objects);
                 adapter.notifyDataSetChanged();
                 hideLoadingDataState();
@@ -86,9 +67,9 @@ public class StreamFragment extends Fragment implements FlanArrayAdapter.IFlanIn
         });
     }
 
-    private void showLoadingDataState() {
+    private void showLoadingDataState(boolean hideProgressBar) {
         setRecycleViewHidden(true);
-        setProgressBarHidden(false);
+        setProgressBarHidden(hideProgressBar);
     }
 
     private void hideLoadingDataState() {
@@ -117,8 +98,26 @@ public class StreamFragment extends Fragment implements FlanArrayAdapter.IFlanIn
         View v = inflater.inflate(R.layout.fragment_stream, container, false);
         ButterKnife.bind(this, v);
         setupRecyclerView();
-        grabDataFromParse();
+        setupPullToRefresh();
+        grabDataFromParse(false);
         return v;
+    }
+
+    private void setupPullToRefresh() {
+        swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                // Your code to refresh the list here.
+                // Make sure you call swipeContainer.setRefreshing(false)
+                // once the network request has completed successfully.
+                grabDataFromParse(true);
+            }
+        });
+        // Configure the refreshing colors
+        swipeContainer.setColorSchemeResources(android.R.color.holo_blue_bright,
+                android.R.color.holo_green_light,
+                android.R.color.holo_orange_light,
+                android.R.color.holo_red_light);
     }
 
     private void setupRecyclerView() {
