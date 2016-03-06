@@ -60,8 +60,14 @@ public class ComposeActivity extends AppCompatActivity {
 
         MapFragment mapFragment = (MapFragment) getSupportFragmentManager().findFragmentById(R.id.mapFragment);
 
-        Location loc = mapFragment.getCurrentLocation();
-        ParseGeoPoint latLong = new ParseGeoPoint(loc.getLatitude(), loc.getLongitude());
+        ParseGeoPoint latLong;
+        if (mapFragment != null) {
+            Location loc = mapFragment.getCurrentLocation();
+            latLong = new ParseGeoPoint(loc.getLatitude(), loc.getLongitude());
+        } else {
+            latLong = new ParseGeoPoint(randomLat, -randomLong);
+        }
+
         String caption = etCaption.getText().toString();
 
         newPost.setAuthor(ParseUser.getCurrentUser());
