@@ -48,7 +48,9 @@ public class DiscoverActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         mMapFragment = new MapFragment();
-        mStreamFragment = new StreamFragment();
+        StreamFragment.StreamConfiguration streamConfiguration = new StreamFragment.StreamConfiguration();
+        streamConfiguration.setStreamType(StreamFragment.StreamType.AllPosts);
+        mStreamFragment = StreamFragment.createInstance(streamConfiguration);
         viewPager.setAdapter(new MapStreamPagerAdapter(getSupportFragmentManager(), mMapFragment, mStreamFragment));
 
         slidingTabStrip.setViewPager(viewPager);
@@ -127,6 +129,7 @@ public class DiscoverActivity extends AppCompatActivity {
 
    public void onProfileViewOnClick(MenuItem mi) {
         Intent i = new Intent(this, ProfileActivity.class);
+        i.putExtra(ProfileActivity.PROFILE_TYPE, ProfileActivity.ProfileType.CURRENT_USER);
         startActivity(i);
     }
 

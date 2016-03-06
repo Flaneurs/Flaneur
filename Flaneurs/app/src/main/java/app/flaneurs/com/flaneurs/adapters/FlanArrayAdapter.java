@@ -41,17 +41,18 @@ public class FlanArrayAdapter extends RecyclerView.Adapter<FlanArrayAdapter.Flan
     public FlanViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater inflator = LayoutInflater.from(parent.getContext());
         View view = inflator.inflate(R.layout.flan_stream_item, parent, false);
-        return new FlanViewHolder(view, new FlanViewHolder.IMyViewHolderClicks() {
+        FlanViewHolder viewHolder = new FlanViewHolder(view, new FlanViewHolder.IMyViewHolderClicks() {
             @Override
             public void onFlanClicked(View caller, int position) {
                 Post flan = mFlans.get(position);
                 mListener.openDetailView(flan);
             }
         });
+        return viewHolder;
     }
 
     @Override
-    public void onBindViewHolder(FlanViewHolder holder, int position) {
+    public void onBindViewHolder(FlanViewHolder holder, final int position) {
         final Post flan = mFlans.get(position);
 
         User author = flan.getAuthor();
@@ -68,6 +69,13 @@ public class FlanArrayAdapter extends RecyclerView.Adapter<FlanArrayAdapter.Flan
             }
 
         }
+        holder.ivProfileImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Post flan = mFlans.get(position);
+                mListener.openProfileView(flan);
+            }
+        });
         PrettyTime pt = new PrettyTime();
         holder.tvCreationTime.setText(pt.format(flan.getCreatedTime()));
         holder.tvDownvotes.setText(flan.getDownVoteCount() + " downvotes");
@@ -88,11 +96,11 @@ public class FlanArrayAdapter extends RecyclerView.Adapter<FlanArrayAdapter.Flan
     }
 
     public static class FlanViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-    @Bind(R.id.ivProfileImage)
-    ImageView ivProfileImage;
+        @Bind(R.id.ivProfileImage)
+        ImageView ivProfileImage;
 
-    @Bind(R.id.tvUsername)
-    TextView tvUsername;
+        @Bind(R.id.tvUsername)
+        TextView tvUsername;
 
         @Bind(R.id.tvStreamCreationTime)
         TextView tvCreationTime;
@@ -112,24 +120,25 @@ public class FlanArrayAdapter extends RecyclerView.Adapter<FlanArrayAdapter.Flan
 
         IMyViewHolderClicks mListener;
 
-    public FlanViewHolder(View itemView, IMyViewHolderClicks listener) {
-        super(itemView);
-        ButterKnife.bind(this, itemView);
-        itemView.setOnClickListener(this);
-        mListener = listener;
-    }
+        public FlanViewHolder(View itemView, IMyViewHolderClicks listener) {
+            super(itemView);
+            ButterKnife.bind(this, itemView);
+            itemView.setOnClickListener(this);
+            mListener = listener;
+        }
 
-    @Override
-    public void onClick(View v) {
-        mListener.onFlanClicked(v, getAdapterPosition());
-    }
+        @Override
+        public void onClick(View v) {
+            mListener.onFlanClicked(v, getAdapterPosition());
+        }
 
-    public interface IMyViewHolderClicks {
-        void onFlanClicked(View caller, int position);
+        public interface IMyViewHolderClicks {
+            void onFlanClicked(View caller, int position);
+        }
     }
-}
 
     public interface IFlanInteractionListener {
         void openDetailView(Post flan);
+        void openProfileView(Post flan);
     }
 }

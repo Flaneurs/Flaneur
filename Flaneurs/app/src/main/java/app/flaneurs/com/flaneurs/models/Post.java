@@ -14,9 +14,9 @@ import java.util.List;
  */
 @ParseClassName("Post")
 public class Post extends ParseObject{
-    private static final String KEY_POST_AUTHOR = "KEY_POST_AUTHOR";
+    public static final String KEY_POST_AUTHOR = "KEY_POST_AUTHOR";
     private static final String KEY_POST_LOCATION = "KEY_POST_LOCATION";
-    private static final String KEY_POST_DATE = "KEY_POST_DATE";
+    public static final String KEY_POST_DATE = "KEY_POST_DATE";
     private static final String KEY_POST_TYPE = "KEY_POST_TYPE";
     private static final String KEY_POST_MEDIAURL = "KEY_POST_MEDIAURL";
     private static final String KEY_POST_CAPTION = "KEY_POST_CAPTION";
