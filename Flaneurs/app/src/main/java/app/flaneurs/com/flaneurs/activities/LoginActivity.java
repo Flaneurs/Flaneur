@@ -33,6 +33,10 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        if (User.currentUser() != null) {
+            finishLogin();
+        }
     }
 
     public void onLoginButtonClicked(View v) {
@@ -61,10 +65,7 @@ public class LoginActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         ParseFacebookUtils.onActivityResult(requestCode, resultCode, data);
-
-        Intent i = new Intent(this, DiscoverActivity.class);
-        startActivity(i);
-        finish();
+        finishLogin();
     }
 
 
@@ -104,5 +105,11 @@ public class LoginActivity extends AppCompatActivity {
             public void done(ParseException e) {
             }
         });
+    }
+
+    private void finishLogin() {
+        Intent i = new Intent(this, DiscoverActivity.class);
+        startActivity(i);
+        finish();
     }
 }

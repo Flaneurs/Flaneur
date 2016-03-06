@@ -69,6 +69,7 @@ public class FlanArrayAdapter extends RecyclerView.Adapter<FlanArrayAdapter.Flan
             }
             String username = author.getUsername();
             holder.tvUsername.setText(username);
+            holder.ivProfileImage.setImageResource(0);
             if (author.getProfileUrl() != null) {
                 Glide.with(mContext).load(author.getProfileUrl()).into(holder.ivProfileImage);
             }
@@ -103,9 +104,8 @@ public class FlanArrayAdapter extends RecyclerView.Adapter<FlanArrayAdapter.Flan
 
     @Override
     public void onLocationChanged(Location location) {
-        mCurrentLocation = location;
-
-        if (location.distanceTo(mCurrentLocation) > 10) {
+      if (mCurrentLocation == null || location.distanceTo(mCurrentLocation) > 10) {
+            mCurrentLocation = location;
             notifyDataSetChanged();
         }
     }
