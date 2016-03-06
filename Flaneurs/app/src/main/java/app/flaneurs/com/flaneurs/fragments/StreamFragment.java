@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,6 +25,7 @@ import java.util.List;
 
 import app.flaneurs.com.flaneurs.R;
 import app.flaneurs.com.flaneurs.activities.ProfileActivity;
+import app.flaneurs.com.flaneurs.adapters.InboxArrayAdapter;
 import app.flaneurs.com.flaneurs.models.User;
 import app.flaneurs.com.flaneurs.utils.DividerItemDecoration;
 import app.flaneurs.com.flaneurs.activities.FlanDetailActivity;
@@ -34,7 +36,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import jp.wasabeef.recyclerview.adapters.AlphaInAnimationAdapter;
 
-public class StreamFragment extends Fragment implements FlanArrayAdapter.IFlanInteractionListener {
+public class StreamFragment extends Fragment implements FlanArrayAdapter.IFlanInteractionListener, InboxArrayAdapter.IInboxInteractionListener {
 
     @Bind(R.id.rvFlans)
     RecyclerView rvFlans;
@@ -75,7 +77,7 @@ public class StreamFragment extends Fragment implements FlanArrayAdapter.IFlanIn
     }
 
     public enum StreamType {
-        AllPosts, User
+        AllPosts, User, Inbox
     }
 
     public static StreamFragment createInstance(StreamConfiguration configuration) {
@@ -87,15 +89,8 @@ public class StreamFragment extends Fragment implements FlanArrayAdapter.IFlanIn
     }
 
     protected ArrayList<Post> mFlans;
-    protected FlanArrayAdapter adapter;
+    protected RecyclerView.Adapter adapter;
     protected LinearLayoutManager layoutManager;
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        mFlans = new ArrayList<>();
-        adapter = new FlanArrayAdapter(getContext(), mFlans, this);
-    }
 
     private void grabDataFromParse(boolean hideProgressBar) {
         showLoadingDataState(hideProgressBar);
@@ -104,7 +99,14 @@ public class StreamFragment extends Fragment implements FlanArrayAdapter.IFlanIn
             grabAllPostsFromParse();
         } else if (streamConfiguration.getStreamType() == StreamType.User) {
             grabAllPostsForUser();
+        } else if (streamConfiguration.getStreamType() == StreamType.Inbox) {
+            grabAllMessagesForUser();
         }
+    }
+
+    private void grabAllMessagesForUser() {
+        User user = (User) getStreamConfiguration().getUser();
+        onParseResultsReceived(user.getInboxPosts());
     }
 
     private void grabAllPostsFromParse() {
@@ -170,16 +172,35 @@ public class StreamFragment extends Fragment implements FlanArrayAdapter.IFlanIn
         View v = inflater.inflate(R.layout.fragment_stream, container, false);
         ButterKnife.bind(this, v);
         retrieveStreamConfiguration();
+        setupAdapter();
         setupRecyclerView();
         setupPullToRefresh();
         grabDataFromParse(false);
         return v;
     }
 
+    private void setupAdapter() {
+        mFlans = new ArrayList<>();
+        StreamConfiguration config = getStreamConfiguration();
+        switch (config.getStreamType()) {
+            case User:
+            case AllPosts:
+                adapter = new FlanArrayAdapter(getContext(), mFlans, this);
+                break;
+            case Inbox:
+                adapter = new InboxArrayAdapter(getContext(), mFlans, this);
+                break;
+            default:
+                Log.e("StreamFragment", "Damn son, you added a new stream configuration, but did not choose an adapter");
+        }
+    }
+
     private void retrieveStreamConfiguration() {
         Bundle bundle = getArguments();
         if (bundle != null) {
             mStreamConfiguration = (StreamConfiguration) bundle.getSerializable(STREAM_CONFIGURATION_KEY);
+        } else {
+            Log.e("StreamFragment", "Damn son, you done fucked up. Make sure you pass in a stream configuration. Don't pull a Migs and try to statically add fragments");
         }
     }
 
@@ -217,6 +238,11 @@ public class StreamFragment extends Fragment implements FlanArrayAdapter.IFlanIn
         Intent i = new Intent(getActivity(), FlanDetailActivity.class);
         i.putExtra(FlanDetailActivity.POST_ID, flan.getObjectId());
         startActivity(i);
+    }
+
+    @Override
+    public void openInboxDetailView(Post flan) {
+        Toast.makeText(getActivity(), "Clicked inbox cell", Toast.LENGTH_SHORT).show();
     }
 
     @Override
