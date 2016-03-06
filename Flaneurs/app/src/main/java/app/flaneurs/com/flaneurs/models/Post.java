@@ -26,6 +26,8 @@ public class Post extends ParseObject{
     private static final String KEY_POST_COMMENTS = "KEY_POST_COMMENTS";
     private static final String KEY_POST_IMAGE = "KEY_POST_IMAGE";
 
+    private static final String KEY_POST_ADDRESS = "KEY_POST_ADDRESS";
+
     public Post() {
 
     }
@@ -44,6 +46,14 @@ public class Post extends ParseObject{
         int downVotes = getDownVoteCount();
         downVotes++;
         setDownVoteCount(downVotes);
+    }
+
+    public void setAddress(String address) {
+        put(KEY_POST_ADDRESS, address);
+    }
+
+    public String getAddress() {
+        return getString(KEY_POST_ADDRESS);
     }
 
     public void setAuthor(ParseUser author) {
@@ -129,4 +139,5 @@ public class Post extends ParseObject{
     public void setComments(List<Comment> comments) {
         put(KEY_POST_COMMENTS, comments);
     }
+
 }

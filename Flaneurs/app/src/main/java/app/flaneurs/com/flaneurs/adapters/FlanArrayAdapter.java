@@ -1,6 +1,8 @@
 package app.flaneurs.com.flaneurs.adapters;
 
 import android.content.Context;
+import android.location.Address;
+import android.location.Geocoder;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,9 +13,10 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.ocpsoft.pretty.time.PrettyTime;
 import com.parse.ParseException;
-import com.parse.ParseGeoPoint;
 
+import java.io.IOException;
 import java.util.List;
+import java.util.Locale;
 
 import app.flaneurs.com.flaneurs.R;
 import app.flaneurs.com.flaneurs.models.Post;
@@ -82,11 +85,9 @@ public class FlanArrayAdapter extends RecyclerView.Adapter<FlanArrayAdapter.Flan
         holder.tvUpvotes.setText(flan.getUpVoteCount() + " upvotes");
         holder.tvViewCount.setText(flan.getViewCount() + " views");
 
-
-        ParseGeoPoint locationPoint = flan.getLocation();
-        if (locationPoint != null) {
-            String location = locationPoint.toString();
-            holder.tvLocation.setText(location);
+        String address = this.getPrettyAddress(flan.getLocation().getLatitude(), flan.getLocation().getLongitude());
+        if (address != null) {
+            holder.tvLocation.setText(address);
         }
     }
 
@@ -140,5 +141,23 @@ public class FlanArrayAdapter extends RecyclerView.Adapter<FlanArrayAdapter.Flan
     public interface IFlanInteractionListener {
         void openDetailView(Post flan);
         void openProfileView(Post flan);
+    }
+
+    public String getPrettyAddress(double latitude, double longitude) {
+        Geocoder geocoder;
+        List<Address> addresses = null;
+        geocoder = new Geocoder(mContext, Locale.getDefault());
+
+        try {
+            addresses = geocoder.getFromLocation(latitude, longitude, 1); // Here 1 represent max location result to returned, by documents it recommended 1 to 5
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        if (addresses != null) {
+            Address bestMatch = (addresses.isEmpty() ? null : addresses.get(0));
+            return bestMatch.getAddressLine(0).toString();
+        }
+        return "";
     }
 }
