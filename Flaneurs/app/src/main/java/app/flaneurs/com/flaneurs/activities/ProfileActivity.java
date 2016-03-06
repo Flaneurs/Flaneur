@@ -30,6 +30,12 @@ public class ProfileActivity extends AppCompatActivity {
     @Bind(R.id.tvUsername)
     TextView tvUsername;
 
+    @Bind(R.id.tvDrops)
+    TextView tvDrops;
+
+    @Bind(R.id.tvUpvotes)
+    TextView tvUpvotes;
+
     @Bind(R.id.vpViewPager)
     ViewPager viewPager;
 
@@ -78,6 +84,11 @@ public class ProfileActivity extends AppCompatActivity {
     private void retrieveUserObject(final IOnUserObjectRetrieved callback) {
         ProfileType profileType = getProfileType();
         if (profileType == ProfileType.CURRENT_USER) {
+            try {
+                User.getCurrentUser().fetch();
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
             callback.onSuccess((User) User.getCurrentUser());
         } else if (profileType == ProfileType.OTHER_USER) {
             ParseQuery<User> query = ParseQuery.getQuery("_User");
@@ -119,6 +130,9 @@ public class ProfileActivity extends AppCompatActivity {
 
         Glide.with(this).load(user.getProfileUrl()).into(ivProfileImage);
         tvUsername.setText(user.getUsername());
+
+        tvDrops.setText(user.getDrops() + " Drops");
+        tvUpvotes.setText(user.getUpVotes() + " UpVotes");
     }
 
     private void extractProfileConfigurationData() {

@@ -14,7 +14,6 @@ import com.google.android.gms.maps.model.LatLng;
 import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseGeoPoint;
-import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
 import java.io.ByteArrayOutputStream;
@@ -24,6 +23,7 @@ import java.util.Random;
 import app.flaneurs.com.flaneurs.R;
 import app.flaneurs.com.flaneurs.fragments.MapFragment;
 import app.flaneurs.com.flaneurs.models.Post;
+import app.flaneurs.com.flaneurs.models.User;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
@@ -64,7 +64,7 @@ public class ComposeActivity extends AppCompatActivity {
     public void onPostButtonClicked(View v) {
 
         final Post newPost = new Post();
-
+        User currentUser = User.currentUser();
         // TODO: get lat and long from map
         Random r = new Random();
         double randomLat = 37 + (1) * r.nextDouble();
@@ -79,7 +79,7 @@ public class ComposeActivity extends AppCompatActivity {
 
         String caption = etCaption.getText().toString();
 
-        newPost.setAuthor(ParseUser.getCurrentUser());
+        newPost.setAuthor(currentUser);
         newPost.setLocation(latLong);
         newPost.setCaption(caption);
         newPost.setCreatedTime(new Date());
@@ -99,6 +99,9 @@ public class ComposeActivity extends AppCompatActivity {
                 Log.v("DEBUG", "Saved!");
             }
         });
+
+        currentUser.incrementDrops();
+        currentUser.saveEventually();
 
         finish();
     }

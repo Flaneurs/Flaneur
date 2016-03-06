@@ -17,6 +17,7 @@ import com.parse.ParseQuery;
 import app.flaneurs.com.flaneurs.R;
 import app.flaneurs.com.flaneurs.fragments.MapFragment;
 import app.flaneurs.com.flaneurs.models.Post;
+import app.flaneurs.com.flaneurs.models.User;
 import app.flaneurs.com.flaneurs.utils.ParseProxyObject;
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -102,8 +103,16 @@ public class FlanDetailActivity extends AppCompatActivity {
     }
 
     public void onUpVoteButtonClicked(View view) {
+        try {
+            User author = (User) mPost.getAuthor().fetchIfNeeded();
+            author.incrementUpVotes();
+            author.saveEventually();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
         mPost.incrementUpVote();
         tvUpvotes.setText(mPost.getUpVoteCount() + " Upvotes");
+
         mPost.saveEventually();
     }
 }

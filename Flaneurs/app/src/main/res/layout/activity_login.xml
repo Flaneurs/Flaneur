@@ -24,6 +24,7 @@
         android:padding="3dp"
         android:background="@color/transparent_button"
         android:onClick="onLoginButtonClicked"
+        android:textColor="@color/inverse_text"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="39dp" />
