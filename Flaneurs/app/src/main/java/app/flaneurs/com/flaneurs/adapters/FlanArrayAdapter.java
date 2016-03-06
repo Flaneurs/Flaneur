@@ -1,5 +1,6 @@
 package app.flaneurs.com.flaneurs.adapters;
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -7,15 +8,16 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.ocpsoft.pretty.time.PrettyTime;
 import com.parse.ParseException;
 import com.parse.ParseGeoPoint;
-import com.parse.ParseUser;
 
 import java.util.List;
 
 import app.flaneurs.com.flaneurs.R;
 import app.flaneurs.com.flaneurs.models.Post;
+import app.flaneurs.com.flaneurs.models.User;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
@@ -27,10 +29,12 @@ public class FlanArrayAdapter extends RecyclerView.Adapter<FlanArrayAdapter.Flan
 
     private List<Post> mFlans; // TODO: make model object
     private IFlanInteractionListener mListener;
+    private Context mContext;
 
-    public FlanArrayAdapter(List<Post> flans, IFlanInteractionListener listener) {
+    public FlanArrayAdapter(Context context, List<Post> flans, IFlanInteractionListener listener) {
         mFlans = flans;
         mListener = listener;
+        mContext = context;
     }
 
     @Override
@@ -50,7 +54,7 @@ public class FlanArrayAdapter extends RecyclerView.Adapter<FlanArrayAdapter.Flan
     public void onBindViewHolder(FlanViewHolder holder, int position) {
         final Post flan = mFlans.get(position);
 
-        ParseUser author = flan.getAuthor();
+        User author = flan.getAuthor();
         if (author != null) {
             try {
                 author.fetch();
@@ -59,12 +63,18 @@ public class FlanArrayAdapter extends RecyclerView.Adapter<FlanArrayAdapter.Flan
             }
             String username = author.getUsername();
             holder.tvUsername.setText(username);
+            if (author.getProfileUrl() != null) {
+                Glide.with(mContext).load(author.getProfileUrl()).into(holder.ivProfileImage);
+            }
+
         }
         PrettyTime pt = new PrettyTime();
         holder.tvCreationTime.setText(pt.format(flan.getCreatedTime()));
         holder.tvDownvotes.setText(flan.getDownVoteCount() + " downvotes");
         holder.tvUpvotes.setText(flan.getUpVoteCount() + " upvotes");
         holder.tvViewCount.setText(flan.getViewCount() + " views");
+
+
         ParseGeoPoint locationPoint = flan.getLocation();
         if (locationPoint != null) {
             String location = locationPoint.toString();

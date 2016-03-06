@@ -30,8 +30,8 @@ public class Post extends ParseObject{
 
     }
 
-    public ParseUser getAuthor() {
-        return getParseUser(KEY_POST_AUTHOR);
+    public User getAuthor() {
+        return (User)getParseUser(KEY_POST_AUTHOR);
     }
 
     public void setAuthor(ParseUser author) {
