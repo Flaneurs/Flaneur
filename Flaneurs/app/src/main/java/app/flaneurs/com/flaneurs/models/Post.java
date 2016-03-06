@@ -34,6 +34,18 @@ public class Post extends ParseObject{
         return (User)getParseUser(KEY_POST_AUTHOR);
     }
 
+    public void incrementUpVote() {
+        int upVotes = getUpVoteCount();
+        upVotes++;
+        setUpVoteCount(upVotes);
+    }
+
+    public void incrementDownVote() {
+        int downVotes = getDownVoteCount();
+        downVotes++;
+        setDownVoteCount(downVotes);
+    }
+
     public void setAuthor(ParseUser author) {
         put(KEY_POST_AUTHOR, author);
     }

@@ -59,14 +59,11 @@ public class ComposeActivity extends AppCompatActivity {
         ParseGeoPoint latLong = new ParseGeoPoint(randomLat, randomLong);
         String caption = etCaption.getText().toString();
 
-        // TODO: get actual current user
         newPost.setAuthor(ParseUser.getCurrentUser());
         newPost.setLocation(latLong);
         newPost.setCaption(caption);
         newPost.setCreatedTime(new Date());
         newPost.setPostType("image");
-        newPost.setDownVoteCount(0);
-        newPost.setUpVoteCount(0);
 
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         mPicture.compress(Bitmap.CompressFormat.JPEG, 100, stream);

@@ -17,14 +17,13 @@ import com.parse.ParseException;
 import com.parse.ParseQuery;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import app.flaneurs.com.flaneurs.R;
-import app.flaneurs.com.flaneurs.utils.DividerItemDecoration;
 import app.flaneurs.com.flaneurs.activities.FlanDetailActivity;
 import app.flaneurs.com.flaneurs.adapters.FlanArrayAdapter;
 import app.flaneurs.com.flaneurs.models.Post;
+import app.flaneurs.com.flaneurs.utils.DividerItemDecoration;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import jp.wasabeef.recyclerview.adapters.AlphaInAnimationAdapter;
@@ -135,6 +134,9 @@ public class StreamFragment extends Fragment implements FlanArrayAdapter.IFlanIn
     @Override
     public void openDetailView(Post flan) {
         Intent i = new Intent(getActivity(), FlanDetailActivity.class);
+
+        i.putExtra("postId", flan.getObjectId());
+
         startActivity(i);
     }
 }

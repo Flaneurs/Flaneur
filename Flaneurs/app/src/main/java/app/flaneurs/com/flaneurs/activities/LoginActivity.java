@@ -26,7 +26,6 @@ import app.flaneurs.com.flaneurs.models.User;
 
 public class LoginActivity extends AppCompatActivity {
 
-
     private String mName;
     private String mPictureUrl;
 
