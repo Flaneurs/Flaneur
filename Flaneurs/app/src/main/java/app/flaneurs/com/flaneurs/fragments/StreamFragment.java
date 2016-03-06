@@ -94,7 +94,7 @@ public class StreamFragment extends Fragment implements FlanArrayAdapter.IFlanIn
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mFlans = new ArrayList<>();
-        adapter = new FlanArrayAdapter(mFlans, this);
+        adapter = new FlanArrayAdapter(getContext(), mFlans, this);
     }
 
     private void grabDataFromParse(boolean hideProgressBar) {
