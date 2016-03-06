@@ -1,6 +1,7 @@
 package app.flaneurs.com.flaneurs.models;
 
 import com.parse.ParseClassName;
+import com.parse.ParseFile;
 import com.parse.ParseGeoPoint;
 import com.parse.ParseObject;
 import com.parse.ParseUser;
@@ -23,6 +24,7 @@ public class Post extends ParseObject{
     private static final String KEY_POST_UPVOTECOUNT = "KEY_POST_UPVOTECOUNT";
     private static final String KEY_POST_DOWNVOTECOUNT = "KEY_POST_DOWNVOTECOUNT";
     private static final String KEY_POST_COMMENTS = "KEY_POST_COMMENTS";
+    private static final String KEY_POST_IMAGE = "KEY_POST_IMAGE";
 
     public Post() {
 
@@ -42,6 +44,14 @@ public class Post extends ParseObject{
 
     public void setLocation(ParseGeoPoint location) {
         put(KEY_POST_LOCATION, location);
+    }
+
+    public ParseFile getImage() {
+        return getParseFile(KEY_POST_IMAGE);
+    }
+
+    public void setImage(ParseFile file) {
+        put(KEY_POST_IMAGE, file);
     }
 
     public Date getCreatedTime() {

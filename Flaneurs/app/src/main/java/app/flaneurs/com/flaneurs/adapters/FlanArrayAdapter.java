@@ -81,6 +81,4 @@ public class FlanArrayAdapter extends RecyclerView.Adapter<FlanArrayAdapter.Flan
     public interface IFlanInteractionListener {
         void openDetailView(String flan);
     }
-
-
 }
