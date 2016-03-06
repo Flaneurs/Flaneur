@@ -47,7 +47,7 @@ public class DiscoverActivity extends AppCompatActivity {
         setContentView(R.layout.activity_discover);
         ButterKnife.bind(this);
 
-        mMapFragment = new MapFragment();
+        mMapFragment = MapFragment.newInstance(true);
         StreamFragment.StreamConfiguration streamConfiguration = new StreamFragment.StreamConfiguration();
         streamConfiguration.setStreamType(StreamFragment.StreamType.AllPosts);
         mStreamFragment = StreamFragment.createInstance(streamConfiguration);
