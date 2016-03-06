@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseGeoPoint;
+import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
 import java.io.ByteArrayOutputStream;
@@ -59,7 +60,7 @@ public class ComposeActivity extends AppCompatActivity {
         String caption = etCaption.getText().toString();
 
         // TODO: get actual current user
-        // newPost.setAuthor(ParseUser.getCurrentUser());
+        newPost.setAuthor(ParseUser.getCurrentUser());
         newPost.setLocation(latLong);
         newPost.setCaption(caption);
         newPost.setCreatedTime(new Date());

@@ -6,9 +6,6 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -18,10 +15,12 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.astuetz.PagerSlidingTabStrip;
+import com.facebook.appevents.AppEventsLogger;
 
 import java.io.File;
 
 import app.flaneurs.com.flaneurs.R;
+import app.flaneurs.com.flaneurs.adapters.MapStreamPagerAdapter;
 import app.flaneurs.com.flaneurs.fragments.MapFragment;
 import app.flaneurs.com.flaneurs.fragments.StreamFragment;
 import butterknife.Bind;
@@ -50,10 +49,9 @@ public class DiscoverActivity extends AppCompatActivity {
 
         mMapFragment = new MapFragment();
         mStreamFragment = new StreamFragment();
-        viewPager.setAdapter(new DiscoverPagerAdapter(getSupportFragmentManager(), mMapFragment, mStreamFragment));
+        viewPager.setAdapter(new MapStreamPagerAdapter(getSupportFragmentManager(), mMapFragment, mStreamFragment));
 
         slidingTabStrip.setViewPager(viewPager);
-
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -137,38 +135,16 @@ public class DiscoverActivity extends AppCompatActivity {
         startActivity(i);
     }
 
-    public class DiscoverPagerAdapter extends FragmentPagerAdapter {
-        private String[] pageTitles = {"Map", "List"};
+    @Override
+    protected void onResume() {
+        super.onResume();
+        AppEventsLogger.activateApp(this);
+    }
 
-        Fragment mFragment1;
-        Fragment mFragment2;
-
-        public DiscoverPagerAdapter(FragmentManager fm, Fragment fragment1, Fragment fragment2) {
-            super(fm);
-
-            mFragment1 = fragment1;
-            mFragment2 = fragment2;
-        }
-
-        @Override
-        public CharSequence getPageTitle(int position) {
-            return pageTitles[position];
-        }
-
-        @Override
-        public Fragment getItem(int position) {
-            switch (position) {
-                case 0:
-                    return mFragment1;
-                case 1:
-                    return mFragment2;
-            }
-            return null;
-        }
-
-        @Override
-        public int getCount() {
-            return pageTitles.length;
-        }
+    @Override
+    protected void onPause() {
+        super.onPause();
+        // Logs 'app deactivate' App Event.
+        AppEventsLogger.deactivateApp(this);
     }
 }
