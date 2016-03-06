@@ -3,7 +3,6 @@ package app.flaneurs.com.flaneurs.activities;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.location.Location;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -22,7 +21,6 @@ import java.util.Date;
 import java.util.Random;
 
 import app.flaneurs.com.flaneurs.R;
-import app.flaneurs.com.flaneurs.fragments.MapFragment;
 import app.flaneurs.com.flaneurs.models.Post;
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -37,6 +35,13 @@ public class ComposeActivity extends AppCompatActivity {
 
     Bitmap mPicture;
 
+    private double mLat;
+    private double mLong;
+
+    public final static String COMPOSE_LAT_ID = "COMPOSE_LAT_ID";
+    public final static String COMPOSE_LONG_ID = "COMPOSE_LONG_ID";
+    public final static String COMPOSE_IMAGE_ID = "COMPOSE_IMAGE_ID";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,7 +49,10 @@ public class ComposeActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         Intent intent = getIntent();
-        String imageUri = intent.getStringExtra("BitmapImage");
+        String imageUri = intent.getStringExtra(COMPOSE_IMAGE_ID);
+        mLat = intent.getDoubleExtra(COMPOSE_LAT_ID, 0);
+        mLong = intent.getDoubleExtra(COMPOSE_LONG_ID, 0);
+
         mPicture = BitmapFactory.decodeFile(imageUri);
         ivPicturePreview.setImageBitmap(mPicture);
     }
@@ -58,14 +66,11 @@ public class ComposeActivity extends AppCompatActivity {
         double randomLat = 37 + (1) * r.nextDouble();
         double randomLong = 122 + (1) * r.nextDouble();
 
-        MapFragment mapFragment = (MapFragment) getSupportFragmentManager().findFragmentById(R.id.mapFragment);
-
         ParseGeoPoint latLong;
-        if (mapFragment != null) {
-            Location loc = mapFragment.getCurrentLocation();
-            latLong = new ParseGeoPoint(loc.getLatitude(), loc.getLongitude());
-        } else {
+        if (mLat == 0) {
             latLong = new ParseGeoPoint(randomLat, -randomLong);
+        } else {
+            latLong = new ParseGeoPoint(mLat, mLong);
         }
 
         String caption = etCaption.getText().toString();

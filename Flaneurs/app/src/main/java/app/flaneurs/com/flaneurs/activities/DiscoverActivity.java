@@ -1,6 +1,7 @@
 package app.flaneurs.com.flaneurs.activities;
 
 import android.content.Intent;
+import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -71,7 +72,13 @@ public class DiscoverActivity extends AppCompatActivity {
             if (resultCode == RESULT_OK) {
                 Uri takenPhotoUri = getPhotoFileUri(photoFileName);
                 Intent i = new Intent(DiscoverActivity.this, ComposeActivity.class);
-                i.putExtra("BitmapImage", takenPhotoUri.getPath());
+
+                Location loc = mMapFragment.getCurrentLocation();
+                if (loc != null) {
+                    i.putExtra(ComposeActivity.COMPOSE_LAT_ID, loc.getLatitude());
+                    i.putExtra(ComposeActivity.COMPOSE_LONG_ID, loc.getLongitude());
+                }
+                i.putExtra(ComposeActivity.COMPOSE_IMAGE_ID, takenPhotoUri.getPath());
                 startActivity(i);
 
             } else { // Result was a failure
