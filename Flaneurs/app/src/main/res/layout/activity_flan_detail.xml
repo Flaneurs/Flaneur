@@ -9,23 +9,23 @@
         android:id="@+id/ivPicturePreview"
         android:layout_width="match_parent"
         android:layout_height="300dp"
-        android:scaleType="centerCrop"
-        android:adjustViewBounds="true"
         android:layout_alignParentTop="true"
+        android:adjustViewBounds="true"
         android:background="@color/primary_dark"
-        android:minHeight="100dp" />
+        android:minHeight="100dp"
+        android:scaleType="centerCrop" />
 
     <TextView
         android:id="@+id/tvCaption"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/primary"
-        android:textColor="@color/inverse_text"
-        android:textStyle="bold"
-        android:text="Caption"
-        android:padding="3dp"
         android:layout_below="@id/ivPicturePreview"
-        android:gravity="center"/>
+        android:background="@color/primary"
+        android:gravity="center"
+        android:padding="3dp"
+        android:text="Caption"
+        android:textColor="@color/inverse_text"
+        android:textStyle="bold" />
 
 
     <LinearLayout
@@ -60,13 +60,11 @@
             android:layout_weight="1"
             android:gravity="center"
             android:text="0 DownVotes"
-            android:textColor="@color/inverse_text"
-            />
+            android:textColor="@color/inverse_text" />
     </LinearLayout>
 
-    <fragment
-        android:id="@+id/mapFragment"
-        android:name="app.flaneurs.com.flaneurs.fragments.MapFragment"
+    <FrameLayout
+        android:id="@+id/flMap"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"

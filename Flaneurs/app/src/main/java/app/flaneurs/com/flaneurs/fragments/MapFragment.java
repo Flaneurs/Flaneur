@@ -11,9 +11,15 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptor;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
 
+import app.flaneurs.com.flaneurs.models.Post;
 import app.flaneurs.com.flaneurs.utils.LocationProvider;
+import app.flaneurs.com.flaneurs.utils.ParseProxyObject;
 import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.RuntimePermissions;
 
@@ -21,6 +27,9 @@ import permissions.dispatcher.RuntimePermissions;
 public class MapFragment extends SupportMapFragment implements LocationProvider.ILocationListener{
 
     public static final String TAG = MapFragment.class.getSimpleName();
+    public static final String ARG_SHOULD_TRACK_LOCATION = "ARG_SHOULD_TRACK_LOCATION";
+    public static final String ARG_LAT_LNG = "ARG_LAT_LNG";
+    public static final String ARG_POST = "ARG_POST";
 
     private GoogleMap map;
     private LocationProvider mLocationProvider;
@@ -28,11 +37,15 @@ public class MapFragment extends SupportMapFragment implements LocationProvider.
     private Location mLocation;
 
     private boolean shouldTrackLocation;
+    private ParseProxyObject post;
+    private LatLng point;
 
-    public static MapFragment newInstance(boolean shouldTrackLocation) {
+    public static MapFragment newInstance(boolean shouldTrackLocation, LatLng latLng, ParseProxyObject parseProxyObject) {
         MapFragment mapFragment = new MapFragment();
         Bundle args = new Bundle();
-        args.putBoolean("shouldTrackLocation", shouldTrackLocation);
+        args.putBoolean(ARG_SHOULD_TRACK_LOCATION, shouldTrackLocation);
+        args.putParcelable(ARG_LAT_LNG, latLng);
+        args.putSerializable(ARG_POST, parseProxyObject);
         mapFragment.setArguments(args);
         return mapFragment;
     }
@@ -41,7 +54,16 @@ public class MapFragment extends SupportMapFragment implements LocationProvider.
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        shouldTrackLocation = (getArguments() != null) ? getArguments().getBoolean("shouldTrackLocation") : false;
+        Bundle arguments = getArguments();
+        if (arguments != null) {
+            shouldTrackLocation = arguments.getBoolean(ARG_SHOULD_TRACK_LOCATION);
+            point = arguments.getParcelable(ARG_LAT_LNG);
+            post = (ParseProxyObject)arguments.getSerializable(ARG_POST);
+        } else {
+            shouldTrackLocation = false;
+            post = null;
+        }
+
         getMapAsync(new OnMapReadyCallback() {
             @Override
             public void onMapReady(GoogleMap googleMap) {
@@ -54,6 +76,17 @@ public class MapFragment extends SupportMapFragment implements LocationProvider.
         map = googleMap;
         if (map != null) {
             Log.d(TAG, "Map Fragment was loaded properly.");
+            if (point != null) {
+                markLatLng(point);
+            } else if (post != null) {
+                double[] latLng = post.getParseGeoPointArray(Post.KEY_POST_LOCATION);
+                LatLng point = new LatLng(latLng[0], latLng[1]);
+                addMarkerAtLatLng(point);
+                if (!shouldTrackLocation) {
+                    CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(point, 17);
+                    map.animateCamera(cameraUpdate);
+                }
+            }
             if (shouldTrackLocation) {
                 MapFragmentPermissionsDispatcher.getMyLocationWithCheck(this);
             }
@@ -61,6 +94,19 @@ public class MapFragment extends SupportMapFragment implements LocationProvider.
             Toast.makeText(getContext(), "Error - Map was null!", Toast.LENGTH_SHORT).show();
             Log.d(TAG, "Map was null.");
         }
+    }
+
+    private void addMarkerAtLatLng(LatLng latLng) {
+        BitmapDescriptor defaultMarker = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN);
+        map.addMarker(new MarkerOptions()
+                .position(latLng)
+                .icon(defaultMarker));
+    }
+
+    public void markLatLng(LatLng latLng) {
+        addMarkerAtLatLng(latLng);
+        CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(latLng, 17);
+        map.animateCamera(cameraUpdate);
     }
 
     @Override
