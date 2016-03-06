@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content">
 
     <com.makeramen.roundedimageview.RoundedImageView xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/ivProfileImage"
@@ -17,7 +17,8 @@
         app:riv_border_color="#333333"
         app:riv_border_width="0dip"
         app:riv_corner_radius="10dip"
-        app:riv_mutate_background="true" />
+        app:riv_mutate_background="true"
+        android:layout_marginTop="5dp" />
 
     <TextView
         android:id="@+id/tvUsername"
@@ -27,6 +28,59 @@
         android:layout_toEndOf="@+id/ivProfileImage"
         android:layout_toRightOf="@+id/ivProfileImage"
         android:text="Username"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        android:layout_marginTop="5dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="1m ago"
+        android:id="@+id/tvStreamCreationTime"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="5dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="San Francisco, CA"
+        android:id="@+id/tvStreamLocation"
+        android:layout_below="@+id/tvUsername"
+        android:layout_toEndOf="@+id/ivProfileImage"
+        android:layout_marginTop="5dp" />
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvStreamLocation"
+        android:layout_toEndOf="@+id/ivProfileImage"
+        android:gravity="right"
+        android:layout_marginTop="5dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/tvStreamViewCount"
+            android:text="10 pickups" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/tvStreamUpvotes"
+            android:text="12 upvotes"
+            android:layout_marginLeft="20dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/tvStreamDownvotes"
+            android:text="12 downvotes"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="10dp" />
+
+    </LinearLayout>
 
 </RelativeLayout>
