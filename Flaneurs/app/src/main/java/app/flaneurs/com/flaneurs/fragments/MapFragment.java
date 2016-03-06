@@ -25,6 +25,8 @@ public class MapFragment extends SupportMapFragment implements LocationProvider.
     private GoogleMap map;
     private LocationProvider mLocationProvider;
 
+    private Location mLocation;
+
     private boolean shouldTrackLocation;
 
     public static MapFragment newInstance(boolean shouldTrackLocation) {
@@ -39,7 +41,7 @@ public class MapFragment extends SupportMapFragment implements LocationProvider.
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        shouldTrackLocation = getArguments().getBoolean("shouldTrackLocation");
+        shouldTrackLocation = (getArguments() != null) ? getArguments().getBoolean("shouldTrackLocation") : false;
         getMapAsync(new OnMapReadyCallback() {
             @Override
             public void onMapReady(GoogleMap googleMap) {
@@ -77,8 +79,13 @@ public class MapFragment extends SupportMapFragment implements LocationProvider.
     }
 
     public void onLocationChanged(Location location) {
+        mLocation = location;
         LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
         CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(latLng, 17);
         map.animateCamera(cameraUpdate);
+    }
+
+    public Location getCurrentLocation() {
+        return (shouldTrackLocation) ? mLocation : null;
     }
 }

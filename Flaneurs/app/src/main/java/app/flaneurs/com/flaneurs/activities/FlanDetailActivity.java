@@ -4,7 +4,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -68,7 +67,7 @@ public class FlanDetailActivity extends AppCompatActivity {
         if (caption != null) {
             tvCaption.setText(caption);
         }
-        Log.e("fuck", "POLICE: " + item.getUpVoteCount());
+
         tvUpvotes.setText(mPost.getUpVoteCount() + " Upvotes");
         tvDownVotes.setText(mPost.getDownVoteCount() + " Downvotes");
     }

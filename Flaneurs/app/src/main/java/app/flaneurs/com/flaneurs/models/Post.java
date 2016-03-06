@@ -129,4 +129,5 @@ public class Post extends ParseObject{
     public void setComments(List<Comment> comments) {
         put(KEY_POST_COMMENTS, comments);
     }
+
 }

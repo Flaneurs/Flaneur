@@ -35,6 +35,13 @@ public class ComposeActivity extends AppCompatActivity {
 
     Bitmap mPicture;
 
+    private double mLat;
+    private double mLong;
+
+    public final static String COMPOSE_LAT_ID = "COMPOSE_LAT_ID";
+    public final static String COMPOSE_LONG_ID = "COMPOSE_LONG_ID";
+    public final static String COMPOSE_IMAGE_ID = "COMPOSE_IMAGE_ID";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,7 +49,10 @@ public class ComposeActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         Intent intent = getIntent();
-        String imageUri = intent.getStringExtra("BitmapImage");
+        String imageUri = intent.getStringExtra(COMPOSE_IMAGE_ID);
+        mLat = intent.getDoubleExtra(COMPOSE_LAT_ID, 0);
+        mLong = intent.getDoubleExtra(COMPOSE_LONG_ID, 0);
+
         mPicture = BitmapFactory.decodeFile(imageUri);
         ivPicturePreview.setImageBitmap(mPicture);
     }
@@ -56,7 +66,13 @@ public class ComposeActivity extends AppCompatActivity {
         double randomLat = 37 + (1) * r.nextDouble();
         double randomLong = 122 + (1) * r.nextDouble();
 
-        ParseGeoPoint latLong = new ParseGeoPoint(randomLat, randomLong);
+        ParseGeoPoint latLong;
+        if (mLat == 0) {
+            latLong = new ParseGeoPoint(randomLat, -randomLong);
+        } else {
+            latLong = new ParseGeoPoint(mLat, mLong);
+        }
+
         String caption = etCaption.getText().toString();
 
         newPost.setAuthor(ParseUser.getCurrentUser());
@@ -73,6 +89,7 @@ public class ComposeActivity extends AppCompatActivity {
         ParseFile file = new ParseFile("picture.jpg", bytearray);
         newPost.setImage(file);
 
+
         newPost.saveInBackground(new SaveCallback() {
             public void done(ParseException e) {
                 Log.v("DEBUG", "Saved!");
@@ -81,4 +98,6 @@ public class ComposeActivity extends AppCompatActivity {
 
         finish();
     }
+
+
 }

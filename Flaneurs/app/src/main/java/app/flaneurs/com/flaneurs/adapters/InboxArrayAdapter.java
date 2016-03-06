@@ -18,6 +18,7 @@ import java.util.List;
 import app.flaneurs.com.flaneurs.R;
 import app.flaneurs.com.flaneurs.models.Post;
 import app.flaneurs.com.flaneurs.models.User;
+import app.flaneurs.com.flaneurs.utils.Utils;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
@@ -68,10 +69,9 @@ public class InboxArrayAdapter extends RecyclerView.Adapter<InboxArrayAdapter.In
 
         PrettyTime pt = new PrettyTime();
         holder.tvCreationTime.setText(pt.format(flan.getCreatedTime()));
-        ParseGeoPoint point = flan.getLocation();
-        if (point != null) {
-            String locationText = point.toString();
-            holder.tvLocation.setText(locationText);
+        String address = Utils.getPrettyAddress(mContext, flan.getLocation().getLatitude(), flan.getLocation().getLongitude());
+        if (address != null) {
+            holder.tvLocation.setText(address);
         }
     }
 

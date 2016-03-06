@@ -1,6 +1,8 @@
 package app.flaneurs.com.flaneurs.adapters;
 
 import android.content.Context;
+import android.location.Address;
+import android.location.Geocoder;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,13 +13,15 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.ocpsoft.pretty.time.PrettyTime;
 import com.parse.ParseException;
-import com.parse.ParseGeoPoint;
 
+import java.io.IOException;
 import java.util.List;
+import java.util.Locale;
 
 import app.flaneurs.com.flaneurs.R;
 import app.flaneurs.com.flaneurs.models.Post;
 import app.flaneurs.com.flaneurs.models.User;
+import app.flaneurs.com.flaneurs.utils.Utils;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
@@ -82,11 +86,9 @@ public class FlanArrayAdapter extends RecyclerView.Adapter<FlanArrayAdapter.Flan
         holder.tvUpvotes.setText(flan.getUpVoteCount() + " upvotes");
         holder.tvViewCount.setText(flan.getViewCount() + " views");
 
-
-        ParseGeoPoint locationPoint = flan.getLocation();
-        if (locationPoint != null) {
-            String location = locationPoint.toString();
-            holder.tvLocation.setText(location);
+        String address = Utils.getPrettyAddress(mContext, flan.getLocation().getLatitude(), flan.getLocation().getLongitude());
+        if (address != null) {
+            holder.tvLocation.setText(address);
         }
     }
 
