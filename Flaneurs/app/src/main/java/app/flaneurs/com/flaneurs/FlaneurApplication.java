@@ -10,14 +10,18 @@ import com.parse.interceptors.ParseLogInterceptor;
 import app.flaneurs.com.flaneurs.models.Comment;
 import app.flaneurs.com.flaneurs.models.Post;
 import app.flaneurs.com.flaneurs.models.User;
+import app.flaneurs.com.flaneurs.utils.LocationProvider;
 
 /**
  * Created by kpu on 3/2/16.
  */
 public class FlaneurApplication extends Application {
 
+   public LocationProvider locationProvider;
+
     @Override
     public void onCreate() {
+        instance = this;
         super.onCreate();
 
         ParseObject.registerSubclass(Post.class);
@@ -32,5 +36,12 @@ public class FlaneurApplication extends Application {
 
         ParseFacebookUtils.initialize(this);
 
+        locationProvider = new LocationProvider(this);
+    }
+
+    private static FlaneurApplication instance;
+
+    public static FlaneurApplication getInstance() {
+        return instance;
     }
 }

@@ -3,6 +3,9 @@ package app.flaneurs.com.flaneurs.utils;
 import android.content.Context;
 import android.location.Address;
 import android.location.Geocoder;
+import android.location.Location;
+
+import com.parse.ParseGeoPoint;
 
 import java.io.IOException;
 import java.util.List;
@@ -32,4 +35,18 @@ public class Utils {
         }
         return "This post is too old to have an address";
     }
+
+    public static String getPrettyDistance(Location current, ParseGeoPoint destinationGeoPoint) {
+        if (current == null || destinationGeoPoint == null) {
+            return "Unknown";
+        }
+
+        Location destination = new Location("");
+        destination.setLatitude(destinationGeoPoint.getLatitude());
+        destination.setLongitude(destinationGeoPoint.getLongitude());
+        float distanceInMeters = current.distanceTo(destination);
+        String pretty = distanceInMeters + "m away";
+        return pretty;
+    }
+
 }

@@ -1,8 +1,7 @@
 package app.flaneurs.com.flaneurs.adapters;
 
 import android.content.Context;
-import android.location.Address;
-import android.location.Geocoder;
+import android.location.Location;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,13 +13,13 @@ import com.bumptech.glide.Glide;
 import com.ocpsoft.pretty.time.PrettyTime;
 import com.parse.ParseException;
 
-import java.io.IOException;
 import java.util.List;
-import java.util.Locale;
 
+import app.flaneurs.com.flaneurs.FlaneurApplication;
 import app.flaneurs.com.flaneurs.R;
 import app.flaneurs.com.flaneurs.models.Post;
 import app.flaneurs.com.flaneurs.models.User;
+import app.flaneurs.com.flaneurs.utils.LocationProvider;
 import app.flaneurs.com.flaneurs.utils.Utils;
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -28,17 +27,19 @@ import butterknife.ButterKnife;
 /**
  * Created by mprice on 2/29/16.
  */
-public class FlanArrayAdapter extends RecyclerView.Adapter<FlanArrayAdapter.FlanViewHolder> {
-
-
-    private List<Post> mFlans; // TODO: make model object
+public class FlanArrayAdapter extends RecyclerView.Adapter<FlanArrayAdapter.FlanViewHolder> implements LocationProvider.ILocationListener {
+    private List<Post> mFlans;
     private IFlanInteractionListener mListener;
     private Context mContext;
+    private Location mCurrentLocation;
 
     public FlanArrayAdapter(Context context, List<Post> flans, IFlanInteractionListener listener) {
         mFlans = flans;
         mListener = listener;
         mContext = context;
+
+        FlaneurApplication.getInstance().locationProvider.addListener(this);
+        mCurrentLocation = FlaneurApplication.getInstance().locationProvider.getCurrentLocation();
     }
 
     @Override
@@ -86,6 +87,9 @@ public class FlanArrayAdapter extends RecyclerView.Adapter<FlanArrayAdapter.Flan
         holder.tvUpvotes.setText(flan.getUpVoteCount() + " upvotes");
         holder.tvViewCount.setText(flan.getViewCount() + " views");
 
+        String pretty = Utils.getPrettyDistance(mCurrentLocation, flan.getLocation());
+        holder.tvStreamDistanceAway.setText(pretty);
+
         String address = Utils.getPrettyAddress(mContext, flan.getLocation().getLatitude(), flan.getLocation().getLongitude());
         if (address != null) {
             holder.tvLocation.setText(address);
@@ -95,6 +99,15 @@ public class FlanArrayAdapter extends RecyclerView.Adapter<FlanArrayAdapter.Flan
     @Override
     public int getItemCount() {
         return mFlans.size();
+    }
+
+    @Override
+    public void onLocationChanged(Location location) {
+        mCurrentLocation = location;
+
+        if (location.distanceTo(mCurrentLocation) > 10) {
+            notifyDataSetChanged();
+        }
     }
 
     public static class FlanViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -119,6 +132,9 @@ public class FlanArrayAdapter extends RecyclerView.Adapter<FlanArrayAdapter.Flan
         @Bind(R.id.tvStreamViewCount)
         TextView tvViewCount;
 
+        @Bind(R.id.tvStreamDistanceAway)
+        TextView tvStreamDistanceAway;
+
 
         IMyViewHolderClicks mListener;
 
@@ -141,6 +157,7 @@ public class FlanArrayAdapter extends RecyclerView.Adapter<FlanArrayAdapter.Flan
 
     public interface IFlanInteractionListener {
         void openDetailView(Post flan);
+
         void openProfileView(Post flan);
     }
 }

@@ -8,10 +8,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.ocpsoft.pretty.time.PrettyTime;
 import com.parse.ParseException;
-import com.parse.ParseGeoPoint;
 
 import java.util.List;
 
@@ -26,9 +24,7 @@ import butterknife.ButterKnife;
  * Created by kamranpirwani on 3/5/16.
  */
 public class InboxArrayAdapter extends RecyclerView.Adapter<InboxArrayAdapter.InboxViewHolder> {
-
-
-    private List<Post> mFlans; // TODO: make model object
+    private List<Post> mFlans;
     private IInboxInteractionListener mListener;
     private Context mContext;
 

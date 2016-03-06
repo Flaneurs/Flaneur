@@ -15,6 +15,8 @@ import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 
+import java.util.ArrayList;
+
 /**
  * Created by kpu on 3/5/16.
  */
@@ -31,8 +33,9 @@ public class LocationProvider implements
 
     private GoogleApiClient mGoogleApiClient;
     private LocationRequest mLocationRequest;
-    private ILocationListener mLocationListener;
+    private ArrayList<ILocationListener> mLocationListeners;
     private Context mContext;
+    private Location mCurrentLocation;
 
     private long UPDATE_INTERVAL = 60000;  /* 60 secs */
     private long FASTEST_INTERVAL = 5000; /* 5 secs */
@@ -43,14 +46,19 @@ public class LocationProvider implements
      */
     private final static int CONNECTION_FAILURE_RESOLUTION_REQUEST = 9000;
 
-    public LocationProvider(Context context, ILocationListener locationListener) {
+    public void addListener(ILocationListener locationListener) {
+        mLocationListeners.add(locationListener);
+    }
+
+    public LocationProvider(Context context) {
+        mLocationListeners = new ArrayList<>();
+
         mGoogleApiClient = new GoogleApiClient.Builder(context)
                 .addConnectionCallbacks(this)
                 .addOnConnectionFailedListener(this)
                 .addApi(LocationServices.API)
                 .build();
 
-        mLocationListener = locationListener;
 
         // Create the LocationRequest object
         mLocationRequest = LocationRequest.create()
@@ -93,7 +101,7 @@ public class LocationProvider implements
 
     /*
      * Called by Location Services when the request to connect the client
-     * finishes successfully. At this point, you can request the current
+     * finishes successfully. At this point, you can request the mCurrentLocation
      * location or start periodic updates
      */
     @Override
@@ -102,9 +110,12 @@ public class LocationProvider implements
 
         // Try to get last known location
         Location location = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+
         if (location != null) {
+            mCurrentLocation = location;
+
             Toast.makeText(mContext, "GPS location was found!", Toast.LENGTH_SHORT).show();
-            mLocationListener.onLocationChanged(location);
+            this.fireOnLocationChanged(location);
         } else {
             Toast.makeText(mContext, "Current location was null, enable GPS on emulator!", Toast.LENGTH_SHORT).show();
             Log.d(TAG, "Current location was null.");
@@ -132,8 +143,7 @@ public class LocationProvider implements
     @Override
     public void onLocationChanged(Location location) {
         Log.d(TAG, String.format("Location changed: %s", location.toString()));
-
-        mLocationListener.onLocationChanged(location);
+        this.fireOnLocationChanged(location);
     }
 
     /*
@@ -144,16 +154,16 @@ public class LocationProvider implements
         Log.d(TAG, "Location services connection failed.");
 
 		/*
-		 * Google Play services can resolve some errors it detects. If the error
+         * Google Play services can resolve some errors it detects. If the error
 		 * has a resolution, try sending an Intent to start a Google Play
 		 * services activity that can resolve error.
 		 */
         if (connectionResult.hasResolution() && mContext instanceof Activity) {
             try {
-                Activity activity = (Activity)mContext;
+                Activity activity = (Activity) mContext;
                 // Start an Activity that tries to resolve the error
                 connectionResult.startResolutionForResult(activity, CONNECTION_FAILURE_RESOLUTION_REQUEST);
-			/*
+            /*
 			 * Thrown if Google Play services canceled the original
 			 * PendingIntent
 			 */
@@ -169,5 +179,18 @@ public class LocationProvider implements
             Toast.makeText(mContext, "Sorry. Location services not available to you", Toast.LENGTH_LONG).show();
             Log.d(TAG, "Google play services unable to resolve location services connection failure.");
         }
+    }
+
+    private void fireOnLocationChanged(Location location) {
+        if (location != null) {
+            mCurrentLocation = location;
+            for (ILocationListener listener : mLocationListeners) {
+                listener.onLocationChanged(location);
+            }
+        }
+    }
+
+    public Location getCurrentLocation() {
+        return mCurrentLocation;
     }
 }

@@ -13,6 +13,7 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 
+import app.flaneurs.com.flaneurs.FlaneurApplication;
 import app.flaneurs.com.flaneurs.utils.LocationProvider;
 import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.RuntimePermissions;
@@ -73,7 +74,8 @@ public class MapFragment extends SupportMapFragment implements LocationProvider.
     void getMyLocation() {
         if (map != null) {
             map.setMyLocationEnabled(true);
-            mLocationProvider = new LocationProvider(getActivity(), this);
+            mLocationProvider = FlaneurApplication.getInstance().locationProvider;
+            mLocationProvider.addListener(this);
             mLocationProvider.connect();
         }
     }
