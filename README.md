@@ -16,22 +16,22 @@ We are interested in capturing and sharing the story of a city, the thoughts and
 - [ ] Passively pick up Flâneurs and view them in your inbox
 
 #### Auth Screen
-- [ ] Allow user to OAuth with Facebook
+- [x] Allow user to OAuth with Facebook
 
 #### Map / Feed Screens
-- [ ] Allow user to see different Flâneurs on a map view
-- [ ] Allow users to see Flâneurs posted by friends and all app users in a feed
+- [x] Allow user to see different Flâneurs on a map view
+- [x] Allow users to see Flâneurs posted by friends and all app users in a feed
  
 #### Compose Screen
-- [ ] Create Flâneurs, either a photo or video with a caption, and drop it at your current location
+- [x] Create Flâneurs, either a photo or video with a caption, and drop it at your current location
  
 #### Inbox Screen
 - [ ] Allow users to see their picked up Flâneurs in an inbox
  
 #### Detail Screen
-- [ ] Allow user to view the content associated with their Flâneurs
+- [x] Allow user to view the content associated with their Flâneurs
 - [ ] Allow users to comment on picked up Flâneurs
-- [ ] Allow users to upvote/downvote their picked up Flâneurs 
+- [x] Allow users to upvote/downvote their picked up Flâneurs 
 
 ### Optional User Stories
 - [ ] Receieve notifications about flaneur subtypes you care about immediately
@@ -39,7 +39,7 @@ We are interested in capturing and sharing the story of a city, the thoughts and
 - [ ] Ability to desiminate diffrent subtypes visually on the map and stream
 - [ ] Ability to archive flaneurs in inbox
 - [ ] Ability to delete flaneurs in inbox
-- [ ] Ability to view user profiles and see how many drops/picks up user has done, as well as view their timeline
+- [x] Ability to view user profiles and see how many drops/picks up user has done, as well as view their timeline
 
 ### Wire Frames
 | Screen  | Name | Archetype | Description |
@@ -53,5 +53,13 @@ We are interested in capturing and sharing the story of a city, the thoughts and
 | ![profile](/wireframes/wireframe_profile.jpg) | Profile | Profile | View users stats such as dropped/picked up Flans and their activity timeline |
 
 ### State Machine
-
 ![transitions](/images/Transitions.png)
+
+### Sprint 1 Demo
+![Flan](/images/flan_demo_1.gif)
+
+- Facebook auth
+- Parse backend
+- Maps
+- Camera
+
