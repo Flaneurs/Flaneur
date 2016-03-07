@@ -41,6 +41,14 @@ We are interested in capturing and sharing the story of a city, the thoughts and
 - [ ] Ability to delete flaneurs in inbox
 - [x] Ability to view user profiles and see how many drops/picks up user has done, as well as view their timeline
 
+### Sprint 2 Demo
+![Flan](/images/flan_demo_1.gif)
+
+- Facebook auth
+- Parse backend
+- Maps
+- Camera
+
 ### Wire Frames
 | Screen  | Name | Archetype | Description |
 | ------------- | :---: | :---: | :---  | :---  |
@@ -55,11 +63,4 @@ We are interested in capturing and sharing the story of a city, the thoughts and
 ### State Machine
 ![transitions](/images/Transitions.png)
 
-### Sprint 1 Demo
-![Flan](/images/flan_demo_1.gif)
-
-- Facebook auth
-- Parse backend
-- Maps
-- Camera
 
