@@ -17,13 +17,20 @@ import android.widget.Toast;
 
 import com.astuetz.PagerSlidingTabStrip;
 import com.facebook.appevents.AppEventsLogger;
+import com.parse.FindCallback;
+import com.parse.ParseException;
+import com.parse.ParseQuery;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 import app.flaneurs.com.flaneurs.R;
 import app.flaneurs.com.flaneurs.adapters.MapStreamPagerAdapter;
 import app.flaneurs.com.flaneurs.fragments.MapFragment;
 import app.flaneurs.com.flaneurs.fragments.StreamFragment;
+import app.flaneurs.com.flaneurs.models.Post;
+import app.flaneurs.com.flaneurs.utils.ParseProxyObject;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
@@ -48,7 +55,23 @@ public class DiscoverActivity extends AppCompatActivity {
         setContentView(R.layout.activity_discover);
         ButterKnife.bind(this);
 
-        mMapFragment = MapFragment.newInstance(true, null, null);
+        ParseQuery<Post> query = ParseQuery.getQuery("Post");
+        query.findInBackground(new FindCallback<Post>() {
+            @Override
+            public void done(List<Post> objects, ParseException e) {
+                configureViewWithPosts(objects);
+            }
+        });
+    }
+
+    private void configureViewWithPosts(List<Post> posts) {
+        ArrayList<ParseProxyObject> postsProxy = new ArrayList<>();
+        // Build ArrayList of ParseProxyObjects to pass into MapFragment
+        for (Post post : posts) {
+            postsProxy.add(new ParseProxyObject(post));
+        }
+
+        mMapFragment = MapFragment.newInstance(true, null, postsProxy);
         StreamFragment.StreamConfiguration streamConfiguration = new StreamFragment.StreamConfiguration();
         streamConfiguration.setStreamType(StreamFragment.StreamType.AllPosts);
         mStreamFragment = StreamFragment.createInstance(streamConfiguration);

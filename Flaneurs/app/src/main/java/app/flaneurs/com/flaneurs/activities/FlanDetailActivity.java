@@ -14,6 +14,8 @@ import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseQuery;
 
+import java.util.ArrayList;
+
 import app.flaneurs.com.flaneurs.R;
 import app.flaneurs.com.flaneurs.fragments.MapFragment;
 import app.flaneurs.com.flaneurs.models.Post;
@@ -74,7 +76,9 @@ public class FlanDetailActivity extends AppCompatActivity {
         tvUpvotes.setText(mPost.getUpVoteCount() + " Upvotes");
         tvDownVotes.setText(mPost.getDownVoteCount() + " Downvotes");
 
-        getSupportFragmentManager().beginTransaction().replace(R.id.flMap, MapFragment.newInstance(false, null, new ParseProxyObject(item))).commit();
+        ArrayList<ParseProxyObject> postsProxy = new ArrayList<>();
+        postsProxy.add(new ParseProxyObject(item));
+        getSupportFragmentManager().beginTransaction().replace(R.id.flMap, MapFragment.newInstance(false, null, postsProxy)).commit();
     }
 
     private void loadImages(ParseFile thumbnail, final ImageView img) {

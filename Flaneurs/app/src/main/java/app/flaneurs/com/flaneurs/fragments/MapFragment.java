@@ -14,8 +14,9 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+
+import java.util.ArrayList;
 
 import app.flaneurs.com.flaneurs.FlaneurApplication;
 import app.flaneurs.com.flaneurs.models.Post;
@@ -30,7 +31,7 @@ public class MapFragment extends SupportMapFragment implements LocationProvider.
     public static final String TAG = MapFragment.class.getSimpleName();
     public static final String ARG_SHOULD_TRACK_LOCATION = "ARG_SHOULD_TRACK_LOCATION";
     public static final String ARG_LAT_LNG = "ARG_LAT_LNG";
-    public static final String ARG_POST = "ARG_POST";
+    public static final String ARG_POSTS = "ARG_POSTS";
 
     private GoogleMap map;
     private LocationProvider mLocationProvider;
@@ -38,15 +39,15 @@ public class MapFragment extends SupportMapFragment implements LocationProvider.
     private Location mLocation;
 
     private boolean shouldTrackLocation;
-    private ParseProxyObject post;
+    private ArrayList<ParseProxyObject> posts;
     private LatLng point;
 
-    public static MapFragment newInstance(boolean shouldTrackLocation, LatLng latLng, ParseProxyObject parseProxyObject) {
+    public static MapFragment newInstance(boolean shouldTrackLocation, LatLng latLng, ArrayList<ParseProxyObject> parseProxyObjects) {
         MapFragment mapFragment = new MapFragment();
         Bundle args = new Bundle();
         args.putBoolean(ARG_SHOULD_TRACK_LOCATION, shouldTrackLocation);
         args.putParcelable(ARG_LAT_LNG, latLng);
-        args.putSerializable(ARG_POST, parseProxyObject);
+        args.putSerializable(ARG_POSTS, parseProxyObjects);
         mapFragment.setArguments(args);
         return mapFragment;
     }
@@ -59,10 +60,11 @@ public class MapFragment extends SupportMapFragment implements LocationProvider.
         if (arguments != null) {
             shouldTrackLocation = arguments.getBoolean(ARG_SHOULD_TRACK_LOCATION);
             point = arguments.getParcelable(ARG_LAT_LNG);
-            post = (ParseProxyObject)arguments.getSerializable(ARG_POST);
+            posts = (ArrayList<ParseProxyObject>)arguments.getSerializable(ARG_POSTS);
         } else {
             shouldTrackLocation = false;
-            post = null;
+            point = null;
+            posts = null;
         }
 
         getMapAsync(new OnMapReadyCallback() {
@@ -79,13 +81,17 @@ public class MapFragment extends SupportMapFragment implements LocationProvider.
             Log.d(TAG, "Map Fragment was loaded properly.");
             if (point != null) {
                 markLatLng(point);
-            } else if (post != null) {
-                double[] latLng = post.getParseGeoPointArray(Post.KEY_POST_LOCATION);
-                LatLng point = new LatLng(latLng[0], latLng[1]);
-                addMarkerAtLatLng(point);
-                if (!shouldTrackLocation) {
-                    CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(point, 17);
-                    map.animateCamera(cameraUpdate);
+            } else if (posts != null && posts.size() > 0) {
+                if (posts.size() == 1) {
+                    ParseProxyObject post = posts.get(0);
+                    double[] latLng = post.getParseGeoPointArray(Post.KEY_POST_LOCATION);
+                    LatLng point = new LatLng(latLng[0], latLng[1]);
+                    markLatLng(point);
+                }
+                for (ParseProxyObject post : posts) {
+                    double[] latLng = post.getParseGeoPointArray(Post.KEY_POST_LOCATION);
+                    LatLng point = new LatLng(latLng[0], latLng[1]);
+                    addMarkerAtLatLng(point);
                 }
             }
             if (shouldTrackLocation) {
@@ -107,7 +113,7 @@ public class MapFragment extends SupportMapFragment implements LocationProvider.
     public void markLatLng(LatLng latLng) {
         addMarkerAtLatLng(latLng);
         CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(latLng, 17);
-        map.animateCamera(cameraUpdate);
+        map.moveCamera(cameraUpdate);
     }
 
     @Override
@@ -127,10 +133,12 @@ public class MapFragment extends SupportMapFragment implements LocationProvider.
     }
 
     public void onLocationChanged(Location location) {
+        if (mLocation == null) {
+            LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
+            CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(latLng, 15);
+            map.animateCamera(cameraUpdate);
+        }
         mLocation = location;
-        LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
-        CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(latLng, 17);
-        map.animateCamera(cameraUpdate);
     }
 
     public Location getCurrentLocation() {
