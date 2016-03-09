@@ -50,6 +50,10 @@ public class LocationProvider implements
         mLocationListeners.add(locationListener);
     }
 
+    public void removeListener(ILocationListener locationListener) {
+        mLocationListeners.remove(locationListener);
+    }
+
     public LocationProvider(Context context) {
         mLocationListeners = new ArrayList<>();
 
@@ -67,6 +71,7 @@ public class LocationProvider implements
                 .setFastestInterval(FASTEST_INTERVAL);
 
         mContext = context;
+        connect();
     }
 
     public void connect() {
