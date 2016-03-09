@@ -1,5 +1,6 @@
 package app.flaneurs.com.flaneurs.activities;
 
+import android.Manifest;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -24,6 +25,7 @@ import com.astuetz.PagerSlidingTabStrip;
 import com.facebook.appevents.AppEventsLogger;
 import com.parse.FindCallback;
 import com.parse.ParseException;
+import com.parse.ParseGeoPoint;
 import com.parse.ParseQuery;
 
 import java.io.File;
@@ -39,12 +41,16 @@ import app.flaneurs.com.flaneurs.models.Post;
 import app.flaneurs.com.flaneurs.models.User;
 import app.flaneurs.com.flaneurs.services.PickupService;
 import app.flaneurs.com.flaneurs.utils.BadgeDrawable;
+import app.flaneurs.com.flaneurs.utils.LocationProvider;
 import app.flaneurs.com.flaneurs.utils.ParseProxyObject;
 import app.flaneurs.com.flaneurs.utils.Utils;
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import permissions.dispatcher.NeedsPermission;
+import permissions.dispatcher.RuntimePermissions;
 
-public class DiscoverActivity extends AppCompatActivity {
+@RuntimePermissions
+public class DiscoverActivity extends AppCompatActivity implements LocationProvider.ILocationListener {
 
     @Bind(R.id.vpViewPager)
     ViewPager viewPager;
@@ -52,8 +58,11 @@ public class DiscoverActivity extends AppCompatActivity {
     @Bind(R.id.psTabs)
     PagerSlidingTabStrip slidingTabStrip;
 
+    private LocationProvider mLocationProvider;
     private MapFragment mMapFragment;
     private StreamFragment mStreamFragment;
+
+    private Location mLocation;
 
     public final String APP_TAG = "flaneurs";
     public final static int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 1034;
@@ -66,23 +75,45 @@ public class DiscoverActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_discover);
         ButterKnife.bind(this);
-
-        ParseQuery<Post> query = ParseQuery.getQuery("Post");
-        query.setLimit(10);
-        query.include(Post.KEY_POST_AUTHOR);
-        query.setCachePolicy(ParseQuery.CachePolicy.CACHE_THEN_NETWORK);
-        query.findInBackground(new FindCallback<Post>() {
-            @Override
-            public void done(List<Post> objects, ParseException e) {
-                if (objects != null && objects.size() > 0)
-                    configureViewWithPosts(objects);
-            }
-        });
+        DiscoverActivityPermissionsDispatcher.getMyLocationWithCheck(this);
 
         FlaneurApplication.getInstance().pickupService.onColdLaunch();
 
         LocalBroadcastManager.getInstance(this).registerReceiver(mMessageReceiver,
                 new IntentFilter(PickupService.PICKUP_EVENT));
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        DiscoverActivityPermissionsDispatcher.onRequestPermissionsResult(this, requestCode, grantResults);
+    }
+
+    @NeedsPermission({ Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION})
+    void getMyLocation() {
+        mLocationProvider = FlaneurApplication.getInstance().locationProvider;
+        mLocationProvider.addListener(this);
+    }
+
+    @Override
+    public void onLocationChanged(Location location) {
+        if (mLocation == null) {
+            ParseGeoPoint currentPoint = new ParseGeoPoint(location.getLatitude(), location.getLongitude());
+
+            ParseQuery<Post> query = ParseQuery.getQuery("Post");
+            query.whereNear(Post.KEY_POST_LOCATION, currentPoint);
+            query.setLimit(10);
+            query.include(Post.KEY_POST_AUTHOR);
+            query.setCachePolicy(ParseQuery.CachePolicy.CACHE_THEN_NETWORK);
+            query.findInBackground(new FindCallback<Post>() {
+                @Override
+                public void done(List<Post> objects, ParseException e) {
+                    if (objects != null && objects.size() > 0)
+                        configureViewWithPosts(objects);
+                }
+            });
+        }
+        mLocation = location;
     }
 
     private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
@@ -111,9 +142,11 @@ public class DiscoverActivity extends AppCompatActivity {
         }
 
         mMapFragment = MapFragment.newInstance(true, false, null, postsProxy);
+
         StreamFragment.StreamConfiguration streamConfiguration = new StreamFragment.StreamConfiguration();
         streamConfiguration.setStreamType(StreamFragment.StreamType.AllPosts);
         mStreamFragment = StreamFragment.createInstance(streamConfiguration);
+
         viewPager.setAdapter(new MapStreamPagerAdapter(getSupportFragmentManager(), mMapFragment, mStreamFragment));
 
         slidingTabStrip.setViewPager(viewPager);
@@ -134,10 +167,9 @@ public class DiscoverActivity extends AppCompatActivity {
                 Uri takenPhotoUri = getPhotoFileUri(photoFileName);
                 Intent i = new Intent(DiscoverActivity.this, ComposeActivity.class);
 
-                Location loc = mMapFragment.getCurrentLocation();
-                if (loc != null) {
-                    i.putExtra(ComposeActivity.COMPOSE_LAT_ID, loc.getLatitude());
-                    i.putExtra(ComposeActivity.COMPOSE_LONG_ID, loc.getLongitude());
+                if (mLocation != null) {
+                    i.putExtra(ComposeActivity.COMPOSE_LAT_ID, mLocation.getLatitude());
+                    i.putExtra(ComposeActivity.COMPOSE_LONG_ID, mLocation.getLongitude());
                 }
                 i.putExtra(ComposeActivity.COMPOSE_IMAGE_ID, takenPhotoUri.getPath());
                 startActivity(i);
