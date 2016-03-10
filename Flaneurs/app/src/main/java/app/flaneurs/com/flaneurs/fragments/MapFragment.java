@@ -26,7 +26,7 @@ import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.RuntimePermissions;
 
 @RuntimePermissions
-public class MapFragment extends SupportMapFragment implements LocationProvider.ILocationListener{
+public class MapFragment extends SupportMapFragment implements LocationProvider.ILocationListener {
 
     public static final String TAG = MapFragment.class.getSimpleName();
     public static final String ARG_SHOULD_TRACK_LOCATION = "ARG_SHOULD_TRACK_LOCATION";
@@ -128,7 +128,6 @@ public class MapFragment extends SupportMapFragment implements LocationProvider.
             map.setMyLocationEnabled(true);
             mLocationProvider = FlaneurApplication.getInstance().locationProvider;
             mLocationProvider.addListener(this);
-            mLocationProvider.connect();
         }
     }
 
@@ -139,9 +138,5 @@ public class MapFragment extends SupportMapFragment implements LocationProvider.
             map.animateCamera(cameraUpdate);
         }
         mLocation = location;
-    }
-
-    public Location getCurrentLocation() {
-        return (shouldTrackLocation) ? mLocation : null;
     }
 }
