@@ -26,6 +26,7 @@ public class InboxActivity extends AppCompatActivity {
         configuration.setStreamType(StreamFragment.StreamType.Inbox);
         configuration.setUser(User.getCurrentUser());
         StreamFragment fragment = StreamFragment.createInstance(configuration);
+        fragment.loadStream();
         return fragment;
     }
 }

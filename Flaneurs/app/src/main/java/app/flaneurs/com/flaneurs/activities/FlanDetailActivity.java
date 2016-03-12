@@ -1,12 +1,15 @@
 package app.flaneurs.com.flaneurs.activities;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.AttributeSet;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.parse.GetCallback;
 import com.parse.GetDataCallback;
@@ -15,9 +18,12 @@ import com.parse.ParseFile;
 import com.parse.ParseQuery;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 import app.flaneurs.com.flaneurs.R;
 import app.flaneurs.com.flaneurs.fragments.MapFragment;
+import app.flaneurs.com.flaneurs.manager.ParseManager;
 import app.flaneurs.com.flaneurs.models.Post;
 import app.flaneurs.com.flaneurs.models.User;
 import app.flaneurs.com.flaneurs.utils.ParseProxyObject;
@@ -39,6 +45,7 @@ public class FlanDetailActivity extends AppCompatActivity {
     TextView tvDownVotes;
 
     private Post mPost;
+    private String mObjectIdentifier;
 
     public final static String POST_ID = "POST_ID";
 
@@ -49,20 +56,30 @@ public class FlanDetailActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         Bundle extras = getIntent().getExtras();
-        String objectId = extras.getString(POST_ID);
+        mObjectIdentifier = extras.getString(POST_ID);
+    }
 
-        ParseQuery<Post> query = ParseQuery.getQuery(Post.class);
-        // First try to find from the cache and only then go to network
-        query.setCachePolicy(ParseQuery.CachePolicy.CACHE_ELSE_NETWORK); // or CACHE_ONLY
-        // Execute the query to find the object with ID
-        query.getInBackground(objectId, new GetCallback<Post>() {
-            public void done(Post item, ParseException e) {
-                if (e == null) {
-                    mPost = item;
-                    configureViewWithPost(item);
-                }
+    @Override
+    public View onCreateView(String name, Context context, AttributeSet attrs) {
+        View v = super.onCreateView(name, context, attrs);
+        ParseManager.getInstance().getPostById(mObjectIdentifier, new ParseManager.IOnPostsReceivedCallback() {
+            @Override
+            public void onSuccess(Post post) {
+                mPost = post;
+                configureViewWithPost(post);
+            }
+
+            @Override
+            public void onSuccess(List<Post> posts) {
+
+            }
+
+            @Override
+            public void onFailure(String error) {
+                Toast.makeText(FlanDetailActivity.this, error, Toast.LENGTH_SHORT).show();
             }
         });
+        return v;
     }
 
     private void configureViewWithPost(Post item) {
@@ -78,7 +95,13 @@ public class FlanDetailActivity extends AppCompatActivity {
 
         ArrayList<ParseProxyObject> postsProxy = new ArrayList<>();
         postsProxy.add(new ParseProxyObject(item));
-        getSupportFragmentManager().beginTransaction().replace(R.id.flMap, MapFragment.newInstance(false, null, postsProxy)).commit();
+        MapFragment.MapConfiguration configuration = new MapFragment.MapConfiguration();
+        configuration.setMapType(MapFragment.MapType.Post);
+        configuration.setPostId(mPost.getObjectId());
+        configuration.setShouldTrackLocation(false);
+        MapFragment mapFragment = MapFragment.newInstance(configuration);
+        getSupportFragmentManager().beginTransaction().replace(R.id.flMap, mapFragment).commit();
+        mapFragment.loadMap();
     }
 
     private void loadImages(ParseFile thumbnail, final ImageView img) {

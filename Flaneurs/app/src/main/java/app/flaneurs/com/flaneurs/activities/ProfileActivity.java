@@ -120,11 +120,14 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
     private void setupProfileView(User user) {
-        mMapFragment = MapFragment.newInstance(false, null, null);
+        //TODO: kpu integrate
+        MapFragment.MapConfiguration config = new MapFragment.MapConfiguration();
+        mMapFragment = MapFragment.newInstance(config);
         StreamFragment.StreamConfiguration configuration = new StreamFragment.StreamConfiguration();
         configuration.setStreamType(StreamFragment.StreamType.User);
         configuration.setUser(user);
         mStreamFragment = StreamFragment.createInstance(configuration);
+        mStreamFragment.loadStream();
         viewPager.setAdapter(new MapStreamPagerAdapter(getSupportFragmentManager(), mMapFragment, mStreamFragment));
         slidingTabStrip.setViewPager(viewPager);
 

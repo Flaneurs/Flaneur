@@ -58,7 +58,13 @@ public class ComposeActivity extends AppCompatActivity {
         mPicture = BitmapFactory.decodeFile(imageUri);
         ivPicturePreview.setImageBitmap(mPicture);
 
-        getSupportFragmentManager().beginTransaction().replace(R.id.flMap, MapFragment.newInstance(false, new LatLng(mLat, mLong), null)).commit();
+        MapFragment.MapConfiguration configuration = new MapFragment.MapConfiguration();
+        configuration.setMapType(MapFragment.MapType.Location);
+        configuration.setPoint(new LatLng(mLat, mLong));
+        configuration.setShouldTrackLocation(false);
+        MapFragment mapFragment = MapFragment.newInstance(configuration);
+        getSupportFragmentManager().beginTransaction().replace(R.id.flMap, mapFragment).commit();
+        mapFragment.loadMap();
     }
 
     public void onPostButtonClicked(View v) {

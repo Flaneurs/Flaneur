@@ -2,6 +2,7 @@ package app.flaneurs.com.flaneurs.fragments;
 
 
 import android.content.Intent;
+import android.location.Location;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -26,6 +27,7 @@ import java.util.List;
 import app.flaneurs.com.flaneurs.R;
 import app.flaneurs.com.flaneurs.activities.ProfileActivity;
 import app.flaneurs.com.flaneurs.adapters.InboxArrayAdapter;
+import app.flaneurs.com.flaneurs.manager.ParseManager;
 import app.flaneurs.com.flaneurs.models.User;
 import app.flaneurs.com.flaneurs.utils.DividerItemDecoration;
 import app.flaneurs.com.flaneurs.activities.FlanDetailActivity;
@@ -53,6 +55,10 @@ public class StreamFragment extends Fragment implements FlanArrayAdapter.IFlanIn
 
     private StreamConfiguration mStreamConfiguration;
 
+    public void setStreamConfiguration(StreamConfiguration mStreamConfiguration) {
+        this.mStreamConfiguration = mStreamConfiguration;
+    }
+
     public StreamConfiguration getStreamConfiguration() {
         return mStreamConfiguration;
     }
@@ -60,6 +66,15 @@ public class StreamFragment extends Fragment implements FlanArrayAdapter.IFlanIn
     public static class StreamConfiguration implements Serializable {
         private StreamType mStreamType;
         private ParseUser mUser;
+        private Location mLocation;
+
+        public Location getLocation() {
+            return mLocation;
+        }
+
+        public void setLocation(Location mLocation) {
+            this.mLocation = mLocation;
+        }
 
         public StreamType getStreamType() {
             return mStreamType;
@@ -94,6 +109,10 @@ public class StreamFragment extends Fragment implements FlanArrayAdapter.IFlanIn
     protected RecyclerView.Adapter adapter;
     protected LinearLayoutManager layoutManager;
 
+    public void loadStream() {
+        grabDataFromParse(false);
+    }
+
     private void grabDataFromParse(boolean hideProgressBar) {
         showLoadingDataState(hideProgressBar);
         StreamConfiguration streamConfiguration = getStreamConfiguration();
@@ -112,12 +131,20 @@ public class StreamFragment extends Fragment implements FlanArrayAdapter.IFlanIn
     }
 
     private void grabAllPostsFromParse() {
-        ParseQuery<Post> query = ParseQuery.getQuery("Post");
-        query.orderByDescending("KEY_POST_DATE");
-        query.findInBackground(new FindCallback<Post>() {
+        ParseManager.getInstance().getPostsRelativeToLocation(getStreamConfiguration().getLocation(), ParseManager.ALL_POSTS, new ParseManager.IOnPostsReceivedCallback() {
             @Override
-            public void done(List<Post> objects, ParseException e) {
-                onParseResultsReceived(objects);
+            public void onSuccess(Post post) {
+
+            }
+
+            @Override
+            public void onSuccess(List<Post> posts) {
+                onParseResultsReceived(posts);
+            }
+
+            @Override
+            public void onFailure(String error) {
+                onParseResultsNotReceived(error);
             }
         });
     }
@@ -130,9 +157,19 @@ public class StreamFragment extends Fragment implements FlanArrayAdapter.IFlanIn
         query.findInBackground(new FindCallback<Post>() {
             @Override
             public void done(List<Post> objects, ParseException e) {
-                onParseResultsReceived(objects);
+                if (e == null) {
+                    onParseResultsReceived(objects);
+                } else {
+                    onParseResultsNotReceived(e.getMessage());
+                }
             }
         });
+    }
+
+    private void onParseResultsNotReceived(String error) {
+        Toast.makeText(getActivity(), error, Toast.LENGTH_SHORT).show();
+        swipeContainer.setRefreshing(false);
+        hideLoadingDataState();
     }
 
     private void onParseResultsReceived(List<Post> posts) {
@@ -177,7 +214,6 @@ public class StreamFragment extends Fragment implements FlanArrayAdapter.IFlanIn
         setupAdapter();
         setupRecyclerView();
         setupPullToRefresh();
-        grabDataFromParse(false);
         return v;
     }
 

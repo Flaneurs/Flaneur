@@ -32,6 +32,7 @@ import app.flaneurs.com.flaneurs.R;
 import app.flaneurs.com.flaneurs.adapters.MapStreamPagerAdapter;
 import app.flaneurs.com.flaneurs.fragments.MapFragment;
 import app.flaneurs.com.flaneurs.fragments.StreamFragment;
+import app.flaneurs.com.flaneurs.manager.ParseManager;
 import app.flaneurs.com.flaneurs.models.Post;
 import app.flaneurs.com.flaneurs.utils.LocationProvider;
 import app.flaneurs.com.flaneurs.utils.ParseProxyObject;
@@ -65,6 +66,7 @@ public class DiscoverActivity extends AppCompatActivity implements LocationProvi
         setContentView(R.layout.activity_discover);
         ButterKnife.bind(this);
         DiscoverActivityPermissionsDispatcher.getMyLocationWithCheck(this);
+        loadViews();
     }
 
     @Override
@@ -82,29 +84,16 @@ public class DiscoverActivity extends AppCompatActivity implements LocationProvi
     @Override
     public void onLocationChanged(Location location) {
         if (mLocation == null) {
-            ParseGeoPoint currentPoint = new ParseGeoPoint(location.getLatitude(), location.getLongitude());
-
-            ParseQuery<Post> query = ParseQuery.getQuery("Post");
-            query.whereNear(Post.KEY_POST_LOCATION, currentPoint);
-            query.setLimit(5);
-            query.findInBackground(new FindCallback<Post>() {
-                @Override
-                public void done(List<Post> objects, ParseException e) {
-                    configureViewWithPosts(objects);
-                }
-            });
+            updateConfigurationsWithLocation(location);
+            reloadData();
         }
         mLocation = location;
     }
 
-    private void configureViewWithPosts(List<Post> posts) {
-        ArrayList<ParseProxyObject> postsProxy = new ArrayList<>();
-        // Build ArrayList of ParseProxyObjects to pass into MapFragment
-        for (Post post : posts) {
-            postsProxy.add(new ParseProxyObject(post));
-        }
-
-        mMapFragment = MapFragment.newInstance(true, null, postsProxy);
+    private void loadViews() {
+        MapFragment.MapConfiguration configuration = new MapFragment.MapConfiguration();
+        configuration.setMapType(MapFragment.MapType.RecentPosts);
+        mMapFragment = MapFragment.newInstance(configuration);
 
         StreamFragment.StreamConfiguration streamConfiguration = new StreamFragment.StreamConfiguration();
         streamConfiguration.setStreamType(StreamFragment.StreamType.AllPosts);
@@ -120,6 +109,21 @@ public class DiscoverActivity extends AppCompatActivity implements LocationProvi
                 onLaunchCamera();
             }
         });
+    }
+
+    private void updateConfigurationsWithLocation(Location location) {
+        MapFragment.MapConfiguration mapConfig = mMapFragment.getMapConfiguration();
+        mapConfig.setCurrentLocation(location);
+        mMapFragment.setMapConfiguration(mapConfig);
+
+        StreamFragment.StreamConfiguration streamConfig = mStreamFragment.getStreamConfiguration();
+        streamConfig.setLocation(location);
+        mStreamFragment.setStreamConfiguration(streamConfig);
+    }
+
+    private void reloadData() {
+        mMapFragment.loadMap();
+        mStreamFragment.loadStream();
     }
 
     @Override
