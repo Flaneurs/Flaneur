@@ -11,8 +11,6 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.parse.ParseException;
 
-import org.ocpsoft.prettytime.PrettyTime;
-
 import java.util.List;
 
 import app.flaneurs.com.flaneurs.R;
@@ -27,12 +25,12 @@ import butterknife.ButterKnife;
  * Created by kamranpirwani on 3/5/16.
  */
 public class InboxArrayAdapter extends RecyclerView.Adapter<InboxArrayAdapter.InboxViewHolder> {
-    private List<InboxItem> mFlans;
+    private List<InboxItem> mInboxItems;
     private IInboxInteractionListener mListener;
     private Context mContext;
 
     public InboxArrayAdapter(Context context, List<InboxItem> flans, IInboxInteractionListener listener) {
-        mFlans = flans;
+        mInboxItems = flans;
         mListener = listener;
         mContext = context;
     }
@@ -44,7 +42,7 @@ public class InboxArrayAdapter extends RecyclerView.Adapter<InboxArrayAdapter.In
         InboxViewHolder viewHolder = new InboxViewHolder(view, new InboxViewHolder.IMyViewHolderClicks() {
             @Override
             public void onInboxClicked(View caller, int position) {
-                InboxItem flan = mFlans.get(position);
+                InboxItem flan = mInboxItems.get(position);
                 mListener.openInboxDetailView(flan);
             }
         });
@@ -53,43 +51,31 @@ public class InboxArrayAdapter extends RecyclerView.Adapter<InboxArrayAdapter.In
 
     @Override
     public void onBindViewHolder(InboxViewHolder holder, final int position) {
-        final InboxItem flan1 = mFlans.get(position);
-        final Post flan = flan1.getPost();
-
-        User author = flan.getAuthor();
-        if (author != null) {
-            try {
-                author.fetch();
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
+        final InboxItem inboxItem = mInboxItems.get(position);
+        final Post post = inboxItem.getPost();
+        final User author;
+        try {
+            author = (User)post.getAuthor().fetchIfNeeded();
             String username = author.getUsername();
             holder.tvUsername.setText(username);
+            Glide.with(mContext).load(author.getProfileUrl()).into(holder.ivInboxImage);
+        } catch (ParseException e) {
+            e.printStackTrace();
         }
 
-        PrettyTime pt = new PrettyTime();
-        holder.tvCreationTime.setText(pt.format(flan.getCreatedTime()));
-        if (flan.getLocation() != null) {
-            String address = Utils.getPrettyAddress(mContext, flan.getLocation().getLatitude(), flan.getLocation().getLongitude());
-            if (address != null) {
-                holder.tvLocation.setText(address);
-            }
-            if (author.getProfileUrl() != null) {
-                Glide.with(mContext).load(author.getProfileUrl()).into(holder.ivInboxImage);
-            }
-        }
+        holder.tvCreationTime.setText(Utils.getPrettyTime(inboxItem.getPickUpTime()));
+        holder.tvLocation.setText(post.getAddress());
 
-        if (flan1.getNew() == true) {
+        if (inboxItem.getNew() == true) {
             holder.ivNew.setVisibility(View.VISIBLE);
         } else {
             holder.ivNew.setVisibility(View.GONE);
         }
-
     }
 
     @Override
     public int getItemCount() {
-        return mFlans.size();
+        return mInboxItems.size();
     }
 
     public static class InboxViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -131,5 +117,4 @@ public class InboxArrayAdapter extends RecyclerView.Adapter<InboxArrayAdapter.In
     public interface IInboxInteractionListener {
         void openInboxDetailView(InboxItem flan);
     }
-
 }

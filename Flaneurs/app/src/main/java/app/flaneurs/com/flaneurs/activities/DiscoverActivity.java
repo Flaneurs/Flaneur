@@ -25,6 +25,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import app.flaneurs.com.flaneurs.FlaneurApplication;
 import app.flaneurs.com.flaneurs.R;
 import app.flaneurs.com.flaneurs.adapters.MapStreamPagerAdapter;
 import app.flaneurs.com.flaneurs.fragments.MapFragment;
@@ -56,12 +57,15 @@ public class DiscoverActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         ParseQuery<Post> query = ParseQuery.getQuery("Post");
+        query.setLimit(10);
         query.findInBackground(new FindCallback<Post>() {
             @Override
             public void done(List<Post> objects, ParseException e) {
                 configureViewWithPosts(objects);
             }
         });
+
+        FlaneurApplication.getInstance().pickupService.onColdLaunch();
     }
 
     private void configureViewWithPosts(List<Post> posts) {

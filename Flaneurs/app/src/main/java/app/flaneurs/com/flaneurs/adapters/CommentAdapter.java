@@ -170,12 +170,7 @@ public class CommentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         view.tvUpvotes.setText(post.getUpVoteCount() + " upvotes");
         view.tvViewCount.setText(post.getViewCount() + " views");
         view.tvStreamDistanceAway.setText("");
-
-        String address = Utils.getPrettyAddress(mContext, post.getLocation().getLatitude(), post.getLocation().getLongitude());
-        if (address != null) {
-            view.tvLocation.setText(address);
-        }
-
+        view.tvLocation.setText(post.getAddress());
         view.tvCaption.setText(post.getCaption());
     }
 

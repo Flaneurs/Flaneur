@@ -26,7 +26,6 @@ import app.flaneurs.com.flaneurs.adapters.CommentAdapter;
 import app.flaneurs.com.flaneurs.fragments.MapFragment;
 import app.flaneurs.com.flaneurs.models.Post;
 import app.flaneurs.com.flaneurs.models.User;
-import app.flaneurs.com.flaneurs.utils.Utils;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
@@ -105,9 +104,7 @@ public class DetailActivity extends AppCompatActivity implements CommentAdapter.
 
     private void configureViewWithPost(Post item) {
         loadImages(item.getImage(), ivPicturePreview);
-        String locationString = Utils.getPrettyAddress(this, item.getLocation().getLatitude(), item.getLocation().getLongitude());
-        ctCollapsingToolbar.setTitle(locationString);
-        String caption = item.getCaption();
+        ctCollapsingToolbar.setTitle(item.getAddress());
         ParseGeoPoint location = item.getLocation();
         LatLng point = new LatLng(location.getLatitude(), location.getLongitude());
         getSupportFragmentManager().beginTransaction().replace(R.id.flMap, MapFragment.newInstance(false, true, point, null)).commit();
@@ -121,12 +118,9 @@ public class DetailActivity extends AppCompatActivity implements CommentAdapter.
                     if (e == null) {
                         Bitmap bmp = BitmapFactory.decodeByteArray(data, 0, data.length);
                         img.setImageBitmap(bmp);
-                    } else {
                     }
                 }
             });
-        } else {
-            //img.setImageResource(R.drawable.menu);
         }
     }
 

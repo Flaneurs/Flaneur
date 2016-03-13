@@ -28,7 +28,8 @@ public class PickupService implements LocationProvider.ILocationListener {
     private List<Post> currentSessionInboxPosts;
     private List<InboxItem> currentSessionInbox;
 
-    private final static int PICKUP_RADIUS_IN_METERS = 2;
+    // TODO: Make more realistic for real testing
+    private final static int PICKUP_RADIUS_IN_METERS = 2000;
     private final static int QUERY_RADIUS_IN_METERS = 10;
 
     private final static double METER_PER_MILE = 1609.344;
@@ -39,35 +40,29 @@ public class PickupService implements LocationProvider.ILocationListener {
 
         currentSessionInboxPosts = new ArrayList<>();
         cachedPosts = new ArrayList<>();
-
-        User.currentUser().fetchInboxPosts(new FindCallback<InboxItem>() {
-            @Override
-            public void done(List<InboxItem> objects, ParseException e) {
-                currentSessionInbox = objects;
-            }
-        });
     }
 
     @Override
     public void onLocationChanged(Location location) {
-        if (mCurrentLocation == null || location.distanceTo(mCurrentLocation) > QUERY_RADIUS_IN_METERS) {
-            mCurrentLocation = location;
+        Location oldLocation = mCurrentLocation;
+        mCurrentLocation = location;
+
+        if (oldLocation == null || oldLocation.distanceTo(mCurrentLocation) > QUERY_RADIUS_IN_METERS) {
             Log.e("PickupService", "Querying for posts");
             queryForPosts();
         }
-        if (mCurrentLocation != null && location.distanceTo(mCurrentLocation) > PICKUP_RADIUS_IN_METERS) {
-            mCurrentLocation = location;
+        if (mCurrentLocation != null) {
             Log.e("PickupService", "Attempting Pickup");
             attemptPickup();
         }
     }
 
     private void attemptPickup() {
-
         ParseGeoPoint currentLocation = new ParseGeoPoint(mCurrentLocation.getLatitude(), mCurrentLocation.getLongitude());
         for (Post post : cachedPosts) {
 
-            if (post.getLocation().distanceInMilesTo(currentLocation) * METER_PER_MILE < PICKUP_RADIUS_IN_METERS) {
+            double distanceInMiles = post.getLocation().distanceInMilesTo(currentLocation);
+            if (distanceInMiles * METER_PER_MILE < PICKUP_RADIUS_IN_METERS) {
                 if (currentSessionInboxPosts.contains(post)) {
                     Log.e("PickupService", "Already pickedup Post at: " + post.getAddress());
                     continue;
@@ -118,16 +113,29 @@ public class PickupService implements LocationProvider.ILocationListener {
         inboxItem.saveInBackground();
 
         currentSessionInboxPosts.add(post);
-        currentSessionInbox.add(inboxItem);
+
+        if (currentSessionInbox != null) {
+            currentSessionInbox.add(inboxItem);
+        }
         sendNotification(post);
     }
 
     private void sendNotification(Post post) {
         Log.e("PickupService", "Picked up a drop at:" + post.getAddress());
-        // TODO: Make toast or somthing
+        // TODO: Make toast or something
     }
 
     public List<InboxItem> getInbox() {
         return currentSessionInbox;
+    }
+
+    public void onColdLaunch() {
+        User.currentUser().fetchInboxPosts(new FindCallback<InboxItem>() {
+            @Override
+            public void done(List<InboxItem> objects, ParseException e) {
+                Log.e("PickupService", "Updating cached inbox");
+                currentSessionInbox = objects;
+            }
+        });
     }
 }
