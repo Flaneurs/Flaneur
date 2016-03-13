@@ -26,8 +26,8 @@ public class Post extends ParseObject{
     public static final String KEY_POST_VIEWCOUNT = "KEY_POST_VIEWCOUNT";
     public static final String KEY_POST_UPVOTECOUNT = "KEY_POST_UPVOTECOUNT";
     public static final String KEY_POST_DOWNVOTECOUNT = "KEY_POST_DOWNVOTECOUNT";
-    public static final String KEY_POST_COMMENTS = "KEY_POST_COMMENTS";
     public static final String KEY_POST_IMAGE = "KEY_POST_IMAGE";
+    public static final String KEY_POST_ADDRESS = "KEY_POST_ADDRESS";
 
    private List<Comment> commentList;
 
@@ -78,6 +78,14 @@ public class Post extends ParseObject{
 
     public void setCreatedTime(Date createdTime) {
         put(KEY_POST_DATE, createdTime);
+    }
+
+    public String getAddress() {
+        return getString(KEY_POST_ADDRESS);
+    }
+
+    public void setAddress(String address) {
+        put(KEY_POST_ADDRESS, address);
     }
 
     public String getPostType() {

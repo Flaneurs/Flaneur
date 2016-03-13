@@ -89,11 +89,7 @@ public class FlanArrayAdapter extends RecyclerView.Adapter<FlanArrayAdapter.Flan
 
         String pretty = Utils.getPrettyDistance(mCurrentLocation, flan.getLocation());
         holder.tvStreamDistanceAway.setText(pretty);
-
-        String address = Utils.getPrettyAddress(mContext, flan.getLocation().getLatitude(), flan.getLocation().getLongitude());
-        if (address != null) {
-            holder.tvLocation.setText(address);
-        }
+        holder.tvLocation.setText(flan.getAddress());
     }
 
     @Override

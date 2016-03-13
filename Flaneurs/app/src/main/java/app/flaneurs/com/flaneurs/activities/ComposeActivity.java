@@ -24,6 +24,7 @@ import app.flaneurs.com.flaneurs.R;
 import app.flaneurs.com.flaneurs.fragments.MapFragment;
 import app.flaneurs.com.flaneurs.models.Post;
 import app.flaneurs.com.flaneurs.models.User;
+import app.flaneurs.com.flaneurs.utils.Utils;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
@@ -92,6 +93,9 @@ public class ComposeActivity extends AppCompatActivity {
 
         ParseFile file = new ParseFile("picture.jpg", bytearray);
         newPost.setImage(file);
+
+        String address = Utils.getPrettyAddress(this, newPost.getLocation().getLatitude(), newPost.getLocation().getLongitude());
+        newPost.setAddress(address);
 
 
         newPost.saveInBackground(new SaveCallback() {

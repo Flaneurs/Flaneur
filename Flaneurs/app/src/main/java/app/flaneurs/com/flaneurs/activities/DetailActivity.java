@@ -68,7 +68,6 @@ public class DetailActivity extends AppCompatActivity {
                     rvComments.setLayoutManager(new LinearLayoutManager(DetailActivity.this));
                     rvComments.setAdapter(adapter);
 
-
                     DefaultItemAnimator animator = new DefaultItemAnimator() {
                         @Override
                         public boolean canReuseUpdatedViewHolder(RecyclerView.ViewHolder viewHolder) {
