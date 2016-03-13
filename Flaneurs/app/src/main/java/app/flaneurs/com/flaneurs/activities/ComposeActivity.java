@@ -5,7 +5,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -18,7 +17,6 @@ import com.parse.SaveCallback;
 
 import java.io.ByteArrayOutputStream;
 import java.util.Date;
-import java.util.Random;
 
 import app.flaneurs.com.flaneurs.R;
 import app.flaneurs.com.flaneurs.fragments.MapFragment;
@@ -65,18 +63,8 @@ public class ComposeActivity extends AppCompatActivity {
     public void onPostButtonClicked(View v) {
         final Post newPost = new Post();
         User currentUser = User.currentUser();
-        // TODO: get lat and long from map
-        Random r = new Random();
-        double randomLat = 37 + (1) * r.nextDouble();
-        double randomLong = 122 + (1) * r.nextDouble();
 
-        ParseGeoPoint latLong;
-        if (mLat == 0) {
-            latLong = new ParseGeoPoint(randomLat, -randomLong);
-        } else {
-            latLong = new ParseGeoPoint(mLat, mLong);
-        }
-
+        ParseGeoPoint latLong = new ParseGeoPoint(mLat, mLong);
         String caption = etCaption.getText().toString();
 
         newPost.setAuthor(currentUser);
@@ -99,7 +87,6 @@ public class ComposeActivity extends AppCompatActivity {
 
         newPost.saveInBackground(new SaveCallback() {
             public void done(ParseException e) {
-                Log.v("DEBUG", "Saved!");
             }
         });
 

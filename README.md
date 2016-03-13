@@ -13,7 +13,7 @@ We are interested in capturing and sharing the story of a city, the thoughts and
 ### Required User Stories
 
 #### General
-- [ ] Passively pick up Flâneurs and view them in your inbox
+- [x] Pick up Flâneurs and view them in your inbox
 
 #### Auth Screen
 - [x] Allow user to OAuth with Facebook
@@ -26,20 +26,38 @@ We are interested in capturing and sharing the story of a city, the thoughts and
 - [x] Create Flâneurs, either a photo or video with a caption, and drop it at your current location
  
 #### Inbox Screen
-- [ ] Allow users to see their picked up Flâneurs in an inbox
+- [x] Allow users to see their picked up Flâneurs in an inbox
  
 #### Detail Screen
 - [x] Allow user to view the content associated with their Flâneurs
-- [ ] Allow users to comment on picked up Flâneurs
+- [x] Allow users to comment on picked up Flâneurs
 - [x] Allow users to upvote/downvote their picked up Flâneurs 
 
 ### Optional User Stories
-- [ ] Receieve notifications about flaneur subtypes you care about immediately
-- [ ] Allow users to breakdown flaneur into different subtypes such as #history or #scenic or #artistic, and provide their own as well
-- [ ] Ability to desiminate diffrent subtypes visually on the map and stream
-- [ ] Ability to archive flaneurs in inbox
+- [ ] Receieve notifications about flaneur immediately
+- [ ] Badge inbox with number of new pickups
+- [ ] Endless scroll on timeline
 - [ ] Ability to delete flaneurs in inbox
 - [x] Ability to view user profiles and see how many drops/picks up user has done, as well as view their timeline
+- [ ] Dropped time, user profile image on map marker
+- [ ] Reveal post in inbox, hide post on timeline (Locked + unlocked visual)
+
+### Polish Items
+- [ ] After viewing inbox item, move it to bottom of list
+- [ ] Only allow 1 upvote, visually represent button change
+- [ ] Change color of picked up drops, remove them from search next query
+- [ ] Optimize parse caching and fetches
+- [ ] Delete old posts
+- [ ] Make compose screen less janky
+- [ ] Get status bar color back on detail view
+- [ ] Have screen scroll up when composing comment
+- [ ] Redo search in area on map
+- [ ] Ability to archive flaneurs in inbox
+- [ ] Cache parse queries (pinAllInBackground)
+- [ ] Kill parseProxy
+
+### Crazy Stretch
+- [ ] Move Pickup Service into actual service
 
 ### Sprint 2 Demo
 ![Flan](/images/flan_demo_1.gif)
