@@ -1,8 +1,6 @@
 package app.flaneurs.com.flaneurs.models;
 
-import com.parse.FindCallback;
 import com.parse.ParseClassName;
-import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
 import java.io.Serializable;
@@ -41,17 +39,6 @@ public class User extends ParseUser implements Serializable {
         int upVotes = getUpVotes();
         upVotes++;
         put(KEY_USER_UPVOTES, upVotes);
-    }
-
-    public void fetchInboxPosts(final FindCallback<InboxItem> callback) {
-        ParseQuery<InboxItem> query = ParseQuery.getQuery("InboxItem");
-
-        query.whereEqualTo(InboxItem.KEY_INBOX_USER, this);
-        query.include(InboxItem.KEY_INBOX_POST);
-        query.setCachePolicy(ParseQuery.CachePolicy.CACHE_ELSE_NETWORK); // or CACHE_ONLY
-        // 5 mins
-        query.orderByDescending(InboxItem.KEY_INBOX_DATE + "," + InboxItem.KEY_INBOX_NEW);
-        query.findInBackground(callback);
     }
 
     public static User currentUser() {

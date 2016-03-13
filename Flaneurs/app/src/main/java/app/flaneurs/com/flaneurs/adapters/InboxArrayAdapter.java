@@ -9,7 +9,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.parse.ParseException;
 
 import java.util.List;
 
@@ -50,18 +49,14 @@ public class InboxArrayAdapter extends RecyclerView.Adapter<InboxArrayAdapter.In
     }
 
     @Override
-    public void onBindViewHolder(InboxViewHolder holder, final int position) {
+    public void onBindViewHolder(final InboxViewHolder holder, final int position) {
         final InboxItem inboxItem = mInboxItems.get(position);
         final Post post = inboxItem.getPost();
-        final User author;
-        try {
-            author = (User)post.getAuthor().fetchIfNeeded();
-            String username = author.getUsername();
-            holder.tvUsername.setText(username);
-            Glide.with(mContext).load(author.getProfileUrl()).into(holder.ivInboxImage);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
+        final User author = post.getAuthor();
+        String username = author.getUsername();
+        holder.tvUsername.setText(username);
+        Glide.with(mContext).load(author.getProfileUrl()).into(holder.ivInboxImage);
+
 
         holder.tvCreationTime.setText(Utils.getPrettyTime(inboxItem.getPickUpTime()));
         holder.tvLocation.setText(post.getAddress());

@@ -6,17 +6,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
-import com.parse.FindCallback;
-import com.parse.ParseException;
-
-import java.util.ArrayList;
 import java.util.List;
 
 import app.flaneurs.com.flaneurs.FlaneurApplication;
 import app.flaneurs.com.flaneurs.R;
 import app.flaneurs.com.flaneurs.adapters.InboxArrayAdapter;
 import app.flaneurs.com.flaneurs.models.InboxItem;
-import app.flaneurs.com.flaneurs.models.User;
 import app.flaneurs.com.flaneurs.utils.DividerItemDecoration;
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -36,22 +31,26 @@ public class InboxActivity extends AppCompatActivity implements InboxArrayAdapte
         setContentView(R.layout.activity_inbox);
         ButterKnife.bind(this);
 
-        User currentUser = User.currentUser();
 
         mInboxItems = FlaneurApplication.getInstance().pickupService.getInbox();
 
-        if (mInboxItems == null) {
-            mInboxItems = new ArrayList<>();
-            currentUser.fetchInboxPosts(new FindCallback<InboxItem>() {
-                @Override
-                public void done(List<InboxItem> objects, ParseException e) {
-                    if (e == null) {
-                        mInboxItems = objects;
-                        mAdapter.notifyDataSetChanged();
-                    }
-                }
-            });
-        }
+//        if (mInboxItems == null) {
+//            mInboxItems = new ArrayList<>();
+//            ParseQuery<InboxItem> query = ParseQuery.getQuery("InboxItem");
+//            query.whereEqualTo(InboxItem.KEY_INBOX_USER, User.currentUser());
+//            query.include(InboxItem.KEY_INBOX_POST);
+//            query.include(InboxItem.KEY_INBOX_POST + "." + Post.KEY_POST_AUTHOR);
+//            query.setCachePolicy(ParseQuery.CachePolicy.CACHE_ELSE_NETWORK);
+//            query.orderByDescending(InboxItem.KEY_INBOX_DATE + "," + InboxItem.KEY_INBOX_NEW);
+//            query.findInBackground(new FindCallback<InboxItem>() {
+//                @Override
+//                public void done(List<InboxItem> objects, ParseException e) {
+//                    Log.e("PickupService", "Updating cached inbox");
+//                    mInboxItems.addAll(objects);
+//                    mAdapter.notifyDataSetChanged();
+//                }
+//            });
+//        }
 
         mAdapter = new InboxArrayAdapter(this, mInboxItems, this);
         mLayoutManager = new LinearLayoutManager(this);

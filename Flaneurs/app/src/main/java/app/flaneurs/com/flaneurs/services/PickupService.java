@@ -131,7 +131,13 @@ public class PickupService implements LocationProvider.ILocationListener {
     }
 
     public void onColdLaunch() {
-        User.currentUser().fetchInboxPosts(new FindCallback<InboxItem>() {
+        ParseQuery<InboxItem> query = ParseQuery.getQuery("InboxItem");
+        query.whereEqualTo(InboxItem.KEY_INBOX_USER, User.currentUser());
+        query.include(InboxItem.KEY_INBOX_POST);
+        query.include(InboxItem.KEY_INBOX_POST + "." + Post.KEY_POST_AUTHOR);
+        query.setCachePolicy(ParseQuery.CachePolicy.CACHE_THEN_NETWORK);
+        query.orderByDescending(InboxItem.KEY_INBOX_DATE + "," + InboxItem.KEY_INBOX_NEW);
+        query.findInBackground(new FindCallback<InboxItem>() {
             @Override
             public void done(List<InboxItem> objects, ParseException e) {
                 Log.e("PickupService", "Updating cached inbox");
