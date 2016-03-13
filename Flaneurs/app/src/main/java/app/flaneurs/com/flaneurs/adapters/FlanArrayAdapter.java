@@ -11,6 +11,9 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.ocpsoft.pretty.time.PrettyTime;
+import com.parse.GetCallback;
+import com.parse.ParseException;
+import com.parse.ParseObject;
 
 import java.util.List;
 
@@ -56,14 +59,27 @@ public class FlanArrayAdapter extends RecyclerView.Adapter<FlanArrayAdapter.Flan
     }
 
     @Override
-    public void onBindViewHolder(FlanViewHolder holder, final int position) {
+    public void onBindViewHolder(final FlanViewHolder holder, final int position) {
         final Post flan = mFlans.get(position);
 
-        User author = flan.getAuthor();
-        String username = author.getUsername();
-        holder.tvUsername.setText(username);
+        final User author = flan.getAuthor();
         holder.ivProfileImage.setImageResource(0);
-        Glide.with(mContext).load(author.getProfileUrl()).into(holder.ivProfileImage);
+        if (author.isDataAvailable()) {
+            String username = author.getUsername();
+            holder.tvUsername.setText(username);
+            Glide.with(mContext).load(author.getProfileUrl()).into(holder.ivProfileImage);
+        } else {
+            author.fetchIfNeededInBackground(new GetCallback<ParseObject>() {
+                @Override
+                public void done(ParseObject object, ParseException e) {
+                    String username = author.getUsername();
+                    holder.tvUsername.setText(username);
+                    Glide.with(mContext).load(author.getProfileUrl()).into(holder.ivProfileImage);
+                }
+            });
+        }
+
+
 
         holder.ivProfileImage.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -303,12 +303,9 @@ public class CommentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         public interface ICommentAddListener {
             void onAddComment(String comment);
         }
-
-
     }
 
     public interface ICommentInteractionListener {
         void openProfileView(User user);
     }
-
 }
