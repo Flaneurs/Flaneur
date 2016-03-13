@@ -63,7 +63,6 @@ public class ComposeActivity extends AppCompatActivity {
     }
 
     public void onPostButtonClicked(View v) {
-
         final Post newPost = new Post();
         User currentUser = User.currentUser();
         // TODO: get lat and long from map

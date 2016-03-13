@@ -79,9 +79,6 @@ public class DetailActivity extends AppCompatActivity {
                         }
                     };
                     rvComments.setItemAnimator(animator);
-
-
-
                 }
             }
         });
@@ -93,7 +90,6 @@ public class DetailActivity extends AppCompatActivity {
                 onUpVoteButtonClicked(view);
             }
         });
-
     }
 
     private void configureViewWithPost(Post item) {
