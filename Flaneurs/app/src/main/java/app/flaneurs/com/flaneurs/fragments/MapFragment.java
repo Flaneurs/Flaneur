@@ -4,6 +4,9 @@ import android.Manifest;
 import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdate;
@@ -15,11 +18,16 @@ import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.parse.Parse;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import app.flaneurs.com.flaneurs.FlaneurApplication;
+import app.flaneurs.com.flaneurs.R;
 import app.flaneurs.com.flaneurs.models.Post;
 import app.flaneurs.com.flaneurs.utils.LocationProvider;
 import app.flaneurs.com.flaneurs.utils.ParseProxyObject;
@@ -27,7 +35,7 @@ import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.RuntimePermissions;
 
 @RuntimePermissions
-public class MapFragment extends SupportMapFragment implements LocationProvider.ILocationListener{
+public class MapFragment extends SupportMapFragment implements LocationProvider.ILocationListener {
 
     public static final String TAG = MapFragment.class.getSimpleName();
     public static final String ARG_SHOULD_TRACK_LOCATION = "ARG_SHOULD_TRACK_LOCATION";
@@ -44,6 +52,8 @@ public class MapFragment extends SupportMapFragment implements LocationProvider.
     private boolean shouldLockMap;
     private ArrayList<ParseProxyObject> posts;
     private LatLng point;
+
+    private Map<String, ParseProxyObject> markerPostMap;
 
     public static MapFragment newInstance(boolean shouldTrackLocation, boolean shouldLockMap, LatLng latLng, ArrayList<ParseProxyObject> parseProxyObjects) {
         MapFragment mapFragment = new MapFragment();
@@ -72,7 +82,7 @@ public class MapFragment extends SupportMapFragment implements LocationProvider.
             posts = null;
         }
 
-
+        markerPostMap = new HashMap<>();
 
         getMapAsync(new OnMapReadyCallback() {
             @Override
@@ -87,11 +97,12 @@ public class MapFragment extends SupportMapFragment implements LocationProvider.
         if (map != null) {
             Log.d(TAG, "Map Fragment was loaded properly.");
 
-
             if (shouldLockMap) {
                 map.getUiSettings().setScrollGesturesEnabled(false);
+            } else {
+                map.setInfoWindowAdapter(new CustomWindowAdapter(getActivity().getLayoutInflater()));
             }
-
+            
             if (point != null) {
                 markLatLng(point);
             } else if (posts != null && posts.size() > 0) {
@@ -99,8 +110,10 @@ public class MapFragment extends SupportMapFragment implements LocationProvider.
                 for (ParseProxyObject post : posts) {
                     double[] latLng = post.getParseGeoPointArray(Post.KEY_POST_LOCATION);
                     LatLng point = new LatLng(latLng[0], latLng[1]);
-                    addMarkerAtLatLng(point);
+                    Marker marker = addMarkerAtLatLng(point);
                     bounds.include(point);
+
+                    markerPostMap.put(marker.getId(), post);
                 }
                 if (!shouldTrackLocation) {
                     map.setOnMapLoadedCallback(new GoogleMap.OnMapLoadedCallback() {
@@ -120,9 +133,9 @@ public class MapFragment extends SupportMapFragment implements LocationProvider.
         }
     }
 
-    private void addMarkerAtLatLng(LatLng latLng) {
+    private Marker addMarkerAtLatLng(LatLng latLng) {
         BitmapDescriptor defaultMarker = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN);
-        map.addMarker(new MarkerOptions()
+        return map.addMarker(new MarkerOptions()
                 .position(latLng)
                 .icon(defaultMarker));
     }
@@ -160,5 +173,42 @@ public class MapFragment extends SupportMapFragment implements LocationProvider.
 
     public Location getCurrentLocation() {
         return (shouldTrackLocation) ? mLocation : null;
+    }
+
+    class CustomWindowAdapter implements GoogleMap.InfoWindowAdapter {
+        LayoutInflater mInflater;
+
+        public CustomWindowAdapter(LayoutInflater i){
+            mInflater = i;
+        }
+
+        // This defines the contents within the info window based on the marker
+        @Override
+        public View getInfoContents(Marker marker) {
+            // Get the associated post
+            ParseProxyObject post = markerPostMap.get(marker.getId());
+
+            // Getting view from the layout file
+            View v = mInflater.inflate(R.layout.custom_info_window, null);
+
+            // Populate fields
+            TextView title = (TextView) v.findViewById(R.id.tv_info_window_title);
+            title.setText(post.getString(Post.KEY_POST_CAPTION));
+
+            TextView description = (TextView) v.findViewById(R.id.tv_info_window_description);
+            String s = String.format("Upvotes: %d", post.getInt(Post.KEY_POST_UPVOTECOUNT));
+            description.setText(s);
+
+            // Return info window contents
+            return v;
+        }
+
+
+        // This changes the frame of the info window; returning null uses the default frame.
+        // This is just the border and arrow surrounding the contents specified above
+        @Override
+        public View getInfoWindow(Marker marker) {
+            return null;
+        }
     }
 }
