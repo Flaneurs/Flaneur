@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -19,12 +20,9 @@ import com.parse.ParseFile;
 import com.parse.ParseGeoPoint;
 import com.parse.ParseQuery;
 
-import java.util.ArrayList;
-
 import app.flaneurs.com.flaneurs.R;
 import app.flaneurs.com.flaneurs.adapters.CommentAdapter;
 import app.flaneurs.com.flaneurs.fragments.MapFragment;
-import app.flaneurs.com.flaneurs.models.Comment;
 import app.flaneurs.com.flaneurs.models.Post;
 import app.flaneurs.com.flaneurs.models.User;
 import app.flaneurs.com.flaneurs.utils.Utils;
@@ -36,7 +34,6 @@ public class DetailActivity extends AppCompatActivity {
     @Bind(R.id.rvComments)
     RecyclerView rvComments;
 
-
     @Bind(R.id.ivPicturePreview)
     ImageView ivPicturePreview;
 
@@ -44,7 +41,6 @@ public class DetailActivity extends AppCompatActivity {
     CollapsingToolbarLayout ctCollapsingToolbar;
 
     CommentAdapter adapter;
-
 
     private Post mPost;
     public final static String POST_ID = "POST_ID";
@@ -55,9 +51,6 @@ public class DetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
         ButterKnife.bind(this);
-
-        ArrayList<Comment> list = new ArrayList<>();
-
         Bundle extras = getIntent().getExtras();
         String objectId = extras.getString(POST_ID);
 
@@ -74,6 +67,22 @@ public class DetailActivity extends AppCompatActivity {
 
                     rvComments.setLayoutManager(new LinearLayoutManager(DetailActivity.this));
                     rvComments.setAdapter(adapter);
+
+
+                    DefaultItemAnimator animator = new DefaultItemAnimator() {
+                        @Override
+                        public boolean canReuseUpdatedViewHolder(RecyclerView.ViewHolder viewHolder) {
+                            if (viewHolder.getItemViewType() == 0) {
+                                return true;
+                            } else {
+                                return false;
+                            }
+                        }
+                    };
+                    rvComments.setItemAnimator(animator);
+
+
+
                 }
             }
         });
@@ -95,7 +104,7 @@ public class DetailActivity extends AppCompatActivity {
         String caption = item.getCaption();
         ParseGeoPoint location = item.getLocation();
         LatLng point = new LatLng(location.getLatitude(), location.getLongitude());
-        getSupportFragmentManager().beginTransaction().replace(R.id.flMap, MapFragment.newInstance(false, point, null)).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.flMap, MapFragment.newInstance(false, true, point, null)).commit();
     }
 
     private void loadImages(ParseFile thumbnail, final ImageView img) {
@@ -125,6 +134,8 @@ public class DetailActivity extends AppCompatActivity {
         }
         mPost.incrementUpVote();
         mPost.saveEventually();
+
+        adapter.onUpvote();
     }
 
 }

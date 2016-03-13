@@ -28,8 +28,6 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 
 public class ProfileActivity extends AppCompatActivity {
-
-
     @Bind(R.id.ivProfileImage)
     ImageView ivProfileImage;
 
@@ -140,7 +138,7 @@ public class ProfileActivity extends AppCompatActivity {
             postsProxy.add(new ParseProxyObject(post));
         }
 
-        mMapFragment = MapFragment.newInstance(false, null, postsProxy);
+        mMapFragment = MapFragment.newInstance(false, false, null, postsProxy);
         StreamFragment.StreamConfiguration configuration = new StreamFragment.StreamConfiguration();
         configuration.setStreamType(StreamFragment.StreamType.User);
         configuration.setUser(user);

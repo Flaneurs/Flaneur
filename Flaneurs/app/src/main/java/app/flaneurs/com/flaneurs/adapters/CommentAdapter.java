@@ -113,10 +113,20 @@ public class CommentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+        onBindViewHolder(holder, position, null);
+    }
+
+
+
+    @Override
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position, List<Object> payloads) {
 
         switch (holder.getItemViewType()) {
             case HEADER:
+                if (payloads != null && !payloads.isEmpty()) {
+                    updateHeaderView((HeaderViewHolder) holder, mPost);
+                }
                 configureHeaderView((HeaderViewHolder) holder, mPost);
                 break;
             case COMMENT:
@@ -127,6 +137,10 @@ public class CommentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 configureFooterView((FooterViewHolder) holder, User.currentUser());
                 break;
         }
+    }
+
+    private void updateHeaderView(HeaderViewHolder view, Post post) {
+        view.tvUpvotes.setText(post.getUpVoteCount() + " upvotes");
     }
 
     private void configureHeaderView(HeaderViewHolder view, Post post) {
@@ -184,6 +198,10 @@ public class CommentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     @Override
     public int getItemCount() {
         return mComments.size() + 2;
+    }
+
+    public void onUpvote() {
+        notifyItemChanged(0, new Boolean(true));
     }
 
     public static class CommentViewHolder extends RecyclerView.ViewHolder {

@@ -77,7 +77,7 @@ public class FlanDetailActivity extends AppCompatActivity {
 
         ParseGeoPoint location = item.getLocation();
         LatLng point = new LatLng(location.getLatitude(), location.getLongitude());
-        getSupportFragmentManager().beginTransaction().replace(R.id.flMap, MapFragment.newInstance(false, point, null)).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.flMap, MapFragment.newInstance(false, false, point, null)).commit();
     }
 
     private void loadImages(ParseFile thumbnail, final ImageView img) {

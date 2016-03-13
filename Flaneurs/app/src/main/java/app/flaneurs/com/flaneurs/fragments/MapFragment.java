@@ -31,6 +31,7 @@ public class MapFragment extends SupportMapFragment implements LocationProvider.
 
     public static final String TAG = MapFragment.class.getSimpleName();
     public static final String ARG_SHOULD_TRACK_LOCATION = "ARG_SHOULD_TRACK_LOCATION";
+    public static final String ARG_SHOULD_LOCK_MAP = "ARG_SHOULD_LOCK_MAP";
     public static final String ARG_LAT_LNG = "ARG_LAT_LNG";
     public static final String ARG_POSTS = "ARG_POSTS";
 
@@ -40,13 +41,15 @@ public class MapFragment extends SupportMapFragment implements LocationProvider.
     private Location mLocation;
 
     private boolean shouldTrackLocation;
+    private boolean shouldLockMap;
     private ArrayList<ParseProxyObject> posts;
     private LatLng point;
 
-    public static MapFragment newInstance(boolean shouldTrackLocation, LatLng latLng, ArrayList<ParseProxyObject> parseProxyObjects) {
+    public static MapFragment newInstance(boolean shouldTrackLocation, boolean shouldLockMap, LatLng latLng, ArrayList<ParseProxyObject> parseProxyObjects) {
         MapFragment mapFragment = new MapFragment();
         Bundle args = new Bundle();
         args.putBoolean(ARG_SHOULD_TRACK_LOCATION, shouldTrackLocation);
+        args.putBoolean(ARG_SHOULD_LOCK_MAP, shouldLockMap);
         args.putParcelable(ARG_LAT_LNG, latLng);
         args.putSerializable(ARG_POSTS, parseProxyObjects);
         mapFragment.setArguments(args);
@@ -60,6 +63,7 @@ public class MapFragment extends SupportMapFragment implements LocationProvider.
         Bundle arguments = getArguments();
         if (arguments != null) {
             shouldTrackLocation = arguments.getBoolean(ARG_SHOULD_TRACK_LOCATION);
+            shouldLockMap = arguments.getBoolean(ARG_SHOULD_LOCK_MAP);
             point = arguments.getParcelable(ARG_LAT_LNG);
             posts = (ArrayList<ParseProxyObject>)arguments.getSerializable(ARG_POSTS);
         } else {
@@ -67,6 +71,8 @@ public class MapFragment extends SupportMapFragment implements LocationProvider.
             point = null;
             posts = null;
         }
+
+
 
         getMapAsync(new OnMapReadyCallback() {
             @Override
@@ -80,6 +86,12 @@ public class MapFragment extends SupportMapFragment implements LocationProvider.
         map = googleMap;
         if (map != null) {
             Log.d(TAG, "Map Fragment was loaded properly.");
+
+
+            if (shouldLockMap) {
+                map.getUiSettings().setScrollGesturesEnabled(false);
+            }
+
             if (point != null) {
                 markLatLng(point);
             } else if (posts != null && posts.size() > 0) {

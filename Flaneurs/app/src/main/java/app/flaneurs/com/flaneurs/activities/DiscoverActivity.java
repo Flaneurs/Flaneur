@@ -71,7 +71,7 @@ public class DiscoverActivity extends AppCompatActivity {
             postsProxy.add(new ParseProxyObject(post));
         }
 
-        mMapFragment = MapFragment.newInstance(true, null, postsProxy);
+        mMapFragment = MapFragment.newInstance(true, false, null, postsProxy);
         StreamFragment.StreamConfiguration streamConfiguration = new StreamFragment.StreamConfiguration();
         streamConfiguration.setStreamType(StreamFragment.StreamType.AllPosts);
         mStreamFragment = StreamFragment.createInstance(streamConfiguration);
