@@ -11,7 +11,6 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.ocpsoft.pretty.time.PrettyTime;
-import com.parse.ParseException;
 
 import java.util.List;
 
@@ -61,19 +60,11 @@ public class FlanArrayAdapter extends RecyclerView.Adapter<FlanArrayAdapter.Flan
         final Post flan = mFlans.get(position);
 
         User author = flan.getAuthor();
-        if (author != null) {
-            try {
-                author.fetchIfNeeded();
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-            String username = author.getUsername();
-            holder.tvUsername.setText(username);
-            holder.ivProfileImage.setImageResource(0);
-            if (author.getProfileUrl() != null) {
-                Glide.with(mContext).load(author.getProfileUrl()).into(holder.ivProfileImage);
-            }
-        }
+        String username = author.getUsername();
+        holder.tvUsername.setText(username);
+        holder.ivProfileImage.setImageResource(0);
+        Glide.with(mContext).load(author.getProfileUrl()).into(holder.ivProfileImage);
+
         holder.ivProfileImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -98,7 +89,7 @@ public class FlanArrayAdapter extends RecyclerView.Adapter<FlanArrayAdapter.Flan
 
     @Override
     public void onLocationChanged(Location location) {
-      if (mCurrentLocation == null || location.distanceTo(mCurrentLocation) > 10) {
+        if (mCurrentLocation == null || location.distanceTo(mCurrentLocation) > 10) {
             mCurrentLocation = location;
             notifyDataSetChanged();
         }
