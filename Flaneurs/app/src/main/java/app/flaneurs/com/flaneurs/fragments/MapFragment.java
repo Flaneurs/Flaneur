@@ -14,6 +14,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.ArrayList;
@@ -82,16 +83,20 @@ public class MapFragment extends SupportMapFragment implements LocationProvider.
             if (point != null) {
                 markLatLng(point);
             } else if (posts != null && posts.size() > 0) {
-                if (posts.size() == 1) {
-                    ParseProxyObject post = posts.get(0);
-                    double[] latLng = post.getParseGeoPointArray(Post.KEY_POST_LOCATION);
-                    LatLng point = new LatLng(latLng[0], latLng[1]);
-                    markLatLng(point);
-                }
+                final LatLngBounds.Builder bounds = new LatLngBounds.Builder();
                 for (ParseProxyObject post : posts) {
                     double[] latLng = post.getParseGeoPointArray(Post.KEY_POST_LOCATION);
                     LatLng point = new LatLng(latLng[0], latLng[1]);
                     addMarkerAtLatLng(point);
+                    bounds.include(point);
+                }
+                if (!shouldTrackLocation) {
+                    map.setOnMapLoadedCallback(new GoogleMap.OnMapLoadedCallback() {
+                        @Override
+                        public void onMapLoaded() {
+                            map.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds.build(), 50));
+                        }
+                    });
                 }
             }
             if (shouldTrackLocation) {

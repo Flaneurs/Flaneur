@@ -9,15 +9,21 @@ import android.widget.Toast;
 
 import com.astuetz.PagerSlidingTabStrip;
 import com.bumptech.glide.Glide;
+import com.parse.FindCallback;
 import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import app.flaneurs.com.flaneurs.R;
 import app.flaneurs.com.flaneurs.adapters.MapStreamPagerAdapter;
 import app.flaneurs.com.flaneurs.fragments.MapFragment;
 import app.flaneurs.com.flaneurs.fragments.StreamFragment;
+import app.flaneurs.com.flaneurs.models.Post;
 import app.flaneurs.com.flaneurs.models.User;
+import app.flaneurs.com.flaneurs.utils.ParseProxyObject;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
@@ -108,8 +114,16 @@ public class ProfileActivity extends AppCompatActivity {
     private void retrieveProfileDataAndSetupView() {
         retrieveUserObject(new IOnUserObjectRetrieved() {
             @Override
-            public void onSuccess(User user) {
-                setupProfileView(user);
+            public void onSuccess(final User user) {
+                ParseQuery<Post> query = ParseQuery.getQuery("Post");
+                query.orderByDescending(Post.KEY_POST_DATE);
+                query.whereEqualTo(Post.KEY_POST_AUTHOR, user);
+                query.findInBackground(new FindCallback<Post>() {
+                    @Override
+                    public void done(List<Post> objects, ParseException e) {
+                        setupProfileView(user, objects);
+                    }
+                });
             }
 
             @Override
@@ -119,8 +133,14 @@ public class ProfileActivity extends AppCompatActivity {
         });
     }
 
-    private void setupProfileView(User user) {
-        mMapFragment = MapFragment.newInstance(false, null, null);
+    private void setupProfileView(User user, List<Post> posts) {
+        ArrayList<ParseProxyObject> postsProxy = new ArrayList<>();
+        // Build ArrayList of ParseProxyObjects to pass into MapFragment
+        for (Post post : posts) {
+            postsProxy.add(new ParseProxyObject(post));
+        }
+
+        mMapFragment = MapFragment.newInstance(false, null, postsProxy);
         StreamFragment.StreamConfiguration configuration = new StreamFragment.StreamConfiguration();
         configuration.setStreamType(StreamFragment.StreamType.User);
         configuration.setUser(user);

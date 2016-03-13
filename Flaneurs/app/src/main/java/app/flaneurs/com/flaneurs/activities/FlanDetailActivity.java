@@ -8,19 +8,18 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.android.gms.maps.model.LatLng;
 import com.parse.GetCallback;
 import com.parse.GetDataCallback;
 import com.parse.ParseException;
 import com.parse.ParseFile;
+import com.parse.ParseGeoPoint;
 import com.parse.ParseQuery;
-
-import java.util.ArrayList;
 
 import app.flaneurs.com.flaneurs.R;
 import app.flaneurs.com.flaneurs.fragments.MapFragment;
 import app.flaneurs.com.flaneurs.models.Post;
 import app.flaneurs.com.flaneurs.models.User;
-import app.flaneurs.com.flaneurs.utils.ParseProxyObject;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
@@ -76,9 +75,9 @@ public class FlanDetailActivity extends AppCompatActivity {
         tvUpvotes.setText(mPost.getUpVoteCount() + " Upvotes");
         tvDownVotes.setText(mPost.getDownVoteCount() + " Downvotes");
 
-        ArrayList<ParseProxyObject> postsProxy = new ArrayList<>();
-        postsProxy.add(new ParseProxyObject(item));
-        getSupportFragmentManager().beginTransaction().replace(R.id.flMap, MapFragment.newInstance(false, null, postsProxy)).commit();
+        ParseGeoPoint location = item.getLocation();
+        LatLng point = new LatLng(location.getLatitude(), location.getLongitude());
+        getSupportFragmentManager().beginTransaction().replace(R.id.flMap, MapFragment.newInstance(false, point, null)).commit();
     }
 
     private void loadImages(ParseFile thumbnail, final ImageView img) {

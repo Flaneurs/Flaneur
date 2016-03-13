@@ -63,7 +63,7 @@ public class FlanArrayAdapter extends RecyclerView.Adapter<FlanArrayAdapter.Flan
         User author = flan.getAuthor();
         if (author != null) {
             try {
-                author.fetch();
+                author.fetchIfNeeded();
             } catch (ParseException e) {
                 e.printStackTrace();
             }
@@ -73,7 +73,6 @@ public class FlanArrayAdapter extends RecyclerView.Adapter<FlanArrayAdapter.Flan
             if (author.getProfileUrl() != null) {
                 Glide.with(mContext).load(author.getProfileUrl()).into(holder.ivProfileImage);
             }
-
         }
         holder.ivProfileImage.setOnClickListener(new View.OnClickListener() {
             @Override
