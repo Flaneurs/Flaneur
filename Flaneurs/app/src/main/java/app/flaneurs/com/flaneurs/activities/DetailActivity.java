@@ -58,7 +58,7 @@ public class DetailActivity extends AppCompatActivity implements CommentAdapter.
 
         ParseQuery<Post> query = ParseQuery.getQuery(Post.class);
         // First try to find from the cache and only then go to network
-        query.setCachePolicy(ParseQuery.CachePolicy.CACHE_ELSE_NETWORK); // or CACHE_ONLY
+        query.setCachePolicy(ParseQuery.CachePolicy.CACHE_THEN_NETWORK);
         // Execute the query to find the object with ID
         query.getInBackground(objectId, new GetCallback<Post>() {
             public void done(Post item, ParseException e) {

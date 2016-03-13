@@ -59,10 +59,12 @@ public class DiscoverActivity extends AppCompatActivity {
         ParseQuery<Post> query = ParseQuery.getQuery("Post");
         query.setLimit(10);
         query.include(Post.KEY_POST_AUTHOR);
+        query.setCachePolicy(ParseQuery.CachePolicy.CACHE_THEN_NETWORK);
         query.findInBackground(new FindCallback<Post>() {
             @Override
             public void done(List<Post> objects, ParseException e) {
-                configureViewWithPosts(objects);
+                if (objects != null && objects.size() > 0)
+                    configureViewWithPosts(objects);
             }
         });
 
@@ -138,7 +140,7 @@ public class DiscoverActivity extends AppCompatActivity {
                     getExternalFilesDir(Environment.DIRECTORY_PICTURES), APP_TAG);
 
             // Create the storage directory if it does not exist
-            if (!mediaStorageDir.exists() && !mediaStorageDir.mkdirs()){
+            if (!mediaStorageDir.exists() && !mediaStorageDir.mkdirs()) {
                 Log.d(APP_TAG, "failed to create directory");
             }
 
@@ -160,18 +162,16 @@ public class DiscoverActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.menu_discover, menu);
 
 
-
-
         return true;
     }
 
-   public void onProfileViewOnClick(MenuItem mi) {
+    public void onProfileViewOnClick(MenuItem mi) {
         Intent i = new Intent(this, ProfileActivity.class);
         i.putExtra(ProfileActivity.PROFILE_TYPE, ProfileActivity.ProfileType.CURRENT_USER);
         startActivity(i);
     }
 
-   public void onInboxViewOnClick(MenuItem mi) {
+    public void onInboxViewOnClick(MenuItem mi) {
         Intent i = new Intent(this, InboxActivity.class);
         startActivity(i);
     }

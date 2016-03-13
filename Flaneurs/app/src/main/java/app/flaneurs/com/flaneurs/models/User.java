@@ -48,7 +48,7 @@ public class User extends ParseUser implements Serializable {
 
         query.whereEqualTo(InboxItem.KEY_INBOX_USER, this);
         query.include(InboxItem.KEY_INBOX_POST);
-        query.setCachePolicy(ParseQuery.CachePolicy.CACHE_ELSE_NETWORK); // or CACHE_ONLY
+        query.setCachePolicy(ParseQuery.CachePolicy.CACHE_THEN_NETWORK); // or CACHE_ONLY
         // 5 mins
         query.setMaxCacheAge(300000);
         query.orderByDescending(InboxItem.KEY_INBOX_DATE + "," + InboxItem.KEY_INBOX_NEW);
