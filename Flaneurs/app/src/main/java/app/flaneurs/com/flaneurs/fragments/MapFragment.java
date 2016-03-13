@@ -97,12 +97,15 @@ public class MapFragment extends SupportMapFragment implements LocationProvider.
         if (map != null) {
             Log.d(TAG, "Map Fragment was loaded properly.");
 
+            int topPadding = (shouldTrackLocation || shouldLockMap) ? 0 : 50;
+            int bottomPadding = (shouldTrackLocation) ? 130 : 0;
+            map.setPadding(0, topPadding, 0, bottomPadding);
             if (shouldLockMap) {
                 map.getUiSettings().setScrollGesturesEnabled(false);
             } else {
                 map.setInfoWindowAdapter(new CustomWindowAdapter(getActivity().getLayoutInflater()));
             }
-            
+
             if (point != null) {
                 markLatLng(point);
             } else if (posts != null && posts.size() > 0) {
