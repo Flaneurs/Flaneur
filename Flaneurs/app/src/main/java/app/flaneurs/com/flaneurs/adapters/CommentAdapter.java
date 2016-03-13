@@ -37,15 +37,15 @@ public class CommentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     private List<Comment> mComments;
 
     private Post mPost;
-
+    private ICommentInteractionListener mListener;
     private Context mContext;
     private static int HEADER_POSITION = 0;
 
     private final int HEADER = 0, COMMENT = 1, FOOTER = 2;
 
-    public CommentAdapter(Context context, Post post) {
+    public CommentAdapter(Context context, Post post, ICommentInteractionListener listener) {
         mPost = post;
-
+        mListener = listener;
         mContext = context;
         mComments = mPost.getComments();
 
@@ -118,7 +118,6 @@ public class CommentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     }
 
 
-
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position, List<Object> payloads) {
 
@@ -143,7 +142,7 @@ public class CommentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         view.tvUpvotes.setText(post.getUpVoteCount() + " upvotes");
     }
 
-    private void configureHeaderView(HeaderViewHolder view, Post post) {
+    private void configureHeaderView(HeaderViewHolder view, final Post post) {
         User author = post.getAuthor();
         if (author != null) {
             try {
@@ -157,6 +156,12 @@ public class CommentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             if (author.getProfileUrl() != null) {
                 Glide.with(mContext).load(author.getProfileUrl()).into(view.ivProfileImage);
             }
+            view.ivProfileImage.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mListener.openProfileView(post.getAuthor());
+                }
+            });
 
         }
         PrettyTime pt = new PrettyTime();
@@ -174,7 +179,7 @@ public class CommentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         view.tvCaption.setText(post.getCaption());
     }
 
-    private void configureCommentView(CommentViewHolder view, Comment comment) {
+    private void configureCommentView(CommentViewHolder view, final Comment comment) {
         try {
             User user = (User) comment.getAuthor().fetchIfNeeded();
             Glide.with(mContext).load(user.getProfileUrl()).into(view.ivProfileImage);
@@ -183,6 +188,14 @@ public class CommentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         } catch (ParseException e) {
             e.printStackTrace();
         }
+
+        view.ivProfileImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mListener.openProfileView(comment.getAuthor());
+            }
+        });
+
         view.tvCreationTime.setText(Utils.getPrettyTime(comment.getCreatedTime()));
         view.tvComment.setText(comment.getCommentText());
     }
@@ -220,6 +233,13 @@ public class CommentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         public CommentViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
+
+            ivProfileImage.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                }
+            });
         }
     }
 
@@ -294,5 +314,12 @@ public class CommentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         public interface ICommentAddListener {
             void onAddComment(String comment);
         }
+
+
     }
+
+    public interface ICommentInteractionListener {
+        void openProfileView(User user);
+    }
+
 }

@@ -1,5 +1,6 @@
 package app.flaneurs.com.flaneurs.activities;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -29,7 +30,7 @@ import app.flaneurs.com.flaneurs.utils.Utils;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class DetailActivity extends AppCompatActivity {
+public class DetailActivity extends AppCompatActivity implements CommentAdapter.ICommentInteractionListener {
 
     @Bind(R.id.rvComments)
     RecyclerView rvComments;
@@ -63,7 +64,7 @@ public class DetailActivity extends AppCompatActivity {
                 if (e == null) {
                     mPost = item;
                     configureViewWithPost(item);
-                    adapter = new CommentAdapter(DetailActivity.this, mPost);
+                    adapter = new CommentAdapter(DetailActivity.this, mPost, DetailActivity.this);
 
                     rvComments.setLayoutManager(new LinearLayoutManager(DetailActivity.this));
                     rvComments.setAdapter(adapter);
@@ -133,4 +134,11 @@ public class DetailActivity extends AppCompatActivity {
         adapter.onUpvote();
     }
 
+    @Override
+    public void openProfileView(User user) {
+        Intent i = new Intent(this, ProfileActivity.class);
+        i.putExtra(ProfileActivity.PROFILE_TYPE, ProfileActivity.ProfileType.OTHER_USER);
+        i.putExtra(ProfileActivity.USER_ID, user.getObjectId());
+        startActivity(i);
+    }
 }
