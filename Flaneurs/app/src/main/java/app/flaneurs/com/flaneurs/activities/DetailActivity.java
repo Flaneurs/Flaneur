@@ -141,7 +141,6 @@ public class DetailActivity extends AppCompatActivity implements CommentAdapter.
     @Override
     public void openProfileView(User user) {
         Intent i = new Intent(this, ProfileActivity.class);
-        i.putExtra(ProfileActivity.PROFILE_TYPE, ProfileActivity.ProfileType.OTHER_USER);
         i.putExtra(ProfileActivity.USER_ID, user.getObjectId());
         startActivity(i);
     }

@@ -5,12 +5,10 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.astuetz.PagerSlidingTabStrip;
 import com.bumptech.glide.Glide;
 import com.parse.FindCallback;
-import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
 
@@ -47,33 +45,9 @@ public class ProfileActivity extends AppCompatActivity {
     PagerSlidingTabStrip slidingTabStrip;
 
     public static final String USER_ID = "USER_ID";
-    public static final String PROFILE_TYPE = "PROFILE_TYPE";
-
-    public enum ProfileType {
-        CURRENT_USER, OTHER_USER
-    }
 
     private MapFragment mMapFragment;
     private StreamFragment mStreamFragment;
-
-    private ProfileType mProfileType;
-    private String mUserId;
-
-    public ProfileType getProfileType() {
-        return mProfileType;
-    }
-
-    public void setProfileType(ProfileType mProfileType) {
-        this.mProfileType = mProfileType;
-    }
-
-    public String getUserId() {
-        return mUserId;
-    }
-
-    public void setUserId(String mUserId) {
-        this.mUserId = mUserId;
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,52 +55,22 @@ public class ProfileActivity extends AppCompatActivity {
         setContentView(R.layout.activity_profile);
         ButterKnife.bind(this);
 
-        extractProfileConfigurationData();
-        retrieveProfileDataAndSetupView();
-    }
+        String userId = getIntent().getStringExtra(USER_ID);
 
-    private void retrieveUserObject(final IOnUserObjectRetrieved callback) {
-        ProfileType profileType = getProfileType();
-        if (profileType == ProfileType.CURRENT_USER) {
-            try {
-                User.getCurrentUser().fetch();
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-            callback.onSuccess((User) User.getCurrentUser());
-        } else if (profileType == ProfileType.OTHER_USER) {
-            ParseQuery<User> query = ParseQuery.getQuery("_User");
-            query.getInBackground(getUserId(), new GetCallback<User>() {
-                @Override
-                public void done(User object, ParseException e) {
-                    if (object == null) {
-                        callback.onError("There was no user id found with " + getUserId());
-                    } else {
-                        callback.onSuccess(object);
-                    }
-                }
-            });
-        }
-    }
+        ParseQuery<Post> query1 = ParseQuery.getQuery("Post");
+        query1.orderByDescending(Post.KEY_POST_DATE);
 
-    private void retrieveProfileDataAndSetupView() {
-        retrieveUserObject(new IOnUserObjectRetrieved() {
+        ParseQuery<User> query2 = ParseQuery.getQuery("_User");
+        query2.whereEqualTo("objectId", userId);
+
+        query1.whereMatchesQuery(Post.KEY_POST_AUTHOR, query2);
+        query1.include(Post.KEY_POST_AUTHOR);
+
+        query1.setCachePolicy(ParseQuery.CachePolicy.CACHE_ELSE_NETWORK);
+        query1.findInBackground(new FindCallback<Post>() {
             @Override
-            public void onSuccess(final User user) {
-                ParseQuery<Post> query = ParseQuery.getQuery("Post");
-                query.orderByDescending(Post.KEY_POST_DATE);
-                query.whereEqualTo(Post.KEY_POST_AUTHOR, user);
-                query.findInBackground(new FindCallback<Post>() {
-                    @Override
-                    public void done(List<Post> objects, ParseException e) {
-                        setupProfileView(user, objects);
-                    }
-                });
-            }
-
-            @Override
-            public void onError(String error) {
-                Toast.makeText(ProfileActivity.this, error, Toast.LENGTH_SHORT).show();
+            public void done(List<Post> objects, ParseException e) {
+                setupProfileView(objects.get(0).getAuthor(), objects);
             }
         });
     }
@@ -151,17 +95,5 @@ public class ProfileActivity extends AppCompatActivity {
 
         tvDrops.setText(user.getDrops() + " Drops");
         tvUpvotes.setText(user.getUpVotes() + " UpVotes");
-    }
-
-    private void extractProfileConfigurationData() {
-        ProfileType profileType = (ProfileType) getIntent().getSerializableExtra(PROFILE_TYPE);
-        setProfileType(profileType);
-        String userId = getIntent().getStringExtra(USER_ID);
-        setUserId(userId);
-    }
-
-    public interface IOnUserObjectRetrieved {
-        void onSuccess(User user);
-        void onError(String error);
     }
 }

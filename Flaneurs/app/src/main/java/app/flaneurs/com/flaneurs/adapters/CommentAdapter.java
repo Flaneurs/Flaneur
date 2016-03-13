@@ -117,10 +117,8 @@ public class CommentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         onBindViewHolder(holder, position, null);
     }
 
-
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position, List<Object> payloads) {
-
         switch (holder.getItemViewType()) {
             case HEADER:
                 if (payloads != null && !payloads.isEmpty()) {

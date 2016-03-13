@@ -238,7 +238,6 @@ public class StreamFragment extends Fragment implements FlanArrayAdapter.IFlanIn
             return;
         }
         Intent i = new Intent(getActivity(), ProfileActivity.class);
-        i.putExtra(ProfileActivity.PROFILE_TYPE, ProfileActivity.ProfileType.OTHER_USER);
         i.putExtra(ProfileActivity.USER_ID, user.getObjectId());
         startActivity(i);
     }

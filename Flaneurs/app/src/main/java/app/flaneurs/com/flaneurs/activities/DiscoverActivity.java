@@ -31,6 +31,7 @@ import app.flaneurs.com.flaneurs.adapters.MapStreamPagerAdapter;
 import app.flaneurs.com.flaneurs.fragments.MapFragment;
 import app.flaneurs.com.flaneurs.fragments.StreamFragment;
 import app.flaneurs.com.flaneurs.models.Post;
+import app.flaneurs.com.flaneurs.models.User;
 import app.flaneurs.com.flaneurs.utils.ParseProxyObject;
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -167,7 +168,7 @@ public class DiscoverActivity extends AppCompatActivity {
 
     public void onProfileViewOnClick(MenuItem mi) {
         Intent i = new Intent(this, ProfileActivity.class);
-        i.putExtra(ProfileActivity.PROFILE_TYPE, ProfileActivity.ProfileType.CURRENT_USER);
+        i.putExtra(ProfileActivity.USER_ID, User.currentUser().getObjectId());
         startActivity(i);
     }
 
