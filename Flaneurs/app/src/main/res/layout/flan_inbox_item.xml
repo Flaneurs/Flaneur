@@ -31,12 +31,22 @@
         android:textStyle="bold"
         android:layout_marginTop="5dp" />
 
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/ivNew"
+        android:src="@drawable/new_badge"
+        android:layout_toRightOf="@+id/ivInboxImage"
+        android:layout_below="@id/tvInboxUsername"
+        android:layout_marginTop="2dp"
+        android:paddingRight="10dp"/>
+
     <TextView
         android:id="@+id/tvInboxLocation"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toEndOf="@+id/ivInboxImage"
-        android:layout_toRightOf="@+id/ivInboxImage"
+        android:layout_toEndOf="@+id/ivNew"
+        android:layout_toRightOf="@+id/ivNew"
         android:layout_below="@id/tvInboxUsername"
         android:text="San Francisco, CA"
         android:layout_marginTop="2dp" />
@@ -51,4 +61,6 @@
         android:layout_alignParentEnd="true"
         android:layout_marginRight="10dp"
         android:layout_marginTop="5dp" />
+
+
 </RelativeLayout>

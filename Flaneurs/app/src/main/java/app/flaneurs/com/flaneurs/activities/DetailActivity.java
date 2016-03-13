@@ -45,7 +45,7 @@ public class DetailActivity extends AppCompatActivity implements CommentAdapter.
 
     private Post mPost;
     public final static String POST_ID = "POST_ID";
-
+    public final static String IS_NEW = "IS_NEW";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +54,8 @@ public class DetailActivity extends AppCompatActivity implements CommentAdapter.
         ButterKnife.bind(this);
         Bundle extras = getIntent().getExtras();
         String objectId = extras.getString(POST_ID);
+        final boolean isNew = extras.getBoolean(IS_NEW);
+
 
         ParseQuery<Post> query = ParseQuery.getQuery(Post.class);
         // First try to find from the cache and only then go to network
@@ -80,6 +82,10 @@ public class DetailActivity extends AppCompatActivity implements CommentAdapter.
                         }
                     };
                     rvComments.setItemAnimator(animator);
+
+                    if (isNew) {
+                        revealPost();
+                    }
                 }
             }
         });
@@ -91,6 +97,10 @@ public class DetailActivity extends AppCompatActivity implements CommentAdapter.
                 onUpVoteButtonClicked(view);
             }
         });
+    }
+
+    private void revealPost() {
+        // TODO: Scroll up!
     }
 
     private void configureViewWithPost(Post item) {

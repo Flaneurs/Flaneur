@@ -16,7 +16,7 @@ import java.util.List;
  * Created by kpu on 2/29/16.
  */
 @ParseClassName("Post")
-public class Post extends ParseObject{
+public class Post extends ParseObject {
     public static final String KEY_POST_AUTHOR = "KEY_POST_AUTHOR";
     public static final String KEY_POST_LOCATION = "KEY_POST_LOCATION";
     public static final String KEY_POST_DATE = "KEY_POST_DATE";

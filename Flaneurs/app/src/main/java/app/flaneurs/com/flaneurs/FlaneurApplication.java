@@ -8,8 +8,10 @@ import com.parse.ParseObject;
 import com.parse.interceptors.ParseLogInterceptor;
 
 import app.flaneurs.com.flaneurs.models.Comment;
+import app.flaneurs.com.flaneurs.models.InboxItem;
 import app.flaneurs.com.flaneurs.models.Post;
 import app.flaneurs.com.flaneurs.models.User;
+import app.flaneurs.com.flaneurs.services.PickupService;
 import app.flaneurs.com.flaneurs.utils.LocationProvider;
 
 /**
@@ -17,7 +19,8 @@ import app.flaneurs.com.flaneurs.utils.LocationProvider;
  */
 public class FlaneurApplication extends Application {
 
-   public LocationProvider locationProvider;
+    public LocationProvider locationProvider;
+    public PickupService pickupService;
 
     @Override
     public void onCreate() {
@@ -25,6 +28,7 @@ public class FlaneurApplication extends Application {
         super.onCreate();
 
         ParseObject.registerSubclass(Post.class);
+        ParseObject.registerSubclass(InboxItem.class);
         ParseObject.registerSubclass(User.class);
         ParseObject.registerSubclass(Comment.class);
 
@@ -37,6 +41,7 @@ public class FlaneurApplication extends Application {
         ParseFacebookUtils.initialize(this);
 
         locationProvider = new LocationProvider(this);
+        pickupService = new PickupService();
     }
 
     private static FlaneurApplication instance;

@@ -1,11 +1,12 @@
 package app.flaneurs.com.flaneurs.models;
 
+import com.parse.FindCallback;
 import com.parse.ParseClassName;
+import com.parse.ParseException;
+import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -17,6 +18,9 @@ public class User extends ParseUser implements Serializable {
     public static final String KEY_USER_INBOX = "KEY_USER_INBOX";
     public static final String KEY_USER_DROPS = "KEY_USER_DROPS";
     public static final String KEY_USER_UPVOTES = "KEY_USER_UPVOTES";
+
+
+    private List<InboxItem> inboxItems;
 
     public String getProfileUrl() {
         return getString(KEY_USER_PROFILE_URL);
@@ -46,15 +50,28 @@ public class User extends ParseUser implements Serializable {
         put(KEY_USER_UPVOTES, upVotes);
     }
 
-    public List<Post> getInboxPosts() {
-        List<Post> posts = (List<Post>) get(KEY_USER_INBOX);
-        if (posts == null) {
-            posts = new ArrayList<Post>();
-            Post post = new Post();
-            post.setCreatedTime(new Date());
-            posts.add(post);
-        }
-        return posts;
+    public void fetchInboxPosts(final FindCallback<InboxItem> callback) {
+        ParseQuery<InboxItem> query = ParseQuery.getQuery("InboxItem");
+
+        // Restrict to cases where the author is the current user.
+        query.whereEqualTo("KEY_INBOX_USER", this);
+        query.include("KEY_INBOX_POST");
+        query.setCachePolicy(ParseQuery.CachePolicy.CACHE_ELSE_NETWORK); // or CACHE_ONLY
+        // Run the query
+        query.findInBackground(new FindCallback<InboxItem>() {
+
+            @Override
+            public void done(List<InboxItem> objects, ParseException e) {
+                callback.done(objects, e);
+                if (e == null) {
+                    inboxItems = objects;
+                }
+            }
+        });
+    }
+
+    public List<InboxItem> getInbox() {
+        return inboxItems;
     }
 
     public static User currentUser() {

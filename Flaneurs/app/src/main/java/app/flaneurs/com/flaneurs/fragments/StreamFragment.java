@@ -27,7 +27,6 @@ import app.flaneurs.com.flaneurs.R;
 import app.flaneurs.com.flaneurs.activities.DetailActivity;
 import app.flaneurs.com.flaneurs.activities.ProfileActivity;
 import app.flaneurs.com.flaneurs.adapters.FlanArrayAdapter;
-import app.flaneurs.com.flaneurs.adapters.InboxArrayAdapter;
 import app.flaneurs.com.flaneurs.models.Post;
 import app.flaneurs.com.flaneurs.models.User;
 import app.flaneurs.com.flaneurs.utils.DividerItemDecoration;
@@ -35,7 +34,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import jp.wasabeef.recyclerview.adapters.AlphaInAnimationAdapter;
 
-public class StreamFragment extends Fragment implements FlanArrayAdapter.IFlanInteractionListener, InboxArrayAdapter.IInboxInteractionListener {
+public class StreamFragment extends Fragment implements FlanArrayAdapter.IFlanInteractionListener {
 
     @Bind(R.id.rvFlans)
     RecyclerView rvFlans;
@@ -103,9 +102,10 @@ public class StreamFragment extends Fragment implements FlanArrayAdapter.IFlanIn
         }
     }
 
+    @Deprecated
     private void grabAllMessagesForUser() {
-        User user = (User) getStreamConfiguration().getUser();
-        onParseResultsReceived(user.getInboxPosts());
+//        User user = (User) getStreamConfiguration().getUser();
+//        onParseResultsReceived(user.getInboxPosts());
     }
 
     private void grabAllPostsFromParse() {
@@ -187,7 +187,8 @@ public class StreamFragment extends Fragment implements FlanArrayAdapter.IFlanIn
                 adapter = new FlanArrayAdapter(getContext(), mFlans, this);
                 break;
             case Inbox:
-                adapter = new InboxArrayAdapter(getContext(), mFlans, this);
+                // TODO: Sorry kamran
+                //adapter = new InboxArrayAdapter(getContext(), null, this);
                 break;
             default:
                 Log.e("StreamFragment", "Damn son, you added a new stream configuration, but did not choose an adapter");
@@ -239,10 +240,6 @@ public class StreamFragment extends Fragment implements FlanArrayAdapter.IFlanIn
         startActivity(i);
     }
 
-    @Override
-    public void openInboxDetailView(Post flan) {
-        Toast.makeText(getActivity(), "Clicked inbox cell", Toast.LENGTH_SHORT).show();
-    }
 
     @Override
     public void openProfileView(Post flan) {

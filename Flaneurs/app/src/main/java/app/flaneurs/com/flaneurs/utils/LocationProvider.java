@@ -25,8 +25,8 @@ public class LocationProvider implements
         GoogleApiClient.OnConnectionFailedListener,
         LocationListener {
 
-    public abstract interface ILocationListener {
-        public void onLocationChanged(Location location);
+    public interface ILocationListener {
+         void onLocationChanged(Location location);
     }
 
     public static final String TAG = LocationProvider.class.getSimpleName();
