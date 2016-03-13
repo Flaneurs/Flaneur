@@ -1,9 +1,12 @@
 package app.flaneurs.com.flaneurs.models;
 
+import com.parse.FindCallback;
 import com.parse.ParseClassName;
+import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseGeoPoint;
 import com.parse.ParseObject;
+import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
 import java.util.Date;
@@ -25,6 +28,9 @@ public class Post extends ParseObject{
     public static final String KEY_POST_DOWNVOTECOUNT = "KEY_POST_DOWNVOTECOUNT";
     public static final String KEY_POST_COMMENTS = "KEY_POST_COMMENTS";
     public static final String KEY_POST_IMAGE = "KEY_POST_IMAGE";
+
+   private List<Comment> commentList;
+
 
     public Post() {
 
@@ -122,12 +128,30 @@ public class Post extends ParseObject{
         put(KEY_POST_DOWNVOTECOUNT, downVoteCount);
     }
 
+    public void fetchComments(final FindCallback<Comment> callback) {
+        ParseQuery<Comment> query = ParseQuery.getQuery("Comment");
+
+        // Restrict to cases where the author is the current user.
+        query.whereEqualTo("KEY_COMMENT_POST", this);
+
+        // Run the query
+        query.findInBackground(new FindCallback<Comment>() {
+
+            @Override
+            public void done(List<Comment> objects, ParseException e) {
+                callback.done(objects, e);
+                if (e == null) {
+                    commentList = objects;
+                }
+            }
+        });
+    }
+
     public List<Comment> getComments() {
-        return getList(KEY_POST_COMMENTS);
+        return commentList;
     }
 
-    public void setComments(List<Comment> comments) {
-        put(KEY_POST_COMMENTS, comments);
+    public void addComment(Comment comment) {
+        commentList.add(comment);
     }
-
 }

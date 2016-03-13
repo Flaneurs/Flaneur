@@ -14,13 +14,14 @@ public class Comment extends ParseObject {
     private static final String KEY_COMMENT_AUTHOR = "KEY_COMMENT_AUTHOR";
     private static final String KEY_COMMENT_DATE = "KEY_COMMENT_DATE";
     private static final String KEY_COMMENT_TEXT = "KEY_COMMENT_TEXT";
+    private static final String KEY_COMMENT_POST = "KEY_COMMENT_POST";
 
     public Comment() {
 
     }
 
-    public ParseUser getAuthor() {
-        return getParseUser(KEY_COMMENT_AUTHOR);
+    public User getAuthor() {
+        return (User)getParseUser(KEY_COMMENT_AUTHOR);
     }
 
     public void setAuthor(ParseUser author) {
@@ -41,5 +42,9 @@ public class Comment extends ParseObject {
 
     public void setCommentText(String text) {
         put(KEY_COMMENT_TEXT, text);
+    }
+
+    public void setPost(Post post) {
+        put(KEY_COMMENT_POST, post);
     }
 }

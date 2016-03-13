@@ -5,9 +5,11 @@ import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 
+import com.ocpsoft.pretty.time.PrettyTime;
 import com.parse.ParseGeoPoint;
 
 import java.io.IOException;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -47,6 +49,11 @@ public class Utils {
         float distanceInMeters = current.distanceTo(destination);
         String pretty = distanceInMeters + "m away";
         return pretty;
+    }
+
+    public static String getPrettyTime(Date date) {
+        PrettyTime pt = new PrettyTime();
+       return pt.format(date);
     }
 
 }

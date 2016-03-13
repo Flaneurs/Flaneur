@@ -24,13 +24,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import app.flaneurs.com.flaneurs.R;
-import app.flaneurs.com.flaneurs.activities.ProfileActivity;
-import app.flaneurs.com.flaneurs.adapters.InboxArrayAdapter;
-import app.flaneurs.com.flaneurs.models.User;
-import app.flaneurs.com.flaneurs.utils.DividerItemDecoration;
+import app.flaneurs.com.flaneurs.activities.DetailActivity;
 import app.flaneurs.com.flaneurs.activities.FlanDetailActivity;
 import app.flaneurs.com.flaneurs.activities.ProfileActivity;
 import app.flaneurs.com.flaneurs.adapters.FlanArrayAdapter;
+import app.flaneurs.com.flaneurs.adapters.InboxArrayAdapter;
 import app.flaneurs.com.flaneurs.models.Post;
 import app.flaneurs.com.flaneurs.models.User;
 import app.flaneurs.com.flaneurs.utils.DividerItemDecoration;
@@ -237,7 +235,7 @@ public class StreamFragment extends Fragment implements FlanArrayAdapter.IFlanIn
 
     @Override
     public void openDetailView(Post flan) {
-        Intent i = new Intent(getActivity(), FlanDetailActivity.class);
+        Intent i = new Intent(getActivity(), DetailActivity.class);
         i.putExtra(FlanDetailActivity.POST_ID, flan.getObjectId());
         startActivity(i);
     }
