@@ -118,7 +118,10 @@ public class MapFragment extends SupportMapFragment implements LocationProvider.
 
                     markerPostMap.put(marker.getId(), post);
                 }
+                LatLngBounds newBounds = bounds.build();
+
                 if (!shouldTrackLocation) {
+                    map.moveCamera(CameraUpdateFactory.newLatLngZoom(newBounds.getCenter(), 5.0f));
                     map.setOnMapLoadedCallback(new GoogleMap.OnMapLoadedCallback() {
                         @Override
                         public void onMapLoaded() {
@@ -168,8 +171,10 @@ public class MapFragment extends SupportMapFragment implements LocationProvider.
     public void onLocationChanged(Location location) {
         if (mLocation == null) {
             LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
-            CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(latLng, 15);
-            map.animateCamera(cameraUpdate);
+            CameraUpdate cameraUpdate1 = CameraUpdateFactory.newLatLngZoom(latLng, 10);
+            CameraUpdate cameraUpdate2 = CameraUpdateFactory.newLatLngZoom(latLng, 15);
+            map.moveCamera(cameraUpdate1);
+            map.animateCamera(cameraUpdate2);
         }
         mLocation = location;
     }
