@@ -11,11 +11,11 @@ import java.util.Date;
  */
 @ParseClassName("InboxItem")
 public class InboxItem extends ParseObject {
-    private static final String KEY_INBOX_USER = "KEY_INBOX_USER";
-    private static final String KEY_INBOX_DATE = "KEY_INBOX_DATE";
-    private static final String KEY_INBOX_POST = "KEY_INBOX_POST";
-    private static final String KEY_INBOX_NEW = "KEY_INBOX_NEW";
-    private static final String KEY_INBOX_ID = "KEY_INBOX_ID";
+    public static final String KEY_INBOX_USER = "KEY_INBOX_USER";
+    public static final String KEY_INBOX_DATE = "KEY_INBOX_DATE";
+    public static final String KEY_INBOX_POST = "KEY_INBOX_POST";
+    public static final String KEY_INBOX_NEW = "KEY_INBOX_NEW";
+    public static final String KEY_INBOX_ID = "KEY_INBOX_ID";
 
 
     public String getId() {

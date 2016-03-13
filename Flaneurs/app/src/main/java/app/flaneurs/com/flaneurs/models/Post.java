@@ -140,7 +140,7 @@ public class Post extends ParseObject {
         ParseQuery<Comment> query = ParseQuery.getQuery("Comment");
 
         // Restrict to cases where the author is the current user.
-        query.whereEqualTo("KEY_COMMENT_POST", this);
+        query.whereEqualTo(Comment.KEY_COMMENT_POST, this);
 
         // Run the query
         query.findInBackground(new FindCallback<Comment>() {

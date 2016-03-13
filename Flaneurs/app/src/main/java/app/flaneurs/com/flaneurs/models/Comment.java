@@ -11,10 +11,10 @@ import java.util.Date;
  */
 @ParseClassName("Comment")
 public class Comment extends ParseObject {
-    private static final String KEY_COMMENT_AUTHOR = "KEY_COMMENT_AUTHOR";
-    private static final String KEY_COMMENT_DATE = "KEY_COMMENT_DATE";
-    private static final String KEY_COMMENT_TEXT = "KEY_COMMENT_TEXT";
-    private static final String KEY_COMMENT_POST = "KEY_COMMENT_POST";
+    public static final String KEY_COMMENT_AUTHOR = "KEY_COMMENT_AUTHOR";
+    public static final String KEY_COMMENT_DATE = "KEY_COMMENT_DATE";
+    public static final String KEY_COMMENT_TEXT = "KEY_COMMENT_TEXT";
+    public static final String KEY_COMMENT_POST = "KEY_COMMENT_POST";
 
     public Comment() {
 
