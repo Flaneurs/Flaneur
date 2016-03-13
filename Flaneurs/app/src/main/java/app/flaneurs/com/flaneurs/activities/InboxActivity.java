@@ -20,7 +20,6 @@ import app.flaneurs.com.flaneurs.models.User;
 import app.flaneurs.com.flaneurs.utils.DividerItemDecoration;
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import jp.wasabeef.recyclerview.adapters.AlphaInAnimationAdapter;
 
 public class InboxActivity extends AppCompatActivity implements InboxArrayAdapter.IInboxInteractionListener {
 
@@ -55,16 +54,10 @@ public class InboxActivity extends AppCompatActivity implements InboxArrayAdapte
         }
 
         mAdapter = new InboxArrayAdapter(this, mInboxItems, this);
-
         mLayoutManager = new LinearLayoutManager(this);
         rvInboxItems.setLayoutManager(mLayoutManager);
-
         rvInboxItems.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL_LIST));
-
-        AlphaInAnimationAdapter alphaAdapter = new AlphaInAnimationAdapter(mAdapter);
-        alphaAdapter.setFirstOnly(false);
-
-        rvInboxItems.setAdapter(alphaAdapter);
+        rvInboxItems.setAdapter(mAdapter);
     }
 
     @Override
