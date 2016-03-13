@@ -25,7 +25,6 @@ public class Post extends ParseObject {
     public static final String KEY_POST_CAPTION = "KEY_POST_CAPTION";
     public static final String KEY_POST_VIEWCOUNT = "KEY_POST_VIEWCOUNT";
     public static final String KEY_POST_UPVOTECOUNT = "KEY_POST_UPVOTECOUNT";
-    public static final String KEY_POST_DOWNVOTECOUNT = "KEY_POST_DOWNVOTECOUNT";
     public static final String KEY_POST_IMAGE = "KEY_POST_IMAGE";
     public static final String KEY_POST_ADDRESS = "KEY_POST_ADDRESS";
 
@@ -46,10 +45,11 @@ public class Post extends ParseObject {
         setUpVoteCount(upVotes);
     }
 
-    public void incrementDownVote() {
-        int downVotes = getDownVoteCount();
-        downVotes++;
-        setDownVoteCount(downVotes);
+
+    public void incrementViewCount() {
+        int viewCount = getViewCount();
+        viewCount++;
+        setViewCount(viewCount);
     }
 
     public void setAuthor(ParseUser author) {
@@ -128,14 +128,6 @@ public class Post extends ParseObject {
         put(KEY_POST_UPVOTECOUNT, upVoteCount);
     }
 
-    public int getDownVoteCount() {
-        return getInt(KEY_POST_DOWNVOTECOUNT);
-    }
-
-    public void setDownVoteCount(int downVoteCount) {
-        put(KEY_POST_DOWNVOTECOUNT, downVoteCount);
-    }
-
     public void fetchComments(final FindCallback<Comment> callback) {
         ParseQuery<Comment> query = ParseQuery.getQuery("Comment");
 
@@ -162,4 +154,6 @@ public class Post extends ParseObject {
     public void addComment(Comment comment) {
         commentList.add(comment);
     }
+
+
 }

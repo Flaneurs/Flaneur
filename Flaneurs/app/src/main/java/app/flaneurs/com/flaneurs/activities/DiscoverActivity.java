@@ -58,6 +58,7 @@ public class DiscoverActivity extends AppCompatActivity {
 
         ParseQuery<Post> query = ParseQuery.getQuery("Post");
         query.setLimit(10);
+        query.include(Post.KEY_POST_AUTHOR);
         query.findInBackground(new FindCallback<Post>() {
             @Override
             public void done(List<Post> objects, ParseException e) {

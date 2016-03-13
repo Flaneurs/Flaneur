@@ -51,6 +51,7 @@ public class User extends ParseUser implements Serializable {
         query.setCachePolicy(ParseQuery.CachePolicy.CACHE_ELSE_NETWORK); // or CACHE_ONLY
         // 5 mins
         query.setMaxCacheAge(300000);
+        query.orderByDescending(InboxItem.KEY_INBOX_DATE + "," + InboxItem.KEY_INBOX_NEW);
         query.findInBackground(callback);
     }
 

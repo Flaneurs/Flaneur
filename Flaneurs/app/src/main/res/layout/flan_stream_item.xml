@@ -85,14 +85,6 @@
             android:text="12 upvotes"
             android:layout_marginLeft="20dp" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/tvStreamDownvotes"
-            android:text="12 downvotes"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="10dp" />
-
     </LinearLayout>
 
 </RelativeLayout>

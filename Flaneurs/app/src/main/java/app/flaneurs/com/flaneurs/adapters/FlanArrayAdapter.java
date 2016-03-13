@@ -83,7 +83,6 @@ public class FlanArrayAdapter extends RecyclerView.Adapter<FlanArrayAdapter.Flan
         });
         PrettyTime pt = new PrettyTime();
         holder.tvCreationTime.setText(pt.format(flan.getCreatedTime()));
-        holder.tvDownvotes.setText(flan.getDownVoteCount() + " downvotes");
         holder.tvUpvotes.setText(flan.getUpVoteCount() + " upvotes");
         holder.tvViewCount.setText(flan.getViewCount() + " views");
 
@@ -120,9 +119,6 @@ public class FlanArrayAdapter extends RecyclerView.Adapter<FlanArrayAdapter.Flan
 
         @Bind(R.id.tvStreamUpvotes)
         TextView tvUpvotes;
-
-        @Bind(R.id.tvStreamDownvotes)
-        TextView tvDownvotes;
 
         @Bind(R.id.tvStreamViewCount)
         TextView tvViewCount;

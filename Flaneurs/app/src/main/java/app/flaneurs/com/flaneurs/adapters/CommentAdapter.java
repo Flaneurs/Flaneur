@@ -166,7 +166,6 @@ public class CommentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         }
         PrettyTime pt = new PrettyTime();
         view.tvCreationTime.setText(pt.format(post.getCreatedTime()));
-        view.tvDownvotes.setText(post.getDownVoteCount() + " downvotes");
         view.tvUpvotes.setText(post.getUpVoteCount() + " upvotes");
         view.tvViewCount.setText(post.getViewCount() + " views");
         view.tvStreamDistanceAway.setText("");
@@ -257,9 +256,6 @@ public class CommentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
         @Bind(R.id.tvStreamUpvotes)
         TextView tvUpvotes;
-
-        @Bind(R.id.tvStreamDownvotes)
-        TextView tvDownvotes;
 
         @Bind(R.id.tvStreamViewCount)
         TextView tvViewCount;
