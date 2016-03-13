@@ -28,8 +28,7 @@ public class PickupService implements LocationProvider.ILocationListener {
     private List<Post> currentSessionInboxPosts;
     private List<InboxItem> currentSessionInbox;
 
-    // TODO: Make more realistic for real testing
-    private final static int PICKUP_RADIUS_IN_METERS = 2000;
+    private final static int PICKUP_RADIUS_IN_METERS = 5;
     private final static int QUERY_RADIUS_IN_METERS = 10;
 
     private final static double METER_PER_MILE = 1609.344;

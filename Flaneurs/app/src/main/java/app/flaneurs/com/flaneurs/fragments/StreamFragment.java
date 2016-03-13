@@ -75,7 +75,7 @@ public class StreamFragment extends Fragment implements FlanArrayAdapter.IFlanIn
     }
 
     public enum StreamType {
-        AllPosts, User, Inbox
+        AllPosts, User
     }
 
     public static StreamFragment createInstance(StreamConfiguration configuration) {
@@ -97,16 +97,9 @@ public class StreamFragment extends Fragment implements FlanArrayAdapter.IFlanIn
             grabAllPostsFromParse();
         } else if (streamConfiguration.getStreamType() == StreamType.User) {
             grabAllPostsForUser();
-        } else if (streamConfiguration.getStreamType() == StreamType.Inbox) {
-            grabAllMessagesForUser();
         }
     }
 
-    @Deprecated
-    private void grabAllMessagesForUser() {
-//        User user = (User) getStreamConfiguration().getUser();
-//        onParseResultsReceived(user.getInboxPosts());
-    }
 
     private void grabAllPostsFromParse() {
         ParseQuery<Post> query = ParseQuery.getQuery("Post");
@@ -185,10 +178,6 @@ public class StreamFragment extends Fragment implements FlanArrayAdapter.IFlanIn
             case User:
             case AllPosts:
                 adapter = new FlanArrayAdapter(getContext(), mFlans, this);
-                break;
-            case Inbox:
-                // TODO: Sorry kamran
-                //adapter = new InboxArrayAdapter(getContext(), null, this);
                 break;
             default:
                 Log.e("StreamFragment", "Damn son, you added a new stream configuration, but did not choose an adapter");
