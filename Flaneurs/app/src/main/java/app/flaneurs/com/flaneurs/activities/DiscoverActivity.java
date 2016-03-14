@@ -103,7 +103,7 @@ public class DiscoverActivity extends AppCompatActivity implements LocationProvi
 
             ParseQuery<Post> query = ParseQuery.getQuery("Post");
             query.whereNear(Post.KEY_POST_LOCATION, currentPoint);
-            query.setLimit(10);
+            query.setLimit(20);
             query.include(Post.KEY_POST_AUTHOR);
             query.setCachePolicy(ParseQuery.CachePolicy.CACHE_THEN_NETWORK);
             query.findInBackground(new FindCallback<Post>() {
