@@ -150,6 +150,9 @@ public class PickupService implements LocationProvider.ILocationListener {
         query.findInBackground(new FindCallback<InboxItem>() {
             @Override
             public void done(List<InboxItem> objects, ParseException e) {
+                if (objects == null) {
+                    return;
+                }
                 Log.e("PickupService", "Updating cached inbox");
                 currentSessionInbox = objects;
 
