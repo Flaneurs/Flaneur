@@ -12,6 +12,7 @@ import com.bumptech.glide.Glide;
 
 import java.util.List;
 
+import app.flaneurs.com.flaneurs.FlaneurApplication;
 import app.flaneurs.com.flaneurs.R;
 import app.flaneurs.com.flaneurs.models.InboxItem;
 import app.flaneurs.com.flaneurs.models.Post;
@@ -66,6 +67,14 @@ public class InboxArrayAdapter extends RecyclerView.Adapter<InboxArrayAdapter.In
         } else {
             holder.ivNew.setVisibility(View.GONE);
         }
+    }
+
+    public void remove(int position) {
+        InboxItem item = mInboxItems.remove(position);
+        item.setHidden(true);
+        item.saveEventually();
+        FlaneurApplication.getInstance().pickupService.onHide(item);
+        notifyItemRemoved(position);
     }
 
     @Override

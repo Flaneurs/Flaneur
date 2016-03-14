@@ -113,6 +113,7 @@ public class PickupService implements LocationProvider.ILocationListener {
         inboxItem.setUser(User.currentUser());
         inboxItem.setPickUpTime(new Date());
         inboxItem.setNew(true);
+        inboxItem.setHidden(false);
         inboxItem.saveInBackground();
 
         post.incrementViewCount();
@@ -139,6 +140,7 @@ public class PickupService implements LocationProvider.ILocationListener {
     public void onColdLaunch() {
         ParseQuery<InboxItem> query = ParseQuery.getQuery("InboxItem");
         query.whereEqualTo(InboxItem.KEY_INBOX_USER, User.currentUser());
+        query.whereEqualTo(InboxItem.KEY_INBOX_HIDDEN, false);
         query.include(InboxItem.KEY_INBOX_POST);
         query.include(InboxItem.KEY_INBOX_POST + "." + Post.KEY_POST_AUTHOR);
         query.setCachePolicy(ParseQuery.CachePolicy.CACHE_THEN_NETWORK);
@@ -150,5 +152,9 @@ public class PickupService implements LocationProvider.ILocationListener {
                 currentSessionInbox = objects;
             }
         });
+    }
+
+    public void onHide(InboxItem item) {
+        currentSessionInbox.remove(item);
     }
 }

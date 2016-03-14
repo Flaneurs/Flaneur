@@ -16,7 +16,7 @@ public class InboxItem extends ParseObject {
     public static final String KEY_INBOX_POST = "KEY_INBOX_POST";
     public static final String KEY_INBOX_NEW = "KEY_INBOX_NEW";
     public static final String KEY_INBOX_ID = "KEY_INBOX_ID";
-
+    public static final String KEY_INBOX_HIDDEN = "KEY_INBOX_HIDDEN";
 
     public String getId() {
         return getString(KEY_INBOX_ID);
@@ -38,7 +38,6 @@ public class InboxItem extends ParseObject {
         put(KEY_INBOX_DATE, pickUpTime);
     }
 
-
     public Post getPost() {
         return (Post)get(KEY_INBOX_POST);
     }
@@ -54,6 +53,14 @@ public class InboxItem extends ParseObject {
 
     public void setNew(boolean isNew) {
         put(KEY_INBOX_NEW, isNew);
+    }
+
+    public boolean getHidden() {
+        return getBoolean(KEY_INBOX_HIDDEN);
+    }
+
+    public void setHidden(boolean isHidden) {
+        put(KEY_INBOX_HIDDEN, isHidden);
     }
 
 }
