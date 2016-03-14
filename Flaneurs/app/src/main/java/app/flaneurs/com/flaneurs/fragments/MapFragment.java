@@ -163,7 +163,6 @@ public class MapFragment extends SupportMapFragment implements LocationProvider.
             map.setMyLocationEnabled(true);
             mLocationProvider = FlaneurApplication.getInstance().locationProvider;
             mLocationProvider.addListener(this);
-            mLocationProvider.connect();
         }
     }
 
@@ -176,10 +175,6 @@ public class MapFragment extends SupportMapFragment implements LocationProvider.
             map.animateCamera(cameraUpdate2);
         }
         mLocation = location;
-    }
-
-    public Location getCurrentLocation() {
-        return (shouldTrackLocation) ? mLocation : null;
     }
 
     class CustomWindowAdapter implements GoogleMap.InfoWindowAdapter {
