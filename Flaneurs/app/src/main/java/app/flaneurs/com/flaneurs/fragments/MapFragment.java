@@ -46,6 +46,7 @@ public class MapFragment extends SupportMapFragment implements LocationProvider.
 
     private GoogleMap map;
     private LocationProvider mLocationProvider;
+    private PostMarkerGetter mPostMarkerGetter;
 
     private Location mLocation;
 
@@ -53,8 +54,6 @@ public class MapFragment extends SupportMapFragment implements LocationProvider.
     private boolean shouldLockMap;
     private ArrayList<ParseProxyObject> posts;
     private LatLng point;
-
-    private Map<String, ParseProxyObject> markerPostMap;
 
     public static MapFragment newInstance(boolean shouldTrackLocation, boolean shouldLockMap, LatLng latLng, ArrayList<ParseProxyObject> parseProxyObjects) {
         MapFragment mapFragment = new MapFragment();
@@ -83,7 +82,7 @@ public class MapFragment extends SupportMapFragment implements LocationProvider.
             posts = null;
         }
 
-        markerPostMap = new HashMap<>();
+        mPostMarkerGetter = new PostMarkerGetter();
 
         getMapAsync(new OnMapReadyCallback() {
             @Override
@@ -140,7 +139,7 @@ public class MapFragment extends SupportMapFragment implements LocationProvider.
         double[] latLng = post.getParseGeoPointArray(Post.KEY_POST_LOCATION);
         LatLng point = new LatLng(latLng[0], latLng[1]);
         Marker marker = addMarkerAtLatLng(point);
-        markerPostMap.put(marker.getId(), post);
+        mPostMarkerGetter.putPostMarker(post, marker);
 
         if (withAnimation) {
             dropPinEffect(marker);
@@ -236,7 +235,7 @@ public class MapFragment extends SupportMapFragment implements LocationProvider.
         @Override
         public View getInfoContents(Marker marker) {
             // Get the associated post
-            ParseProxyObject post = markerPostMap.get(marker.getId());
+            ParseProxyObject post = mPostMarkerGetter.getPostForMarkerId(marker.getId());
 
             // Getting view from the layout file
             View v = mInflater.inflate(R.layout.custom_info_window, null);
@@ -258,6 +257,29 @@ public class MapFragment extends SupportMapFragment implements LocationProvider.
         @Override
         public View getInfoWindow(Marker marker) {
             return null;
+        }
+    }
+
+    class PostMarkerGetter {
+        private Map<String, ParseProxyObject> markerPostMap;
+        private Map<String, Marker> postMarkerMap;
+
+        public PostMarkerGetter() {
+            markerPostMap = new HashMap<>();
+            postMarkerMap = new HashMap<>();
+        }
+
+        public void putPostMarker(ParseProxyObject post, Marker marker) {
+            markerPostMap.put(marker.getId(), post);
+            postMarkerMap.put(post.getObjectId(), marker);
+        }
+
+        public Marker getMarkerForPostId(String postId) {
+            return postMarkerMap.get(postId);
+        }
+
+        public  ParseProxyObject getPostForMarkerId(String markerId) {
+            return markerPostMap.get(markerId);
         }
     }
 }

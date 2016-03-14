@@ -17,6 +17,8 @@ import java.util.List;
  */
 @ParseClassName("Post")
 public class Post extends ParseObject {
+    public static final String KEY_POST = "KEY_POST";
+    
     public static final String KEY_POST_AUTHOR = "KEY_POST_AUTHOR";
     public static final String KEY_POST_LOCATION = "KEY_POST_LOCATION";
     public static final String KEY_POST_DATE = "KEY_POST_DATE";
@@ -28,8 +30,6 @@ public class Post extends ParseObject {
     public static final String KEY_POST_IMAGE = "KEY_POST_IMAGE";
     public static final String KEY_POST_ADDRESS = "KEY_POST_ADDRESS";
 
-    public static final String KEY_POST = "KEY_POST";
-    
     private List<Comment> commentList;
 
     public Post() {
