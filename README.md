@@ -34,27 +34,26 @@ We are interested in capturing and sharing the story of a city, the thoughts and
 - [x] Allow users to upvote/downvote their picked up Flâneurs 
 
 ### Optional User Stories
-- [ ] Receieve notifications about flaneur immediately
-- [ ] Badge inbox with number of new pickups
-- [ ] Endless scroll on timeline
-- [ ] Ability to delete flaneurs in inbox
+- [x] Receieve notifications about flaneur immediately
+- [x] Badge inbox with number of new pickups
+- [x] Ability to delete flaneurs in inbox
 - [x] Ability to view user profiles and see how many drops/picks up user has done, as well as view their timeline
-- [ ] Dropped time, user profile image on map marker
-- [ ] Reveal post in inbox, hide post on timeline (Locked + unlocked visual)
+- [x] Reveal post in inbox, hide post on timeline (Locked + unlocked visual)
 
 ### Polish Items
 - [ ] After viewing inbox item, move it to bottom of list
-- [ ] Only allow 1 upvote, visually represent button change
-- [ ] Change color of picked up drops, remove them from search next query
+- [x] Only allow 1 upvote, visually represent button change
+- [x] Remove marker from map on pickup
 - [ ] Optimize parse caching and fetches
 - [ ] Delete old posts
-- [ ] Make compose screen less janky
 - [ ] Get status bar color back on detail view
 - [ ] Have screen scroll up when composing comment
 - [ ] Redo search in area on map
+- [ ] Endless scroll on timeline
 - [ ] Ability to archive flaneurs in inbox
 - [ ] Cache parse queries (pinAllInBackground)
 - [ ] Kill parseProxy
+
 
 ### Crazy Stretch
 - [ ] Move Pickup Service into actual service
