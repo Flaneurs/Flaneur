@@ -81,6 +81,8 @@ public class InboxActivity extends AppCompatActivity implements InboxArrayAdapte
         item.setNew(false);
         item.saveEventually();
 
+        FlaneurApplication.getInstance().pickupService.decrementNew();
+
         Intent i = new Intent(this, DetailActivity.class);
         i.putExtra(DetailActivity.POST_ID, item.getPost().getObjectId());
         i.putExtra(DetailActivity.IS_NEW, isNew);

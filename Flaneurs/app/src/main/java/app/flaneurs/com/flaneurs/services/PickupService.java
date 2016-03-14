@@ -169,4 +169,8 @@ public class PickupService implements LocationProvider.ILocationListener {
     public int getNewItemsCount() {
         return mNewInboxItems;
     }
+
+    public void decrementNew() {
+        mNewInboxItems--;
+    }
 }

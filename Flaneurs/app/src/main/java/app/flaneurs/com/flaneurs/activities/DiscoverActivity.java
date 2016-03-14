@@ -91,11 +91,7 @@ public class DiscoverActivity extends AppCompatActivity {
             String address = intent.getStringExtra(PickupService.PICKUP_ADDRESS);
             Utils.fireLocalNotification(DiscoverActivity.this, address);
 
-            LayerDrawable icon = (LayerDrawable) mInboxItem.getIcon();
-            // Update LayerDrawable's BadgeDrawable
-            int newInboxCount = FlaneurApplication.getInstance().pickupService.getNewItemsCount();
-            BadgeDrawable.setBadgeCount(DiscoverActivity.this, icon, newInboxCount);
-
+            updateInboxIcon();
             Log.v("DiscoverActivity", "Sending local notif for pickup at " + address);
         }
     };
@@ -217,6 +213,7 @@ public class DiscoverActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         AppEventsLogger.activateApp(this);
+        updateInboxIcon();
     }
 
     @Override
@@ -224,5 +221,15 @@ public class DiscoverActivity extends AppCompatActivity {
         super.onPause();
         // Logs 'app deactivate' App Event.
         AppEventsLogger.deactivateApp(this);
+    }
+
+    private void updateInboxIcon() {
+        if (mInboxItem == null) {
+            return;
+        }
+        LayerDrawable icon = (LayerDrawable) mInboxItem.getIcon();
+        // Update LayerDrawable's BadgeDrawable
+        int newInboxCount = FlaneurApplication.getInstance().pickupService.getNewItemsCount();
+        BadgeDrawable.setBadgeCount(DiscoverActivity.this, icon, newInboxCount);
     }
 }
