@@ -160,7 +160,6 @@ public class CommentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                     mListener.openProfileView(post.getAuthor());
                 }
             });
-
         }
         PrettyTime pt = new PrettyTime();
         view.tvCreationTime.setText(pt.format(post.getCreatedTime()));
