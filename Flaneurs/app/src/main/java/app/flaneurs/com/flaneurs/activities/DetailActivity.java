@@ -63,7 +63,6 @@ public class DetailActivity extends AppCompatActivity implements CommentAdapter.
             public void done(Post item, ParseException e) {
                 if (e == null) {
                     mPost = item;
-                    configureViewWithPost(item);
                     adapter = new CommentAdapter(DetailActivity.this, mPost, DetailActivity.this);
 
                     rvComments.setLayoutManager(new LinearLayoutManager(DetailActivity.this));
@@ -84,6 +83,8 @@ public class DetailActivity extends AppCompatActivity implements CommentAdapter.
                     if (isNew) {
                         revealPost();
                     }
+
+                    configureViewWithPost(item);
                 }
             }
         });
