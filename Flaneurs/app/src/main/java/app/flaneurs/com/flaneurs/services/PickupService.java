@@ -115,6 +115,7 @@ public class PickupService implements LocationProvider.ILocationListener {
         inboxItem.setPickUpTime(new Date());
         inboxItem.setNew(true);
         inboxItem.setHidden(false);
+        inboxItem.setUpvoted(false);
         inboxItem.saveInBackground();
 
         post.incrementViewCount();

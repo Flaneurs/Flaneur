@@ -28,15 +28,14 @@ public class Post extends ParseObject {
     public static final String KEY_POST_IMAGE = "KEY_POST_IMAGE";
     public static final String KEY_POST_ADDRESS = "KEY_POST_ADDRESS";
 
-   private List<Comment> commentList;
-
+    private List<Comment> commentList;
 
     public Post() {
 
     }
 
     public User getAuthor() {
-        return (User)getParseUser(KEY_POST_AUTHOR);
+        return (User) getParseUser(KEY_POST_AUTHOR);
     }
 
     public void incrementUpVote() {
@@ -156,8 +155,8 @@ public class Post extends ParseObject {
     }
 
 
-    public boolean equals(Object o){
-        if(o instanceof Post){
+    public boolean equals(Object o) {
+        if (o instanceof Post) {
             Post toCompare = (Post) o;
             return this.getObjectId().equals(toCompare.getObjectId());
         }

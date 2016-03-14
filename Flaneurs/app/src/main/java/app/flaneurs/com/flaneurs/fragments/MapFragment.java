@@ -100,7 +100,7 @@ public class MapFragment extends SupportMapFragment implements LocationProvider.
             int bottomPadding = (shouldTrackLocation) ? 130 : 0;
             map.setPadding(0, topPadding, 0, bottomPadding);
             if (shouldLockMap) {
-                map.getUiSettings().setScrollGesturesEnabled(false);
+                map.getUiSettings().setAllGesturesEnabled(false);
             } else {
                 map.setInfoWindowAdapter(new CustomWindowAdapter(getActivity().getLayoutInflater()));
             }

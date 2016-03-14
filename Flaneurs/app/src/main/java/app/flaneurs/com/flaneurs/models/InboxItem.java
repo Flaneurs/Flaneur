@@ -17,6 +17,8 @@ public class InboxItem extends ParseObject {
     public static final String KEY_INBOX_NEW = "KEY_INBOX_NEW";
     public static final String KEY_INBOX_ID = "KEY_INBOX_ID";
     public static final String KEY_INBOX_HIDDEN = "KEY_INBOX_HIDDEN";
+    public static final String KEY_INBOX_UPVOTED = "KEY_INBOX_UPVOTED";
+
 
     public String getId() {
         return getString(KEY_INBOX_ID);
@@ -63,4 +65,11 @@ public class InboxItem extends ParseObject {
         put(KEY_INBOX_HIDDEN, isHidden);
     }
 
+    public boolean getUpvoted() {
+        return getBoolean(KEY_INBOX_UPVOTED);
+    }
+
+    public void setUpvoted(boolean isHidden) {
+        put(KEY_INBOX_UPVOTED, isHidden);
+    }
 }

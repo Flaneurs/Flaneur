@@ -40,10 +40,12 @@ public class CommentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     private ICommentInteractionListener mListener;
     private Context mContext;
     private static int HEADER_POSITION = 0;
+    private boolean mIsRevealed;
 
     private final int HEADER = 0, COMMENT = 1, FOOTER = 2;
 
-    public CommentAdapter(Context context, Post post, ICommentInteractionListener listener) {
+    public CommentAdapter(Context context, Post post, ICommentInteractionListener listener, boolean isRevealed) {
+        mIsRevealed = isRevealed;
         mPost = post;
         mListener = listener;
         mContext = context;
@@ -167,7 +169,12 @@ public class CommentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         view.tvViewCount.setText(post.getViewCount() + " views");
         view.tvStreamDistanceAway.setText("");
         view.tvLocation.setText(post.getAddress());
-        view.tvCaption.setText(post.getCaption());
+
+        if (mIsRevealed) {
+            view.tvCaption.setText(post.getCaption());
+        } else {
+            view.tvCaption.setText("Go find this drop to see its contents!");
+        }
     }
 
     private void configureCommentView(CommentViewHolder view, final Comment comment) {
