@@ -18,7 +18,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 
 public class InboxActivity extends AppCompatActivity implements InboxArrayAdapter.IInboxInteractionListener {
-
+    
     @Bind(R.id.rvInboxItems)
     RecyclerView rvInboxItems;
 
@@ -78,14 +78,16 @@ public class InboxActivity extends AppCompatActivity implements InboxArrayAdapte
     @Override
     public void openInboxDetailView(InboxItem item) {
         boolean isNew = item.getNew();
+        boolean isLiked = item.getUpvoted();
         item.setNew(false);
         item.saveEventually();
 
         FlaneurApplication.getInstance().pickupService.decrementNew();
 
         Intent i = new Intent(this, DetailActivity.class);
-        i.putExtra(DetailActivity.POST_ID, item.getPost().getObjectId());
+        i.putExtra(DetailActivity.INBOX_ID, item.getObjectId());
         i.putExtra(DetailActivity.IS_NEW, isNew);
+        i.putExtra(DetailActivity.IS_LIKED, isLiked);
         startActivity(i);
     }
 }
