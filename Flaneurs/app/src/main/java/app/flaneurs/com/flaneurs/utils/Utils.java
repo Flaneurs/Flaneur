@@ -1,9 +1,13 @@
 package app.flaneurs.com.flaneurs.utils;
 
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
+import android.support.v4.app.NotificationCompat;
 
 import com.ocpsoft.pretty.time.PrettyTime;
 import com.parse.ParseGeoPoint;
@@ -12,6 +16,9 @@ import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+
+import app.flaneurs.com.flaneurs.R;
+import app.flaneurs.com.flaneurs.activities.InboxActivity;
 
 /**
  * Created by kamranpirwani on 3/5/16.
@@ -53,7 +60,33 @@ public class Utils {
 
     public static String getPrettyTime(Date date) {
         PrettyTime pt = new PrettyTime();
-       return pt.format(date);
+        return pt.format(date);
     }
 
+    public static void fireLocalNotification(Context context, String address) {
+        NotificationCompat.Builder mBuilder =
+                new NotificationCompat.Builder(context)
+                        .setSmallIcon(R.drawable.ic_stat_flan)
+                        .setContentTitle("Flanuers")
+                        .setContentText("New pickup at " + address)
+                        .setWhen(System.currentTimeMillis())
+                        .setAutoCancel(true);
+
+
+        Intent resultIntent = new Intent(context, InboxActivity.class);
+        PendingIntent resultPendingIntent =
+                PendingIntent.getActivity(
+                        context,
+                        0,
+                        resultIntent,
+                        PendingIntent.FLAG_UPDATE_CURRENT
+                );
+
+        mBuilder.setContentIntent(resultPendingIntent);
+
+        int mNotificationId = 001;
+        NotificationManager mNotifyMgr =
+                (NotificationManager) context.getSystemService(context.NOTIFICATION_SERVICE);
+        mNotifyMgr.notify(mNotificationId, mBuilder.build());
+    }
 }
