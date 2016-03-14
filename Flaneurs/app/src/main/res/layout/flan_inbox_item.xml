@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
     <com.makeramen.roundedimageview.RoundedImageView xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/ivInboxImage"
         android:layout_width="50dp"
@@ -8,59 +10,58 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_marginRight="10dp"
-        android:layout_marginLeft="5dp"
         android:layout_marginBottom="5dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="5dp"
         android:adjustViewBounds="true"
         android:scaleType="fitXY"
         android:src="@drawable/profile_photo_placeholder"
         app:riv_border_color="#333333"
         app:riv_border_width="0dip"
         app:riv_corner_radius="4dip"
-        app:riv_mutate_background="true"
-        android:layout_marginTop="5dp" />
+        app:riv_mutate_background="true" />
 
     <TextView
         android:id="@+id/tvInboxUsername"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
+        android:layout_marginTop="5dp"
         android:layout_toEndOf="@+id/ivInboxImage"
         android:layout_toRightOf="@+id/ivInboxImage"
         android:text="Username"
-        android:textStyle="bold"
-        android:layout_marginTop="5dp" />
+        android:textStyle="bold" />
 
     <ImageView
+        android:id="@+id/ivNew"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/ivNew"
-        android:src="@drawable/new_badge"
-        android:layout_toRightOf="@+id/ivInboxImage"
         android:layout_below="@id/tvInboxUsername"
         android:layout_marginTop="2dp"
-        android:paddingRight="10dp"/>
+        android:layout_toRightOf="@+id/ivInboxImage"
+        android:paddingRight="10dp"
+        android:src="@drawable/new_badge" />
 
     <TextView
         android:id="@+id/tvInboxLocation"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@id/tvInboxUsername"
+        android:layout_marginTop="2dp"
         android:layout_toEndOf="@+id/ivNew"
         android:layout_toRightOf="@+id/ivNew"
-        android:layout_below="@id/tvInboxUsername"
-        android:text="San Francisco, CA"
-        android:layout_marginTop="2dp" />
+        android:text="San Francisco, CA" />
 
     <TextView
+        android:id="@+id/tvInboxCreationTime"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="1m ago"
-        android:id="@+id/tvInboxCreationTime"
-        android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
+        android:layout_alignParentTop="true"
         android:layout_marginRight="10dp"
-        android:layout_marginTop="5dp" />
-
+        android:layout_marginTop="5dp"
+        android:text="1m ago"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
 
 </RelativeLayout>

@@ -55,7 +55,6 @@ public class DetailActivity extends AppCompatActivity implements CommentAdapter.
         String objectId = extras.getString(POST_ID);
         final boolean isNew = extras.getBoolean(IS_NEW);
 
-
         ParseQuery<Post> query = ParseQuery.getQuery(Post.class);
         // First try to find from the cache and only then go to network
         query.setCachePolicy(ParseQuery.CachePolicy.CACHE_THEN_NETWORK);

@@ -20,7 +20,6 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.parse.Parse;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -210,7 +209,6 @@ public class MapFragment extends SupportMapFragment implements LocationProvider.
             // Return info window contents
             return v;
         }
-
 
         // This changes the frame of the info window; returning null uses the default frame.
         // This is just the border and arrow surrounding the contents specified above

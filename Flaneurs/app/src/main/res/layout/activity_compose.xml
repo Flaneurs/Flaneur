@@ -9,10 +9,11 @@
     <ImageView
         android:id="@+id/ivPicturePreview"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="300dp"
         android:layout_alignParentTop="true"
         android:background="@color/primary_dark"
-        android:minHeight="100dp" />
+        android:minHeight="100dp"
+        android:scaleType="centerCrop" />
 
     <EditText
         android:id="@+id/etCaption"

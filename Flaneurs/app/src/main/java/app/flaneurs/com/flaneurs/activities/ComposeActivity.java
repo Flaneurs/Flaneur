@@ -84,7 +84,6 @@ public class ComposeActivity extends AppCompatActivity {
         String address = Utils.getPrettyAddress(this, newPost.getLocation().getLatitude(), newPost.getLocation().getLongitude());
         newPost.setAddress(address);
 
-
         newPost.saveInBackground(new SaveCallback() {
             public void done(ParseException e) {
             }
@@ -95,6 +94,4 @@ public class ComposeActivity extends AppCompatActivity {
 
         finish();
     }
-
-
 }

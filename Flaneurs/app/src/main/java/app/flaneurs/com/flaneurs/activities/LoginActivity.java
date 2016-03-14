@@ -53,13 +53,11 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-
     public void onFakeLoginButtonClicked(View v) {
         Intent i = new Intent(this, DiscoverActivity.class);
         startActivity(i);
         finish();
     }
-
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -67,7 +65,6 @@ public class LoginActivity extends AppCompatActivity {
         ParseFacebookUtils.onActivityResult(requestCode, resultCode, data);
         finishLogin();
     }
-
 
     private void getUserDetailsFromFB() {
         Bundle parameters = new Bundle();

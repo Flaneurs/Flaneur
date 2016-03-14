@@ -1,30 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-    android:layout_height="match_parent" android:fitsSystemWindows="true"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
     tools:context=".DiscoverActivity">
 
     <com.astuetz.PagerSlidingTabStrip
         android:id="@+id/psTabs"
-        app:pstsShouldExpand="true"
-        app:pstsTextAllCaps="true"
         android:layout_width="match_parent"
         android:layout_height="53dp"
+        android:textColor="@color/primary"
         app:pstsIndicatorColor="@color/primary_dark"
-        android:textColor="@color/primary" />
+        app:pstsShouldExpand="true"
+        app:pstsTextAllCaps="true" />
 
     <android.support.v4.view.ViewPager
-        android:layout_marginTop="?attr/actionBarSize"
         android:id="@+id/vpViewPager"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="?attr/actionBarSize"
         android:background="@android:color/white" />
 
-    <android.support.design.widget.FloatingActionButton android:id="@+id/fab"
-        android:layout_width="wrap_content" android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end" android:layout_margin="@dimen/fab_margin"
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="@dimen/fab_margin"
         android:src="@drawable/ic_action_compose" />
 
 </android.support.design.widget.CoordinatorLayout>
