@@ -1,6 +1,8 @@
 package app.flaneurs.com.flaneurs.services;
 
+import android.content.Intent;
 import android.location.Location;
+import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
 import com.parse.FindCallback;
@@ -22,6 +24,9 @@ import app.flaneurs.com.flaneurs.utils.LocationProvider;
  * Created by mprice on 3/12/16.
  */
 public class PickupService implements LocationProvider.ILocationListener {
+
+    public static String PICKUP_ADDRESS = "PICKUP_ADDRESS";
+    public static String PICKUP_EVENT = "PICKUP_EVENT";
 
     private Location mCurrentLocation;
     private List<Post> cachedPosts;
@@ -122,8 +127,9 @@ public class PickupService implements LocationProvider.ILocationListener {
     }
 
     private void sendNotification(Post post) {
-        Log.e("PickupService", "Picked up a drop at:" + post.getAddress());
-        // TODO: Make toast or something
+        Intent intent = new Intent(PICKUP_EVENT);
+        intent.putExtra(PICKUP_ADDRESS, post.getAddress());
+        LocalBroadcastManager.getInstance(FlaneurApplication.getInstance().getApplicationContext()).sendBroadcast(intent);
     }
 
     public List<InboxItem> getInbox() {

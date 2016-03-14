@@ -1,12 +1,16 @@
 package app.flaneurs.com.flaneurs.activities;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -32,7 +36,9 @@ import app.flaneurs.com.flaneurs.fragments.MapFragment;
 import app.flaneurs.com.flaneurs.fragments.StreamFragment;
 import app.flaneurs.com.flaneurs.models.Post;
 import app.flaneurs.com.flaneurs.models.User;
+import app.flaneurs.com.flaneurs.services.PickupService;
 import app.flaneurs.com.flaneurs.utils.ParseProxyObject;
+import app.flaneurs.com.flaneurs.utils.Utils;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
@@ -70,6 +76,26 @@ public class DiscoverActivity extends AppCompatActivity {
         });
 
         FlaneurApplication.getInstance().pickupService.onColdLaunch();
+
+        LocalBroadcastManager.getInstance(this).registerReceiver(mMessageReceiver,
+                new IntentFilter(PickupService.PICKUP_EVENT));
+    }
+
+    private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String address = intent.getStringExtra(PickupService.PICKUP_ADDRESS);
+            Utils.fireLocalNotification(DiscoverActivity.this, address);
+
+            Log.v("DiscoverActivity", "Sending local notif for pickup at " + address);
+        }
+    };
+
+    @Override
+    protected void onDestroy() {
+        // Unregister since the activity is about to be closed.
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(mMessageReceiver);
+        super.onDestroy();
     }
 
     private void configureViewWithPosts(List<Post> posts) {
