@@ -120,10 +120,12 @@ public class DiscoverActivity extends AppCompatActivity implements LocationProvi
         @Override
         public void onReceive(Context context, Intent intent) {
             String address = intent.getStringExtra(PickupService.PICKUP_ADDRESS);
+            String postId = intent.getStringExtra(PickupService.PICKUP_POST_ID);
             Utils.fireLocalNotification(DiscoverActivity.this, address);
-
             updateInboxIcon();
             Log.v("DiscoverActivity", "Sending local notif for pickup at " + address);
+
+            mMapFragment.onPostPickup(postId);
         }
     };
 

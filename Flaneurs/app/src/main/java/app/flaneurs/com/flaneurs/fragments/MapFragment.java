@@ -177,6 +177,10 @@ public class MapFragment extends SupportMapFragment implements LocationProvider.
         mLocation = location;
     }
 
+    public void onPostPickup(String postId) {
+        //TODO a thing
+    }
+
     class CustomWindowAdapter implements GoogleMap.InfoWindowAdapter {
         LayoutInflater mInflater;
 

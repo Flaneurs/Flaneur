@@ -26,6 +26,7 @@ import app.flaneurs.com.flaneurs.utils.LocationProvider;
 public class PickupService implements LocationProvider.ILocationListener {
 
     public static String PICKUP_ADDRESS = "PICKUP_ADDRESS";
+    public static String PICKUP_POST_ID = "PICKUP_POST_ID";
     public static String PICKUP_EVENT = "PICKUP_EVENT";
 
     private Location mCurrentLocation;
@@ -33,8 +34,8 @@ public class PickupService implements LocationProvider.ILocationListener {
     private List<Post> currentSessionInboxPosts;
     private List<InboxItem> currentSessionInbox;
 
-    private final static int PICKUP_RADIUS_IN_METERS = 5;
-    private final static int QUERY_RADIUS_IN_METERS = 10;
+    private final static int PICKUP_RADIUS_IN_METERS = 30;
+    private final static int QUERY_RADIUS_IN_METERS = 50;
     private final static double METER_PER_MILE = 1609.344;
 
     private int mNewInboxItems;
@@ -132,6 +133,7 @@ public class PickupService implements LocationProvider.ILocationListener {
     private void sendNotification(Post post) {
         Intent intent = new Intent(PICKUP_EVENT);
         intent.putExtra(PICKUP_ADDRESS, post.getAddress());
+        intent.putExtra(PICKUP_POST_ID, post.getObjectId());
         LocalBroadcastManager.getInstance(FlaneurApplication.getInstance().getApplicationContext()).sendBroadcast(intent);
         mNewInboxItems++;
     }
