@@ -28,6 +28,8 @@ public class Post extends ParseObject {
     public static final String KEY_POST_IMAGE = "KEY_POST_IMAGE";
     public static final String KEY_POST_ADDRESS = "KEY_POST_ADDRESS";
 
+    public static final String KEY_POST = "KEY_POST";
+
    private List<Comment> commentList;
 
 

@@ -22,6 +22,7 @@ import app.flaneurs.com.flaneurs.R;
 import app.flaneurs.com.flaneurs.fragments.MapFragment;
 import app.flaneurs.com.flaneurs.models.Post;
 import app.flaneurs.com.flaneurs.models.User;
+import app.flaneurs.com.flaneurs.utils.ParseProxyObject;
 import app.flaneurs.com.flaneurs.utils.Utils;
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -92,6 +93,10 @@ public class ComposeActivity extends AppCompatActivity {
         currentUser.incrementDrops();
         currentUser.saveEventually();
 
+        Intent data = new Intent();
+        data.putExtra(Post.KEY_POST, new ParseProxyObject(newPost));
+
+        setResult(RESULT_OK, data);
         finish();
     }
 }

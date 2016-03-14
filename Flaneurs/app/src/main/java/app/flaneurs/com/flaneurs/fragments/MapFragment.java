@@ -3,9 +3,11 @@ package app.flaneurs.com.flaneurs.fragments;
 import android.Manifest;
 import android.location.Location;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.animation.BounceInterpolator;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -110,12 +112,8 @@ public class MapFragment extends SupportMapFragment implements LocationProvider.
             } else if (posts != null && posts.size() > 0) {
                 final LatLngBounds.Builder bounds = new LatLngBounds.Builder();
                 for (ParseProxyObject post : posts) {
-                    double[] latLng = post.getParseGeoPointArray(Post.KEY_POST_LOCATION);
-                    LatLng point = new LatLng(latLng[0], latLng[1]);
-                    Marker marker = addMarkerAtLatLng(point);
-                    bounds.include(point);
-
-                    markerPostMap.put(marker.getId(), post);
+                    LatLng markerPoint = addMarkerForPost(post, false);
+                    bounds.include(markerPoint);
                 }
                 LatLngBounds newBounds = bounds.build();
 
@@ -136,6 +134,19 @@ public class MapFragment extends SupportMapFragment implements LocationProvider.
             Toast.makeText(getContext(), "Error - Map was null!", Toast.LENGTH_SHORT).show();
             Log.d(TAG, "Map was null.");
         }
+    }
+
+    public LatLng addMarkerForPost(ParseProxyObject post, boolean withAnimation) {
+        double[] latLng = post.getParseGeoPointArray(Post.KEY_POST_LOCATION);
+        LatLng point = new LatLng(latLng[0], latLng[1]);
+        Marker marker = addMarkerAtLatLng(point);
+        markerPostMap.put(marker.getId(), post);
+
+        if (withAnimation) {
+            dropPinEffect(marker);
+        }
+
+        return point;
     }
 
     private Marker addMarkerAtLatLng(LatLng latLng) {
@@ -175,6 +186,38 @@ public class MapFragment extends SupportMapFragment implements LocationProvider.
             map.animateCamera(cameraUpdate2);
         }
         mLocation = location;
+    }
+
+    private void dropPinEffect(final Marker marker) {
+        // Handler allows us to repeat a code block after a specified delay
+        final android.os.Handler handler = new android.os.Handler();
+        final long start = SystemClock.uptimeMillis();
+        final long duration = 1500;
+
+        // Use the bounce interpolator
+        final android.view.animation.Interpolator interpolator = new BounceInterpolator();
+
+        // Animate marker with a bounce updating its position every 15 ms
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                long elapsed = SystemClock.uptimeMillis() - start;
+
+                // Calculate t for bounce based on elapsed time
+                float t = Math.max(1 - interpolator.getInterpolation((float) elapsed / duration), 0);
+
+                // Set the anchor
+                marker.setAnchor(0.5f, 1.0f + 8 * t);
+
+                if (t > 0.0) {
+                    // Post this event again 15ms from now
+                    handler.postDelayed(this, 15);
+                } else {
+                    // done elapsing, show window
+                    marker.showInfoWindow();
+                }
+            }
+        });
     }
 
     class CustomWindowAdapter implements GoogleMap.InfoWindowAdapter {

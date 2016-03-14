@@ -67,6 +67,7 @@ public class DiscoverActivity extends AppCompatActivity implements LocationProvi
     public final String APP_TAG = "flaneurs";
     public final static int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 1034;
     public String photoFileName = "photo.jpg";
+    public final static int POST_REQUEST_CODE = 42;
 
     private MenuItem mInboxItem;
 
@@ -172,10 +173,17 @@ public class DiscoverActivity extends AppCompatActivity implements LocationProvi
                     i.putExtra(ComposeActivity.COMPOSE_LONG_ID, mLocation.getLongitude());
                 }
                 i.putExtra(ComposeActivity.COMPOSE_IMAGE_ID, takenPhotoUri.getPath());
-                startActivity(i);
+                startActivityForResult(i, POST_REQUEST_CODE);
 
             } else { // Result was a failure
                 Toast.makeText(this, "Picture wasn't taken!", Toast.LENGTH_SHORT).show();
+            }
+        } else if (requestCode == POST_REQUEST_CODE) {
+            if (resultCode == RESULT_OK) {
+                ParseProxyObject post = (ParseProxyObject) data.getExtras().getSerializable(Post.KEY_POST);
+                mMapFragment.addMarkerForPost(post, true);
+            } else { // Result was a failure
+                Toast.makeText(this, "Flan wasn't posted!", Toast.LENGTH_SHORT).show();
             }
         }
     }
