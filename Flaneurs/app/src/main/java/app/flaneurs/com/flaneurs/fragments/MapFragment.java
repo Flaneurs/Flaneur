@@ -7,6 +7,7 @@ import android.os.SystemClock;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.animation.AnticipateInterpolator;
 import android.view.animation.BounceInterpolator;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -189,7 +190,15 @@ public class MapFragment extends SupportMapFragment implements LocationProvider.
 
 
     public void onPostPickup(String postId) {
-        //TODO a thing
+        if (mPostMarkerGetter != null) {
+            Marker marker = mPostMarkerGetter.getMarkerForPostId(postId);
+            if (marker != null) {
+                if (marker.isInfoWindowShown()) {
+                    marker.hideInfoWindow();
+                }
+                pickUpPinEffect(marker);
+            }
+        }
     }
 
     private void dropPinEffect(final Marker marker) {
@@ -219,6 +228,39 @@ public class MapFragment extends SupportMapFragment implements LocationProvider.
                 } else {
                     // done elapsing, show window
                     marker.showInfoWindow();
+                }
+            }
+        });
+    }
+
+    private void pickUpPinEffect(final Marker marker) {
+        // Handler allows us to repeat a code block after a specified delay
+        final android.os.Handler handler = new android.os.Handler();
+        final long start = SystemClock.uptimeMillis();
+        final long duration = 500;
+
+        // Use the bounce interpolator
+        final android.view.animation.Interpolator interpolator = new AnticipateInterpolator();
+
+        // Animate marker with a bounce updating its position every 15 ms
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                long elapsed = SystemClock.uptimeMillis() - start;
+
+                // Calculate t for bounce based on elapsed time
+                float t = Math.min(interpolator.getInterpolation((float) elapsed / duration), 1);
+
+                // Set the anchor
+                marker.setAnchor(0.5f, 1.0f + 8 * t);
+
+                if (t < 1.0) {
+                    // Post this event again 15ms from now
+                    handler.postDelayed(this, 15);
+                } else {
+                    // done elapsing, hide from map
+                    marker.remove();
+                    mPostMarkerGetter.removeMarker(marker);
                 }
             }
         });
@@ -278,8 +320,28 @@ public class MapFragment extends SupportMapFragment implements LocationProvider.
             return postMarkerMap.get(postId);
         }
 
-        public  ParseProxyObject getPostForMarkerId(String markerId) {
+        public ParseProxyObject getPostForMarkerId(String markerId) {
             return markerPostMap.get(markerId);
+        }
+
+        public void removePost(ParseProxyObject post) {
+            Marker marker = getMarkerForPostId(post.getObjectId());
+            removeMarkerForPostId(post.getObjectId());
+            removePostForMarkerId(marker.getId());
+        }
+
+        public void removeMarker(Marker marker) {
+            ParseProxyObject post = getPostForMarkerId(marker.getId());
+            removeMarkerForPostId(post.getObjectId());
+            removePostForMarkerId(marker.getId());
+        }
+
+        public void removeMarkerForPostId(String postId) {
+            postMarkerMap.remove(postId);
+        }
+
+        public void removePostForMarkerId(String markerId) {
+            markerPostMap.remove(markerId);
         }
     }
 }
