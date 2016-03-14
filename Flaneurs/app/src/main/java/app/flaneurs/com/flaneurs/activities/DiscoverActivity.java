@@ -4,6 +4,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.drawable.LayerDrawable;
 import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
@@ -37,6 +38,7 @@ import app.flaneurs.com.flaneurs.fragments.StreamFragment;
 import app.flaneurs.com.flaneurs.models.Post;
 import app.flaneurs.com.flaneurs.models.User;
 import app.flaneurs.com.flaneurs.services.PickupService;
+import app.flaneurs.com.flaneurs.utils.BadgeDrawable;
 import app.flaneurs.com.flaneurs.utils.ParseProxyObject;
 import app.flaneurs.com.flaneurs.utils.Utils;
 import butterknife.Bind;
@@ -56,6 +58,8 @@ public class DiscoverActivity extends AppCompatActivity {
     public final String APP_TAG = "flaneurs";
     public final static int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 1034;
     public String photoFileName = "photo.jpg";
+
+    private MenuItem mInboxItem;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,6 +90,11 @@ public class DiscoverActivity extends AppCompatActivity {
         public void onReceive(Context context, Intent intent) {
             String address = intent.getStringExtra(PickupService.PICKUP_ADDRESS);
             Utils.fireLocalNotification(DiscoverActivity.this, address);
+
+            LayerDrawable icon = (LayerDrawable) mInboxItem.getIcon();
+            // Update LayerDrawable's BadgeDrawable
+            int newInboxCount = FlaneurApplication.getInstance().pickupService.getNewItemsCount();
+            BadgeDrawable.setBadgeCount(DiscoverActivity.this, icon, newInboxCount);
 
             Log.v("DiscoverActivity", "Sending local notif for pickup at " + address);
         }
@@ -188,6 +197,8 @@ public class DiscoverActivity extends AppCompatActivity {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_discover, menu);
 
+        // Get the notifications MenuItem and LayerDrawable (layer-list)
+        mInboxItem = menu.findItem(R.id.miInbox);
         return true;
     }
 

@@ -35,8 +35,9 @@ public class PickupService implements LocationProvider.ILocationListener {
 
     private final static int PICKUP_RADIUS_IN_METERS = 5;
     private final static int QUERY_RADIUS_IN_METERS = 10;
-
     private final static double METER_PER_MILE = 1609.344;
+
+    private int mNewInboxItems;
 
     public PickupService() {
         FlaneurApplication.getInstance().locationProvider.addListener(this);
@@ -131,6 +132,7 @@ public class PickupService implements LocationProvider.ILocationListener {
         Intent intent = new Intent(PICKUP_EVENT);
         intent.putExtra(PICKUP_ADDRESS, post.getAddress());
         LocalBroadcastManager.getInstance(FlaneurApplication.getInstance().getApplicationContext()).sendBroadcast(intent);
+        mNewInboxItems++;
     }
 
     public List<InboxItem> getInbox() {
@@ -150,11 +152,21 @@ public class PickupService implements LocationProvider.ILocationListener {
             public void done(List<InboxItem> objects, ParseException e) {
                 Log.e("PickupService", "Updating cached inbox");
                 currentSessionInbox = objects;
+
+                for (InboxItem item : currentSessionInbox) {
+                    if (item.getNew()) {
+                        mNewInboxItems++;
+                    }
+                }
             }
         });
     }
 
     public void onHide(InboxItem item) {
         currentSessionInbox.remove(item);
+    }
+
+    public int getNewItemsCount() {
+        return mNewInboxItems;
     }
 }
