@@ -42,7 +42,7 @@ public class Utils {
                 return address;
             }
         }
-        return "This post is too old to have an address";
+        return "Unknown";
     }
 
     public static String getPrettyDistance(Location current, ParseGeoPoint destinationGeoPoint) {

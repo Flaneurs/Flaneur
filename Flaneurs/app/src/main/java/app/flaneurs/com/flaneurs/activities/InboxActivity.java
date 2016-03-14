@@ -18,7 +18,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 
 public class InboxActivity extends AppCompatActivity implements InboxArrayAdapter.IInboxInteractionListener {
-    
+
     @Bind(R.id.rvInboxItems)
     RecyclerView rvInboxItems;
 
