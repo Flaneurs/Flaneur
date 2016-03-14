@@ -49,8 +49,7 @@ public class PickupService implements LocationProvider.ILocationListener {
         if (oldLocation == null || oldLocation.distanceTo(mCurrentLocation) > QUERY_RADIUS_IN_METERS) {
             Log.e("PickupService", "Querying for posts");
             queryForPosts();
-        }
-        if (mCurrentLocation != null) {
+        } else if (mCurrentLocation != null) {
             Log.e("PickupService", "Attempting Pickup");
             attemptPickup();
         }
@@ -75,6 +74,7 @@ public class PickupService implements LocationProvider.ILocationListener {
         ParseQuery<Post> query = ParseQuery.getQuery("Post");
         ParseGeoPoint current = new ParseGeoPoint(mCurrentLocation.getLatitude(), mCurrentLocation.getLongitude());
         query.whereNear(Post.KEY_POST_LOCATION, current);
+        query.whereNotEqualTo(Post.KEY_POST_AUTHOR, User.currentUser());
 
         currentSessionInboxPosts = new ArrayList<>();
 
@@ -112,7 +112,7 @@ public class PickupService implements LocationProvider.ILocationListener {
 
         post.incrementViewCount();
         post.saveEventually();
-
+        post.getAuthor().fetchIfNeededInBackground();
         currentSessionInboxPosts.add(post);
 
         if (currentSessionInbox != null) {
