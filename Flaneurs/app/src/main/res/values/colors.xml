@@ -12,5 +12,6 @@
     <color name="divider">#B6B6B6</color>
 
     <color name="transparent_button">#44000000</color>
+    <color name="pressed_transparent_button">#66000000</color>
 
 </resources>

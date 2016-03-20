@@ -11,5 +11,7 @@
     <string name="facebook_app_id">1681929948730169</string>
     <string name="compose_hint_text">What\'s happening?</string>
     <string name="compose_post_string">Post</string>
+    <string name="location_prefix_text">— at </string>
+    <string name="text_location_placeholder">42 location ave</string>
 
 </resources>

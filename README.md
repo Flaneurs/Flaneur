@@ -40,7 +40,7 @@ We are interested in capturing and sharing the story of a city, the thoughts and
 - [x] Reveal post in inbox, hide post on timeline (Locked + unlocked visual)
 
 ### Polish Items
-- [ ] After viewing inbox item, move it to bottom of list
+- [x] After viewing inbox item, move it to bottom of list
 - [x] Only allow 1 upvote, visually represent button change
 - [x] Remove marker from map on pickup
 - [ ] Optimize parse caching and fetches

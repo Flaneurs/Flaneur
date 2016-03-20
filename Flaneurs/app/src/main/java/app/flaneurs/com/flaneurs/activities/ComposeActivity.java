@@ -5,9 +5,12 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.DisplayMetrics;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.parse.ParseException;
@@ -35,6 +38,12 @@ public class ComposeActivity extends AppCompatActivity {
     @Bind(R.id.etCaption)
     EditText etCaption;
 
+    @Bind(R.id.tvLocation)
+    TextView tvLocation;
+
+    @Bind(R.id.postButton)
+    Button postButton;
+
     Bitmap mPicture;
 
     private double mLat;
@@ -58,19 +67,28 @@ public class ComposeActivity extends AppCompatActivity {
         mPicture = BitmapFactory.decodeFile(imageUri);
         ivPicturePreview.setImageBitmap(mPicture);
 
+        tvLocation.setText(Utils.getPrettyAddress(this, mLat, mLong));
+
+        DisplayMetrics metrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(metrics);
+        int sidePadding = (int) (310.0/768 * metrics.widthPixels);
+
+        postButton.setPadding(sidePadding, 0, sidePadding, 0);
+
         getSupportActionBar().hide();
         getSupportFragmentManager().beginTransaction().replace(R.id.flMap, MapFragment.newInstance(false, false, new LatLng(mLat, mLong), null)).commit();
     }
 
     public void onPostButtonClicked(View v) {
         final Post newPost = new Post();
+
         User currentUser = User.currentUser();
+        newPost.setAuthor(currentUser);
 
         ParseGeoPoint latLong = new ParseGeoPoint(mLat, mLong);
-        String caption = etCaption.getText().toString();
-
-        newPost.setAuthor(currentUser);
         newPost.setLocation(latLong);
+
+        String caption = etCaption.getText().toString();
         newPost.setCaption(caption);
         newPost.setCreatedTime(new Date());
         newPost.setPostType("image");
@@ -83,7 +101,7 @@ public class ComposeActivity extends AppCompatActivity {
         ParseFile file = new ParseFile("picture.jpg", bytearray);
         newPost.setImage(file);
 
-        String address = Utils.getPrettyAddress(this, newPost.getLocation().getLatitude(), newPost.getLocation().getLongitude());
+        String address = tvLocation.getText().toString();
         newPost.setAddress(address);
 
         newPost.saveInBackground(new SaveCallback() {

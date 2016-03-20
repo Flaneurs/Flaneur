@@ -13,6 +13,8 @@ public class User extends ParseUser implements Serializable {
     public static final String KEY_USER_PROFILE_URL = "KEY_USER_PROFILE_URL";
     public static final String KEY_USER_DROPS = "KEY_USER_DROPS";
     public static final String KEY_USER_UPVOTES = "KEY_USER_UPVOTES";
+    private static final String KEY_USER_COVER_PHOTO = "KEY_USER_COVER_PHOTO";
+
     public String getProfileUrl() {
         return getString(KEY_USER_PROFILE_URL);
     }
@@ -39,6 +41,10 @@ public class User extends ParseUser implements Serializable {
         int upVotes = getUpVotes();
         upVotes++;
         put(KEY_USER_UPVOTES, upVotes);
+    }
+
+    public String getCoverPhotoUrl() {
+        return getString(KEY_USER_COVER_PHOTO);
     }
 
     public static User currentUser() {

@@ -30,6 +30,11 @@ public class InboxActivity extends AppCompatActivity implements InboxArrayAdapte
     protected LinearLayoutManager mLayoutManager;
 
     @Override
+    protected void onResume() {
+        super.onResume();
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_inbox);
@@ -64,6 +69,10 @@ public class InboxActivity extends AppCompatActivity implements InboxArrayAdapte
     public void openInboxDetailView(InboxItem item, InboxArrayAdapter.InboxViewHolder view) {
         boolean isNew = item.getNew();
         boolean isLiked = item.getUpvoted();
+        if (isNew) {
+            mInboxItems.remove(item);
+            mInboxItems.add(item);
+        }
         item.setNew(false);
         item.saveEventually();
 

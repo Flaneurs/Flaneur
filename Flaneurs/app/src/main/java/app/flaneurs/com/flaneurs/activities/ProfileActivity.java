@@ -1,5 +1,6 @@
 package app.flaneurs.com.flaneurs.activities;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -24,13 +25,12 @@ import app.flaneurs.com.flaneurs.models.User;
 import app.flaneurs.com.flaneurs.utils.ParseProxyObject;
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import jp.wasabeef.glide.transformations.BlurTransformation;
+import jp.wasabeef.glide.transformations.ColorFilterTransformation;
 
 public class ProfileActivity extends AppCompatActivity {
     @Bind(R.id.ivProfileImage)
-    ImageView ivProfileImage;
-
-    @Bind(R.id.tvUsername)
-    TextView tvUsername;
+    com.github.siyamed.shapeimageview.DiamondImageView ivProfileImage;
 
     @Bind(R.id.tvDrops)
     TextView tvDrops;
@@ -43,6 +43,12 @@ public class ProfileActivity extends AppCompatActivity {
 
     @Bind(R.id.psTabs)
     PagerSlidingTabStrip slidingTabStrip;
+
+    @Bind(R.id.ivCoverPhoto)
+    ImageView ivCoverPhoto;
+
+    @Bind(R.id.tvProfileName)
+    TextView tvProfileName;
 
     public static final String USER_ID = "USER_ID";
 
@@ -89,11 +95,10 @@ public class ProfileActivity extends AppCompatActivity {
         mStreamFragment = StreamFragment.createInstance(configuration);
         viewPager.setAdapter(new MapStreamPagerAdapter(getSupportFragmentManager(), mMapFragment, mStreamFragment));
         slidingTabStrip.setViewPager(viewPager);
-
-        Glide.with(this).load(user.getProfileUrl()).into(ivProfileImage);
-        tvUsername.setText(user.getUsername());
-
+        Glide.with(this).load(user.getProfileUrl()).asBitmap().into(ivProfileImage);
+        Glide.with(getApplicationContext()).load(user.getCoverPhotoUrl()).bitmapTransform(new BlurTransformation(this, 3), new ColorFilterTransformation(this, Color.argb(150, 0, 0, 0))).into(ivCoverPhoto);
         tvDrops.setText(user.getDrops() + " Drops");
         tvUpvotes.setText(user.getUpVotes() + " UpVotes");
+        tvProfileName.setText(user.getUsername());
     }
 }
