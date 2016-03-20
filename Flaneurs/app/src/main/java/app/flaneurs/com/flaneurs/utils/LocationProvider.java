@@ -115,6 +115,11 @@ public class LocationProvider implements
 
         // Try to get last known location
         Location location = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+        if (location == null) {
+            location = new Location("placeholder");
+            location.setLatitude(42.42);
+            location.setLongitude(42.42);
+        }
 
         if (location != null) {
             mCurrentLocation = location;
