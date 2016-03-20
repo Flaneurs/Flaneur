@@ -11,7 +11,6 @@
         android:layout_height="300dp"
         android:layout_alignParentTop="true"
         android:background="@color/primary_dark"
-        android:minHeight="100dp"
         android:scaleType="centerCrop" />
 
     <EditText
@@ -19,15 +18,52 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/ivPicturePreview"
-        android:layout_margin="5dp"
+        android:layout_marginEnd="5dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="5dp"
         android:hint="@string/compose_hint_text" />
+
+    <LinearLayout
+        android:id="@+id/llLocation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/etCaption"
+        android:layout_marginBottom="6dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="13dp"
+            android:layout_marginEnd="5dp"
+            android:text="@string/location_prefix_text" />
+
+        <TextView
+            android:id="@+id/tvLocation"
+            android:layout_width="wrap_content"
+            android:textColor="@color/primary_dark"
+            android:text="@string/text_location_placeholder"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+    <View
+        android:layout_above="@+id/flMap"
+        android:layout_marginBottom="1dp"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginStart="2dp"
+        android:layout_marginEnd="2dp"
+        android:background="@color/divider" />
 
     <FrameLayout
         android:id="@+id/flMap"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_above="@+id/postButton"
-        android:layout_below="@+id/etCaption" />
+        android:layout_below="@+id/llLocation" />
 
     <Button
         android:id="@+id/postButton"

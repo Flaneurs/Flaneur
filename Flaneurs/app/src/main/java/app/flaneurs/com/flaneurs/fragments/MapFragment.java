@@ -45,7 +45,7 @@ public class MapFragment extends SupportMapFragment implements LocationProvider.
     public static final String ARG_LAT_LNG = "ARG_LAT_LNG";
     public static final String ARG_POSTS = "ARG_POSTS";
 
-    private GoogleMap map;
+    private GoogleMap mGoogleMap;
     private LocationProvider mLocationProvider;
     private PostMarkerGetter mPostMarkerGetter;
 
@@ -94,17 +94,17 @@ public class MapFragment extends SupportMapFragment implements LocationProvider.
     }
 
     protected void loadMap(GoogleMap googleMap) {
-        map = googleMap;
-        if (map != null) {
+        mGoogleMap = googleMap;
+        if (mGoogleMap != null) {
             Log.d(TAG, "Map Fragment was loaded properly.");
 
             int topPadding = (shouldTrackLocation || shouldLockMap) ? 0 : 50;
             int bottomPadding = (shouldTrackLocation) ? 130 : 0;
-            map.setPadding(0, topPadding, 0, bottomPadding);
+            mGoogleMap.setPadding(0, topPadding, 0, bottomPadding);
             if (shouldLockMap) {
-                map.getUiSettings().setAllGesturesEnabled(false);
+                mGoogleMap.getUiSettings().setAllGesturesEnabled(false);
             } else {
-                map.setInfoWindowAdapter(new CustomWindowAdapter(getActivity().getLayoutInflater()));
+                mGoogleMap.setInfoWindowAdapter(new CustomWindowAdapter(getActivity().getLayoutInflater()));
             }
 
             if (point != null) {
@@ -118,11 +118,11 @@ public class MapFragment extends SupportMapFragment implements LocationProvider.
                 LatLngBounds newBounds = bounds.build();
 
                 if (!shouldTrackLocation) {
-                    map.moveCamera(CameraUpdateFactory.newLatLngZoom(newBounds.getCenter(), 5.0f));
-                    map.setOnMapLoadedCallback(new GoogleMap.OnMapLoadedCallback() {
+                    mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(newBounds.getCenter(), 5.0f));
+                    mGoogleMap.setOnMapLoadedCallback(new GoogleMap.OnMapLoadedCallback() {
                         @Override
                         public void onMapLoaded() {
-                            map.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds.build(), 50));
+                            mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds.build(), 50));
                         }
                     });
                 }
@@ -166,7 +166,7 @@ public class MapFragment extends SupportMapFragment implements LocationProvider.
         }
 
         BitmapDescriptor defaultMarker = BitmapDescriptorFactory.fromResource(resource);
-        return map.addMarker(new MarkerOptions()
+        return mGoogleMap.addMarker(new MarkerOptions()
                 .position(latLng)
                 .icon(defaultMarker));
     }
@@ -174,7 +174,7 @@ public class MapFragment extends SupportMapFragment implements LocationProvider.
     public void markLatLng(LatLng latLng) {
         addMarkerAtLatLng(latLng, 0, true);
         CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(latLng, 17);
-        map.moveCamera(cameraUpdate);
+        mGoogleMap.moveCamera(cameraUpdate);
     }
 
     @Override
@@ -185,8 +185,8 @@ public class MapFragment extends SupportMapFragment implements LocationProvider.
 
     @NeedsPermission({Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION})
     void getMyLocation() {
-        if (map != null) {
-            map.setMyLocationEnabled(true);
+        if (mGoogleMap != null) {
+            mGoogleMap.setMyLocationEnabled(true);
             mLocationProvider = FlaneurApplication.getInstance().locationProvider;
             mLocationProvider.addListener(this);
         }
@@ -197,8 +197,8 @@ public class MapFragment extends SupportMapFragment implements LocationProvider.
             LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
             CameraUpdate cameraUpdate1 = CameraUpdateFactory.newLatLngZoom(latLng, 10);
             CameraUpdate cameraUpdate2 = CameraUpdateFactory.newLatLngZoom(latLng, 15);
-            map.moveCamera(cameraUpdate1);
-            map.animateCamera(cameraUpdate2);
+            mGoogleMap.moveCamera(cameraUpdate1);
+            mGoogleMap.animateCamera(cameraUpdate2);
         }
         mLocation = location;
     }
