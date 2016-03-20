@@ -3,8 +3,8 @@
     package="app.flaneurs.com.flaneurs" >
 
     <uses-sdk
-        android:minSdkVersion="15"
-        android:targetSdkVersion="17" />
+        android:minSdkVersion="21"
+        android:targetSdkVersion="21" />
 
     <permission
         android:name="com.truiton.supportmapfragment.permission.MAPS_RECEIVE"
