@@ -26,6 +26,7 @@ import com.facebook.appevents.AppEventsLogger;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseGeoPoint;
+import com.parse.ParseObject;
 import com.parse.ParseQuery;
 
 import java.io.File;
@@ -112,6 +113,7 @@ public class DiscoverActivity extends AppCompatActivity implements LocationProvi
                 @Override
                 public void done(List<Post> objects, ParseException e) {
                     if (objects != null && objects.size() > 0)
+                        ParseObject.pinAllInBackground(objects);
                         configureViewWithPosts(objects);
                 }
             });
