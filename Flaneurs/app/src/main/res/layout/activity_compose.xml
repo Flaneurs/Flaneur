@@ -16,19 +16,19 @@
 
     <EditText
         android:id="@+id/etCaption"
-        android:hint="@string/compose_hint_text"
-        android:layout_margin="5dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/ivPicturePreview" />
+        android:layout_below="@id/ivPicturePreview"
+        android:layout_margin="5dp"
+        android:hint="@string/compose_hint_text" />
 
     <FrameLayout
         android:id="@+id/flMap"
         android:layout_width="match_parent"
         android:layout_height="300dp"
+        android:layout_above="@+id/postButton"
         android:layout_alignParentBottom="true"
-        android:layout_below="@+id/etCaption"
-        android:layout_above="@+id/postButton"/>
+        android:layout_below="@+id/etCaption" />
 
     <Button
         android:id="@+id/postButton"
@@ -36,13 +36,13 @@
         android:layout_height="50dp"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:onClick="onPostButtonClicked"
-        android:textSize="18sp"
         android:background="@drawable/post_button"
-        android:textColor="#ffffff"
-        android:paddingRight="150dp"
-        android:paddingLeft="150dp"
         android:drawableEnd="@drawable/walk_marker"
-        android:text="@string/compose_post_string" />
+        android:onClick="onPostButtonClicked"
+        android:paddingLeft="150dp"
+        android:paddingRight="150dp"
+        android:text="@string/compose_post_string"
+        android:textColor="#ffffff"
+        android:textSize="18sp" />
 
 </RelativeLayout>
