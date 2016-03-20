@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Flaneurs</string>
+    <string name="app_name">WalkAbout</string>
     <string name="action_settings">Settings</string>
 
     <string name="discover_label">Discover</string>
