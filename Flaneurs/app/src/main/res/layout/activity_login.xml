@@ -11,17 +11,19 @@
     tools:context="app.flaneurs.com.flaneurs.activities.LoginActivity">
 
     <ImageView
+        android:id="@+id/ivLogo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:paddingBottom="80dp"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="40dp"
         android:src="@drawable/flan_logo" />
 
     <Button
         android:id="@+id/btnLogin"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
+        android:layout_above="@+id/btnEmailLogin"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="39dp"
         android:background="@color/transparent_button"
@@ -31,10 +33,22 @@
         android:textColor="@color/inverse_text" />
 
     <Button
+        android:id="@+id/btnEmailLogin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="39dp"
+        android:background="@color/transparent_button"
+        android:padding="3dp"
+        android:text="Login With Email"
+        android:textColor="@color/inverse_text" />
+
+    <Button
         android:id="@+id/btnLoginFake"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@id/btnLogin"
+        android:layout_above="@id/btnEmailLogin"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="39dp"
         android:onClick="onFakeLoginButtonClicked"
