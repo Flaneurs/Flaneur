@@ -13,9 +13,17 @@
         android:layout_height="200dp"
         android:adjustViewBounds="true"
         android:scaleType="centerCrop"
-        android:background="@color/com_facebook_blue"
         android:transitionName="image"
         />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/tvCaption"
+        style="@style/ExpandedAppBar"
+        android:text="Caption"
+        android:padding="5dp"
+        android:layout_alignBottom="@id/ivImageThumb"/>
 
 
     <com.makeramen.roundedimageview.RoundedImageView xmlns:app="http://schemas.android.com/apk/res-auto"

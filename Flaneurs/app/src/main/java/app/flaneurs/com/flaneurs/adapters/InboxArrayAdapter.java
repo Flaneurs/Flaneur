@@ -97,7 +97,7 @@ public class InboxArrayAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         } else {
             return OLD_ITEM;
         }
-}
+    }
 
 
     @Override
@@ -109,14 +109,14 @@ public class InboxArrayAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                 break;
             default:
             case NEW_ITEM:
-                final InboxItem inboxItem = mInboxItems.get(position-1);
+                final InboxItem inboxItem = mInboxItems.get(position - 1);
                 final Post post = inboxItem.getPost();
                 final User author = post.getAuthor();
 
                 configureInboxView((InboxViewHolder) holder, post, author, inboxItem, true);
                 break;
             case OLD_ITEM:
-                final InboxItem inboxItem1 = mInboxItems.get(position-2);
+                final InboxItem inboxItem1 = mInboxItems.get(position - 2);
                 final Post post1 = inboxItem1.getPost();
                 final User author1 = post1.getAuthor();
 
@@ -129,8 +129,12 @@ public class InboxArrayAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     private void configureInboxView(InboxViewHolder holder, Post post, User author, InboxItem inboxItem, boolean isNew) {
         if (isNew) {
             holder.ivImageThumb.setVisibility(View.GONE);
+            holder.tvCaption.setVisibility(View.GONE);
+
         } else {
             holder.ivImageThumb.setVisibility(View.VISIBLE);
+            holder.tvCaption.setVisibility(View.VISIBLE);
+
             ParseFile parseFile = post.getImage();
             Glide.with(mContext)
                     .load(parseFile.getUrl())
@@ -146,7 +150,7 @@ public class InboxArrayAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
         holder.tvCreationTime.setText(Utils.getPrettyTime(inboxItem.getPickUpTime()));
         holder.tvLocation.setText(post.getAddress());
-
+        holder.tvCaption.setText(post.getCaption());
         if (inboxItem.getNew() == true) {
             holder.ivNew.setVisibility(View.VISIBLE);
         } else {
@@ -194,8 +198,12 @@ public class InboxArrayAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         @Bind(R.id.ivImageThumb)
         public ImageView ivImageThumb;
 
+        @Bind(R.id.tvCaption)
+        public TextView tvCaption;
+
         IMyViewHolderClicks mListener;
         boolean mIsNew;
+
         public InboxViewHolder(View itemView, IMyViewHolderClicks listener, boolean isNew) {
             super(itemView);
             ButterKnife.bind(this, itemView);
