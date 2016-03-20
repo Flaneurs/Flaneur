@@ -276,8 +276,11 @@ public class MapFragment extends SupportMapFragment implements LocationProvider.
         // This defines the contents within the info window based on the marker
         @Override
         public View getInfoContents(Marker marker) {
-            // Get the associated post
+            // Get the associated post, bail if null
             ParseProxyObject post = mPostMarkerGetter.getPostForMarkerId(marker.getId());
+            if (post == null) {
+                return null;
+            }
 
             // Getting view from the layout file
             View v = mInflater.inflate(R.layout.custom_info_window, null);
