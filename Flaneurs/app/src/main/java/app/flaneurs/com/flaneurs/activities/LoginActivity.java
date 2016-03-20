@@ -49,6 +49,8 @@ public class LoginActivity extends AppCompatActivity {
                     Log.d("Flanuers", "User signed up and logged in through Facebook!");
                     getUserDetailsFromFB();
                 }
+                //TODO: Remove once we have all authed once and have better pictures
+                getUserDetailsFromFB();
             }
         });
     }
@@ -68,7 +70,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private void getUserDetailsFromFB() {
         Bundle parameters = new Bundle();
-        parameters.putString("fields", "email,name,picture");
+        parameters.putString("fields", "email,name,picture.width(720).height(720)");
         new GraphRequest(
                 AccessToken.getCurrentAccessToken(),
                 "/me",
