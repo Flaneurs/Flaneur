@@ -97,8 +97,8 @@ public class ProfileActivity extends AppCompatActivity {
         slidingTabStrip.setViewPager(viewPager);
         Glide.with(this).load(user.getProfileUrl()).asBitmap().into(ivProfileImage);
         Glide.with(getApplicationContext()).load(user.getCoverPhotoUrl()).bitmapTransform(new BlurTransformation(this, 3), new ColorFilterTransformation(this, Color.argb(150, 0, 0, 0))).into(ivCoverPhoto);
-        tvDrops.setText(user.getDrops() + " Drops");
-        tvUpvotes.setText(user.getUpVotes() + " UpVotes");
+        tvDrops.setText("" + user.getDrops());
+        tvUpvotes.setText("" + user.getUpVotes());
         tvProfileName.setText(user.getUsername());
     }
 }

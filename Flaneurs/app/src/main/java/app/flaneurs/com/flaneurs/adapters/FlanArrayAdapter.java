@@ -67,14 +67,14 @@ public class FlanArrayAdapter extends RecyclerView.Adapter<FlanArrayAdapter.Flan
         if (author.isDataAvailable()) {
             String username = author.getUsername();
             holder.tvUsername.setText(username);
-            Glide.with(mContext).load(author.getProfileUrl()).into(holder.ivProfileImage);
+            Glide.with(mContext).load(author.getProfileUrl()).asBitmap().into(holder.ivProfileImage);
         } else {
             author.fetchIfNeededInBackground(new GetCallback<ParseObject>() {
                 @Override
                 public void done(ParseObject object, ParseException e) {
                     String username = author.getUsername();
                     holder.tvUsername.setText(username);
-                    Glide.with(mContext).load(author.getProfileUrl()).into(holder.ivProfileImage);
+                    Glide.with(mContext).load(author.getProfileUrl()).asBitmap().into(holder.ivProfileImage);
                 }
             });
         }
@@ -88,8 +88,8 @@ public class FlanArrayAdapter extends RecyclerView.Adapter<FlanArrayAdapter.Flan
         });
         PrettyTime pt = new PrettyTime();
         holder.tvCreationTime.setText(pt.format(flan.getCreatedTime()));
-        holder.tvUpvotes.setText(flan.getUpVoteCount() + " upvotes");
-        holder.tvViewCount.setText(flan.getViewCount() + " views");
+        holder.tvUpvotes.setText(flan.getUpVoteCount() + "");
+        holder.tvViewCount.setText(flan.getViewCount() + "");
 
         String pretty = Utils.getPrettyDistance(mCurrentLocation, flan.getLocation());
         holder.tvStreamDistanceAway.setText(pretty);
