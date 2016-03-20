@@ -283,12 +283,16 @@ public class MapFragment extends SupportMapFragment implements LocationProvider.
             View v = mInflater.inflate(R.layout.custom_info_window, null);
 
             // Populate fields
-            TextView title = (TextView) v.findViewById(R.id.tv_info_window_title);
-            title.setText(post.getString(Post.KEY_POST_CAPTION));
+            TextView tvInfoWindowAddress = (TextView) v.findViewById(R.id.tvInfoWindowAddress);
+            tvInfoWindowAddress.setText(post.getString(Post.KEY_POST_ADDRESS));
 
-            TextView description = (TextView) v.findViewById(R.id.tv_info_window_description);
-            String s = String.format("Upvotes: %d", post.getInt(Post.KEY_POST_UPVOTECOUNT));
-            description.setText(s);
+            TextView tvInfowWindowViews = (TextView) v.findViewById(R.id.tvInfoWindowViews);
+            String viewCountString = String.format("Views: %d", post.getInt(Post.KEY_POST_VIEWCOUNT));
+            tvInfowWindowViews.setText(viewCountString);
+
+            TextView tvInfoWindowViews = (TextView) v.findViewById(R.id.tvInfoWindowUpvotes);
+            String upvoteCountString = String.format("Upvotes: %d", post.getInt(Post.KEY_POST_UPVOTECOUNT));
+            tvInfoWindowViews.setText(upvoteCountString);
 
             // Return info window contents
             return v;

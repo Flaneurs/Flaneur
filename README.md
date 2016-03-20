@@ -58,9 +58,11 @@ We are interested in capturing and sharing the story of a city, the thoughts and
 ### Crazy Stretch
 - [ ] Move Pickup Service into actual service
 
+### Sprint 3 Demo
+![Flan](/images/flan_demo_2.gif)
+
 ### Sprint 2 Demo
 ![Flan](/images/flan_demo_1.gif)
-
 - Facebook auth
 - Parse backend
 - Maps
