@@ -66,7 +66,7 @@ public class Utils {
     public static void fireLocalNotification(Context context, String address) {
         NotificationCompat.Builder mBuilder =
                 new NotificationCompat.Builder(context)
-                        .setSmallIcon(R.drawable.ic_stat_flan)
+                        .setSmallIcon(R.drawable.ic_stat_name)
                         .setContentTitle("Flanuers")
                         .setContentText("New pickup at " + address)
                         .setWhen(System.currentTimeMillis())

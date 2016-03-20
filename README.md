@@ -1,7 +1,6 @@
 ![Flan](/images/logo.png)
-> Flâneur (pronounced: [flɑnœʁ]), 
-> from the French noun flâneur, means "stroller", "lounger", "saunterer", or "loafer".
-> Flânerie refers to the act of strolling, with all of its accompanying associations.
+> WalkAbout (pronounced: [wôkəˌbout]), 
+> an informal stroll among a crowd conducted by an important visitor.
 
 Location Based Content Sharing Platform
 
