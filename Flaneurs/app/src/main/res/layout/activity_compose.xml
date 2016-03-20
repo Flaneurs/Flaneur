@@ -25,9 +25,8 @@
     <FrameLayout
         android:id="@+id/flMap"
         android:layout_width="match_parent"
-        android:layout_height="300dp"
+        android:layout_height="0dp"
         android:layout_above="@+id/postButton"
-        android:layout_alignParentBottom="true"
         android:layout_below="@+id/etCaption" />
 
     <Button
