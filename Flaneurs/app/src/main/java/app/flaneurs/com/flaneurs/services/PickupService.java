@@ -109,25 +109,27 @@ public class PickupService implements LocationProvider.ILocationListener {
     }
 
     private void addPostToInbox(Post post) {
-        InboxItem inboxItem = new InboxItem();
+        if (User.currentUser() != null) {
+            InboxItem inboxItem = new InboxItem();
 
-        inboxItem.setPost(post);
-        inboxItem.setUser(User.currentUser());
-        inboxItem.setPickUpTime(new Date());
-        inboxItem.setNew(true);
-        inboxItem.setHidden(false);
-        inboxItem.setUpvoted(false);
-        inboxItem.saveInBackground();
+            inboxItem.setPost(post);
+            inboxItem.setUser(User.currentUser());
+            inboxItem.setPickUpTime(new Date());
+            inboxItem.setNew(true);
+            inboxItem.setHidden(false);
+            inboxItem.setUpvoted(false);
+            inboxItem.saveInBackground();
 
-        post.incrementViewCount();
-        post.saveEventually();
-        post.getAuthor().fetchIfNeededInBackground();
-        currentSessionInboxPosts.add(post);
+            post.incrementViewCount();
+            post.saveEventually();
+            post.getAuthor().fetchIfNeededInBackground();
+            currentSessionInboxPosts.add(post);
 
-        if (currentSessionInbox != null) {
-            currentSessionInbox.add(inboxItem);
+            if (currentSessionInbox != null) {
+                currentSessionInbox.add(inboxItem);
+            }
+            sendNotification(post);
         }
-        sendNotification(post);
     }
 
     private void sendNotification(Post post) {

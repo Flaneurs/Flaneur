@@ -58,6 +58,7 @@ public class ComposeActivity extends AppCompatActivity {
         mPicture = BitmapFactory.decodeFile(imageUri);
         ivPicturePreview.setImageBitmap(mPicture);
 
+        getSupportActionBar().hide();
         getSupportFragmentManager().beginTransaction().replace(R.id.flMap, MapFragment.newInstance(false, false, new LatLng(mLat, mLong), null)).commit();
     }
 
