@@ -2,6 +2,7 @@ package app.flaneurs.com.flaneurs.adapters;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +10,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.parse.ParseFile;
+import com.parse.ParseImageView;
 
 import java.util.List;
 
@@ -24,36 +27,112 @@ import butterknife.ButterKnife;
 /**
  * Created by kamranpirwani on 3/5/16.
  */
-public class InboxArrayAdapter extends RecyclerView.Adapter<InboxArrayAdapter.InboxViewHolder> {
+public class InboxArrayAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private List<InboxItem> mInboxItems;
     private IInboxInteractionListener mListener;
     private Context mContext;
+
+    private final int NEW_HEADER = 0, NEW_ITEM = 1, OLD_HEADER = 2, OLD_ITEM = 3;
+
+    private int mNewItemCount = 0;
+
+    InboxViewHolder.IMyViewHolderClicks mClickListener = new InboxViewHolder.IMyViewHolderClicks() {
+        @Override
+        public void onInboxClicked(InboxViewHolder caller, int position) {
+            InboxItem flan = mInboxItems.get(position);
+            mListener.openInboxDetailView(flan, caller);
+        }
+    };
 
     public InboxArrayAdapter(Context context, List<InboxItem> flans, IInboxInteractionListener listener) {
         mInboxItems = flans;
         mListener = listener;
         mContext = context;
+
+        // TODO: Make more efficient
+        for(InboxItem item : mInboxItems) {
+            if (item.getNew()) {
+                Log.e("test", "Adding new test");
+                mNewItemCount++;
+            }
+        }
     }
 
     @Override
-    public InboxViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater inflator = LayoutInflater.from(parent.getContext());
-        View view = inflator.inflate(R.layout.flan_inbox_item, parent, false);
-        InboxViewHolder viewHolder = new InboxViewHolder(view, new InboxViewHolder.IMyViewHolderClicks() {
-            @Override
-            public void onInboxClicked(View caller, int position) {
-                InboxItem flan = mInboxItems.get(position);
-                mListener.openInboxDetailView(flan);
-            }
-        });
+        RecyclerView.ViewHolder viewHolder;
+
+        switch (viewType) {
+            case NEW_HEADER:
+            case OLD_HEADER:
+                View v1 = inflator.inflate(R.layout.flan_inbox_header_item, parent, false);
+                viewHolder = new HeaderViewHolder(v1);
+                break;
+            default:
+            case NEW_ITEM:
+                View v2 = inflator.inflate(R.layout.flan_inbox_item, parent, false);
+                viewHolder = new InboxViewHolder(v2, mClickListener);
+                break;
+            case OLD_ITEM:
+                View v3 = inflator.inflate(R.layout.flan_inbox_item, parent, false);
+                viewHolder = new InboxViewHolder(v3, mClickListener);
+                break;
+
+        }
+
         return viewHolder;
     }
 
     @Override
-    public void onBindViewHolder(final InboxViewHolder holder, final int position) {
-        final InboxItem inboxItem = mInboxItems.get(position);
-        final Post post = inboxItem.getPost();
-        final User author = post.getAuthor();
+    public int getItemViewType(int position) {
+        if (position == NEW_HEADER) {
+            return NEW_HEADER;
+        } else if (position <= mNewItemCount) {
+            return NEW_ITEM;
+        } else if (position == mNewItemCount + 1) {
+            return OLD_HEADER;
+        } else {
+            return OLD_ITEM;
+        }
+}
+
+
+    @Override
+    public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position) {
+        switch (holder.getItemViewType()) {
+            case NEW_HEADER:
+            case OLD_HEADER:
+                configureHeaderView((HeaderViewHolder) holder, position);
+                break;
+            default:
+            case NEW_ITEM:
+                final InboxItem inboxItem = mInboxItems.get(position-1);
+                final Post post = inboxItem.getPost();
+                final User author = post.getAuthor();
+
+                configureInboxView((InboxViewHolder) holder, post, author, inboxItem, true);
+                break;
+            case OLD_ITEM:
+                final InboxItem inboxItem1 = mInboxItems.get(position-1);
+                final Post post1 = inboxItem1.getPost();
+                final User author1 = post1.getAuthor();
+
+                configureInboxView((InboxViewHolder) holder, post1, author1, inboxItem1, false);
+                break;
+
+        }
+    }
+
+    private void configureInboxView(InboxViewHolder holder, Post post, User author, InboxItem inboxItem, boolean isNew) {
+        if (isNew) {
+            holder.ivImageThumb.setVisibility(View.GONE);
+        } else {
+            holder.ivImageThumb.setVisibility(View.VISIBLE);
+            ParseFile parseFile = post.getImage();
+            holder.ivImageThumb.setParseFile(parseFile);
+            holder.ivImageThumb.loadInBackground();
+        }
         String username = author.getUsername();
         holder.tvUsername.setText(username);
         Glide.with(mContext).load(author.getProfileUrl()).into(holder.ivInboxImage);
@@ -66,6 +145,14 @@ public class InboxArrayAdapter extends RecyclerView.Adapter<InboxArrayAdapter.In
             holder.ivNew.setVisibility(View.VISIBLE);
         } else {
             holder.ivNew.setVisibility(View.GONE);
+        }
+    }
+
+    private void configureHeaderView(HeaderViewHolder holder, int position) {
+        if (position > 0) {
+            holder.tvHeader.setText("Older Pickups");
+        } else {
+            holder.tvHeader.setText("New");
         }
     }
 
@@ -84,19 +171,22 @@ public class InboxArrayAdapter extends RecyclerView.Adapter<InboxArrayAdapter.In
 
     public static class InboxViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         @Bind(R.id.ivInboxImage)
-        ImageView ivInboxImage;
+        public ImageView ivInboxImage;
 
         @Bind(R.id.ivNew)
-        ImageView ivNew;
+        public ImageView ivNew;
 
         @Bind(R.id.tvInboxUsername)
-        TextView tvUsername;
+        public TextView tvUsername;
 
         @Bind(R.id.tvInboxCreationTime)
-        TextView tvCreationTime;
+        public TextView tvCreationTime;
 
         @Bind(R.id.tvInboxLocation)
-        TextView tvLocation;
+        public TextView tvLocation;
+
+        @Bind(R.id.ivImageThumb)
+        public ParseImageView ivImageThumb;
 
         IMyViewHolderClicks mListener;
 
@@ -109,16 +199,27 @@ public class InboxArrayAdapter extends RecyclerView.Adapter<InboxArrayAdapter.In
 
         @Override
         public void onClick(View v) {
-            mListener.onInboxClicked(v, getAdapterPosition());
+            mListener.onInboxClicked(this, getAdapterPosition());
             ivNew.setVisibility(View.GONE);
         }
 
         public interface IMyViewHolderClicks {
-            void onInboxClicked(View caller, int position);
+            void onInboxClicked(InboxViewHolder caller, int position);
+        }
+    }
+
+    public static class HeaderViewHolder extends RecyclerView.ViewHolder {
+        @Bind(R.id.tvHeader)
+        TextView tvHeader;
+
+
+        public HeaderViewHolder(View itemView) {
+            super(itemView);
+            ButterKnife.bind(this, itemView);
         }
     }
 
     public interface IInboxInteractionListener {
-        void openInboxDetailView(InboxItem flan);
+        void openInboxDetailView(InboxItem flan, InboxViewHolder view);
     }
 }

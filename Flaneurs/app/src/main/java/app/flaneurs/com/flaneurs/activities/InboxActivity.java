@@ -2,10 +2,13 @@ package app.flaneurs.com.flaneurs.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.ActivityOptionsCompat;
+import android.support.v4.util.Pair;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.view.View;
 
 import java.util.List;
 
@@ -76,7 +79,7 @@ public class InboxActivity extends AppCompatActivity implements InboxArrayAdapte
     }
 
     @Override
-    public void openInboxDetailView(InboxItem item) {
+    public void openInboxDetailView(InboxItem item, InboxArrayAdapter.InboxViewHolder view) {
         boolean isNew = item.getNew();
         boolean isLiked = item.getUpvoted();
         item.setNew(false);
@@ -88,6 +91,13 @@ public class InboxActivity extends AppCompatActivity implements InboxArrayAdapte
         i.putExtra(DetailActivity.INBOX_ID, item.getObjectId());
         i.putExtra(DetailActivity.IS_NEW, isNew);
         i.putExtra(DetailActivity.IS_LIKED, isLiked);
-        startActivity(i);
+
+        Pair<View, String> p1 = Pair.create((View)view.ivInboxImage, "profile");
+        Pair<View, String> p2 = Pair.create((View)view.tvUsername, "userName");
+        Pair<View, String> p3 = Pair.create((View) view.ivImageThumb, "image");
+        ActivityOptionsCompat options = ActivityOptionsCompat.
+                makeSceneTransitionAnimation(this, p1, p2, p3);
+
+        startActivity(i, options.toBundle());
     }
 }

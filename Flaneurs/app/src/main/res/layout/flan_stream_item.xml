@@ -19,7 +19,9 @@
         app:riv_border_color="#333333"
         app:riv_border_width="0dip"
         app:riv_corner_radius="10dip"
-        app:riv_mutate_background="true" />
+        app:riv_mutate_background="true"
+        android:transitionName="profile"
+        />
 
     <TextView
         android:id="@+id/tvUsername"
@@ -30,7 +32,9 @@
         android:layout_toEndOf="@+id/ivProfileImage"
         android:layout_toRightOf="@+id/ivProfileImage"
         android:text="Username"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        android:transitionName="userName"
+        />
 
     <TextView
         android:id="@+id/tvStreamCreationTime"
@@ -41,6 +45,8 @@
         android:layout_marginRight="10dp"
         android:layout_marginTop="5dp"
         android:text="1m ago"
+        android:transitionName="profile"
+
         android:textAppearance="?android:attr/textAppearanceSmall" />
 
     <TextView
@@ -52,6 +58,8 @@
         android:layout_marginRight="10dp"
         android:layout_marginTop="5dp"
         android:text="10m away"
+        android:transitionName="pickupTime"
+
         android:textAppearance="?android:attr/textAppearanceSmall" />
 
     <TextView
@@ -61,6 +69,7 @@
         android:layout_below="@+id/tvUsername"
         android:layout_marginTop="5dp"
         android:layout_toEndOf="@+id/ivProfileImage"
+        android:transitionName="location"
         android:text="San Francisco, CA" />
 
     <LinearLayout
