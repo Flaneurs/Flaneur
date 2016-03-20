@@ -35,12 +35,14 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme" >
+         >
         <activity
             android:name=".activities.DiscoverActivity"
+            android:theme="@style/AppTheme"
             android:label="@string/discover_label" />
         <activity
             android:name=".activities.LoginActivity"
+            android:theme="@style/AppTheme"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -50,12 +52,15 @@
         </activity>
         <activity
             android:name=".activities.InboxActivity"
+            android:theme="@style/AppTheme"
             android:label="@string/inbox_label" />
         <activity
             android:name=".activities.ComposeActivity"
+            android:theme="@style/AppTheme"
             android:label="@string/compose_label" />
         <activity
             android:name=".activities.ProfileActivity"
+            android:theme="@style/AppTheme"
             android:label="@string/profile_label" />
 
         <meta-data
