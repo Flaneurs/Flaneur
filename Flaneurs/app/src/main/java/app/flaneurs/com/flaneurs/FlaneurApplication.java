@@ -36,7 +36,7 @@ public class FlaneurApplication extends Application {
         // any network interceptors must be added with the Configuration Builder given this syntax
         Parse.initialize(new Parse.Configuration.Builder(this)
                 .addNetworkInterceptor(new ParseLogInterceptor())
-                .server(getString(R.string.parse_server_url)).build());
+                .server(getString(R.string.parse_server_url)).enableLocalDataStore().build());
 
         ParseFacebookUtils.initialize(this);
 

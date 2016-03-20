@@ -8,6 +8,7 @@ import android.util.Log;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseGeoPoint;
+import com.parse.ParseObject;
 import com.parse.ParseQuery;
 
 import java.util.ArrayList;
@@ -148,9 +149,11 @@ public class PickupService implements LocationProvider.ILocationListener {
         ParseQuery<InboxItem> query = ParseQuery.getQuery("InboxItem");
         query.whereEqualTo(InboxItem.KEY_INBOX_USER, User.currentUser());
         query.whereEqualTo(InboxItem.KEY_INBOX_HIDDEN, false);
+
         query.include(InboxItem.KEY_INBOX_POST);
         query.include(InboxItem.KEY_INBOX_POST + "." + Post.KEY_POST_AUTHOR);
-        query.setCachePolicy(ParseQuery.CachePolicy.CACHE_THEN_NETWORK);
+
+      //  query.setCachePolicy(ParseQuery.CachePolicy.CACHE_THEN_NETWORK);
         query.orderByDescending(InboxItem.KEY_INBOX_NEW + "," + InboxItem.KEY_INBOX_DATE);
         query.findInBackground(new FindCallback<InboxItem>() {
             @Override
@@ -158,6 +161,7 @@ public class PickupService implements LocationProvider.ILocationListener {
                 if (objects == null) {
                     return;
                 }
+                ParseObject.pinAllInBackground(objects);
                 Log.e("PickupService", "Updating cached inbox");
                 currentSessionInbox = objects;
 

@@ -74,11 +74,9 @@ public class InboxActivity extends AppCompatActivity implements InboxArrayAdapte
         i.putExtra(DetailActivity.IS_NEW, isNew);
         i.putExtra(DetailActivity.IS_LIKED, isLiked);
 
-        Pair<View, String> p1 = Pair.create((View)view.ivInboxImage, "profile");
-        Pair<View, String> p2 = Pair.create((View)view.tvUsername, "userName");
         Pair<View, String> p3 = Pair.create((View) view.ivImageThumb, "image");
         ActivityOptionsCompat options = ActivityOptionsCompat.
-                makeSceneTransitionAnimation(this, p1, p2);
+                makeSceneTransitionAnimation(this, p3);
 
         startActivity(i, options.toBundle());
     }

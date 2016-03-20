@@ -82,6 +82,8 @@ public class DiscoverActivity extends AppCompatActivity implements LocationProvi
 
         LocalBroadcastManager.getInstance(this).registerReceiver(mMessageReceiver,
                 new IntentFilter(PickupService.PICKUP_EVENT));
+
+       // ParseQuery.clearAllCachedResults();
     }
 
     @Override
@@ -105,7 +107,7 @@ public class DiscoverActivity extends AppCompatActivity implements LocationProvi
             query.whereNear(Post.KEY_POST_LOCATION, currentPoint);
             query.setLimit(20);
             query.include(Post.KEY_POST_AUTHOR);
-            query.setCachePolicy(ParseQuery.CachePolicy.CACHE_THEN_NETWORK);
+           // query.setCachePolicy(ParseQuery.CachePolicy.CACHE_THEN_NETWORK);
             query.findInBackground(new FindCallback<Post>() {
                 @Override
                 public void done(List<Post> objects, ParseException e) {

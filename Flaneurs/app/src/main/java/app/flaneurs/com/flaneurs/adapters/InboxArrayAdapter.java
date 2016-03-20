@@ -10,7 +10,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.parse.ParseFile;
 
 import java.util.List;
@@ -138,9 +137,6 @@ public class InboxArrayAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             ParseFile parseFile = post.getImage();
             Glide.with(mContext)
                     .load(parseFile.getUrl())
-                    .skipMemoryCache(true)
-                    .diskCacheStrategy(DiskCacheStrategy.SOURCE)
-                    .dontTransform()
                     .into(holder.ivImageThumb);
 
         }

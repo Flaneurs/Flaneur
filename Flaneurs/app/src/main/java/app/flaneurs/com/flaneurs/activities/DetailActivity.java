@@ -1,5 +1,7 @@
 package app.flaneurs.com.flaneurs.activities;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -10,11 +12,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.transition.Transition;
 import android.view.View;
+import android.view.ViewAnimationUtils;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
@@ -47,6 +50,8 @@ public class DetailActivity extends AppCompatActivity implements CommentAdapter.
 
     CommentAdapter adapter;
 
+    private Transition.TransitionListener mEnterTransitionListener;
+
     private Post mPost;
     private InboxItem mInboxItem;
     private boolean mIsLiked;
@@ -70,6 +75,7 @@ public class DetailActivity extends AppCompatActivity implements CommentAdapter.
         final boolean isNew = extras.getBoolean(IS_NEW);
         mIsLiked = extras.getBoolean(IS_LIKED);
         mFab = (FloatingActionButton) findViewById(R.id.fab);
+        mFab.setVisibility(View.INVISIBLE);
 
         if (postId != null) {
             configureForDiscoverItem(postId);
@@ -77,13 +83,42 @@ public class DetailActivity extends AppCompatActivity implements CommentAdapter.
         } else if (inboxId != null) {
             configureForInboxItem(inboxId, isNew);
         }
+
+        mEnterTransitionListener = new Transition.TransitionListener() {
+            @Override
+            public void onTransitionStart(Transition transition) {
+
+            }
+
+            @Override
+            public void onTransitionEnd(Transition transition) {
+                enterReveal();
+            }
+
+            @Override
+            public void onTransitionCancel(Transition transition) {
+
+            }
+
+            @Override
+            public void onTransitionPause(Transition transition) {
+
+            }
+
+            @Override
+            public void onTransitionResume(Transition transition) {
+
+            }
+        };
+        getWindow().getEnterTransition().addListener(mEnterTransitionListener);
     }
 
     private void configureForInboxItem(String inboxId, boolean isNew) {
         ablLayout.setExpanded(true, true);
 
         ParseQuery<InboxItem> query = ParseQuery.getQuery(InboxItem.class);
-        query.setCachePolicy(ParseQuery.CachePolicy.CACHE_THEN_NETWORK);
+     //   query.setCachePolicy(ParseQuery.CachePolicy.CACHE_THEN_NETWORK);
+        query.fromLocalDatastore();
         query.include(InboxItem.KEY_INBOX_POST);
         query.getInBackground(inboxId, new GetCallback<InboxItem>() {
             public void done(InboxItem item, ParseException e) {
@@ -113,7 +148,7 @@ public class DetailActivity extends AppCompatActivity implements CommentAdapter.
         ablLayout.setExpanded(false, false);
         mFab.setImageDrawable(ContextCompat.getDrawable(DetailActivity.this, R.drawable.ic_action_locked));
         ParseQuery<Post> query = ParseQuery.getQuery(Post.class);
-        query.setCachePolicy(ParseQuery.CachePolicy.CACHE_THEN_NETWORK);
+        //query.setCachePolicy(ParseQuery.CachePolicy.CACHE_THEN_NETWORK);
         query.getInBackground(postId, new GetCallback<Post>() {
             public void done(Post item, ParseException e) {
                 if (e == null) {
@@ -147,9 +182,8 @@ public class DetailActivity extends AppCompatActivity implements CommentAdapter.
         rvComments.setItemAnimator(animator);
 
         Glide.with(this)
-                .load(item.getImage().getUrl()).
-                skipMemoryCache(true)
-                .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                .load(item.getImage().getUrl())
+//
                 .into(ivPicturePreview);
 
         ctCollapsingToolbar.setTitle(item.getAddress());
@@ -185,4 +219,67 @@ public class DetailActivity extends AppCompatActivity implements CommentAdapter.
         i.putExtra(ProfileActivity.USER_ID, user.getObjectId());
         startActivity(i);
     }
+
+    void enterReveal() {
+
+
+
+
+
+
+
+        // previously invisible view
+        final View myView = mFab;
+
+        // get the center for the clipping circle
+        int cx = myView.getMeasuredWidth() / 2;
+        int cy = myView.getMeasuredHeight() / 2;
+
+        // get the final radius for the clipping circle
+        int finalRadius = Math.max(myView.getWidth(), myView.getHeight()) / 2;
+
+        // create the animator for this view (the start radius is zero)
+        Animator anim =
+                ViewAnimationUtils.createCircularReveal(myView, cx, cy, 0, finalRadius);
+
+        // make the view visible and start the animation
+        myView.setVisibility(View.VISIBLE);
+        anim.start();
+    }
+
+    void exitReveal() {
+        // previously visible view
+        final View myView = mFab;
+
+        // get the center for the clipping circle
+        int cx = myView.getMeasuredWidth() / 2;
+        int cy = myView.getMeasuredHeight() / 2;
+
+        // get the initial radius for the clipping circle
+        int initialRadius = myView.getWidth() / 2;
+
+        // create the animation (the final radius is zero)
+        Animator anim =
+                ViewAnimationUtils.createCircularReveal(myView, cx, cy, initialRadius, 0);
+
+        // make the view invisible when the animation is done
+        anim.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                super.onAnimationEnd(animation);
+                myView.setVisibility(View.INVISIBLE);
+                supportFinishAfterTransition();
+
+            }
+        });
+
+        // start the animation
+        anim.start();
+    }
+
+    @Override
+    public void onBackPressed() {
+        exitReveal();
+    }
+
 }

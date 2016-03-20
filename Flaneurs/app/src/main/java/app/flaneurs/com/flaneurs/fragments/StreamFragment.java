@@ -104,7 +104,7 @@ public class StreamFragment extends Fragment implements FlanArrayAdapter.IFlanIn
     private void grabAllPostsFromParse() {
         ParseQuery<Post> query = ParseQuery.getQuery("Post");
         query.orderByDescending(Post.KEY_POST_DATE);
-        query.setCachePolicy(ParseQuery.CachePolicy.CACHE_THEN_NETWORK);
+       // query.setCachePolicy(ParseQuery.CachePolicy.CACHE_THEN_NETWORK);
         query.include(Post.KEY_POST_AUTHOR);
         query.findInBackground(new FindCallback<Post>() {
             @Override
@@ -119,7 +119,7 @@ public class StreamFragment extends Fragment implements FlanArrayAdapter.IFlanIn
         ParseUser user = getStreamConfiguration().getUser();
         ParseQuery<Post> query = ParseQuery.getQuery("Post");
         query.orderByDescending(Post.KEY_POST_DATE);
-        query.setCachePolicy(ParseQuery.CachePolicy.CACHE_THEN_NETWORK);
+        //query.setCachePolicy(ParseQuery.CachePolicy.CACHE_THEN_NETWORK);
         query.whereEqualTo(Post.KEY_POST_AUTHOR, user);
         query.findInBackground(new FindCallback<Post>() {
             @Override
