@@ -150,7 +150,7 @@ public class MapFragment extends SupportMapFragment implements LocationProvider.
     }
 
     private Marker addMarkerAtLatLng(LatLng latLng) {
-        BitmapDescriptor defaultMarker = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN);
+        BitmapDescriptor defaultMarker = BitmapDescriptorFactory.fromResource(R.drawable.walk_marker);
         return map.addMarker(new MarkerOptions()
                 .position(latLng)
                 .icon(defaultMarker));
