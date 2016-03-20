@@ -74,7 +74,7 @@ public class FlanArrayAdapter extends RecyclerView.Adapter<FlanArrayAdapter.Flan
                 public void done(ParseObject object, ParseException e) {
                     String username = author.getUsername();
                     holder.tvUsername.setText(username);
-                    Glide.with(mContext).load(author.getProfileUrl()).into(holder.ivProfileImage);
+                    Glide.with(mContext).load(author.getProfileUrl()).asBitmap().into(holder.ivProfileImage);
                 }
             });
         }
