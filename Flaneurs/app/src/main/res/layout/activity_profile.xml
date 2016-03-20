@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_marginTop="24dp"
     tools:context="app.flaneurs.com.flaneurs.activities.ProfileActivity">
 
     <RelativeLayout
@@ -25,14 +26,27 @@
             android:layout_height="match_parent"
             android:orientation="horizontal"
             android:weightSum="1">
-            <TextView
-                android:id="@+id/tvUpvotes"
+            <RelativeLayout
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="0.33"
-                android:gravity="center"
-                android:text="0 Upvotes"
-                android:textColor="@color/inverse_text" />
+                android:layout_weight="0.33">
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@mipmap/ic_upvote"
+                    android:layout_toLeftOf="@+id/tvUpvotes"
+                    android:layout_alignBottom="@+id/tvUpvotes"
+                    android:layout_marginTop="3dp"
+                    />
+                <TextView
+                    android:id="@+id/tvUpvotes"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:layout_centerInParent="true"
+                    android:text="0"
+                    android:textColor="@color/inverse_text" />
+            </RelativeLayout>
 
             <RelativeLayout
                 android:layout_width="0dp"
@@ -42,7 +56,6 @@
                     android:id="@+id/ivProfileImage"
                     android:layout_width="90dp"
                     android:layout_height="90dp"
-                    android:layout_weight="0.33"
                     app:siBorderWidth="2dp"
                     app:siBorderColor="@color/inverse_text"
                     android:layout_centerHorizontal="true"
@@ -51,7 +64,7 @@
                     android:scaleType="fitXY"
                     android:src="@drawable/profile_photo_placeholder"
                      />
-                <TextView
+                <app.flaneurs.com.flaneurs.utils.AutoResizeTextView
                     android:id="@+id/tvProfileName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -59,19 +72,34 @@
                     android:layout_marginBottom="10dp"
                     android:gravity="center"
                     android:text="Kamran Pirwani"
+                    android:textStyle="bold"
                     android:textColor="@android:color/white"
+                    android:maxLines="1"
+
                     android:textSize="17sp"
                     />
             </RelativeLayout>
-
-            <TextView
-                android:id="@+id/tvDrops"
+            <RelativeLayout
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="0.33"
-                android:gravity="center"
-                android:text="0 Drops"
-                android:textColor="@color/inverse_text"/>
+                android:layout_weight="0.33">
+                <TextView
+                    android:id="@+id/tvDrops"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="3dp"
+                    android:layout_centerInParent="true"
+                    android:gravity="center"
+                    android:text="0"
+                    android:textColor="@color/inverse_text"/>
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/walk_marker"
+                    android:layout_toLeftOf="@+id/tvDrops"
+                    android:layout_alignBottom="@+id/tvDrops"
+                    />
+            </RelativeLayout>
         </LinearLayout>
 
     </RelativeLayout>
