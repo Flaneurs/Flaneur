@@ -75,7 +75,6 @@ public class ComposeActivity extends AppCompatActivity {
 
         postButton.setPadding(sidePadding, 0, sidePadding, 0);
 
-        getSupportActionBar().hide();
         getSupportFragmentManager().beginTransaction().replace(R.id.flMap, MapFragment.newInstance(false, false, new LatLng(mLat, mLong), null)).commit();
     }
 

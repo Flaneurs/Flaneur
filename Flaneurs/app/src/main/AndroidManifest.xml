@@ -56,7 +56,7 @@
             android:label="@string/inbox_label" />
         <activity
             android:name=".activities.ComposeActivity"
-            android:theme="@style/AppTheme"
+            android:theme="@style/AppTheme.NoActionBar.ClearStatusBar"
             android:label="@string/compose_label" />
         <activity
             android:name=".activities.ProfileActivity"
