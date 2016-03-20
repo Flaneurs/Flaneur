@@ -40,6 +40,9 @@
         android:textSize="18sp"
         android:background="@drawable/post_button"
         android:textColor="#ffffff"
+        android:paddingRight="150dp"
+        android:paddingLeft="150dp"
+        android:drawableEnd="@drawable/walk_marker"
         android:text="@string/compose_post_string" />
 
 </RelativeLayout>
