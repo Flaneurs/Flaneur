@@ -83,7 +83,7 @@ public class DetailActivity extends AppCompatActivity implements CommentAdapter.
         ablLayout.setExpanded(true, true);
 
         ParseQuery<InboxItem> query = ParseQuery.getQuery(InboxItem.class);
-        query.setCachePolicy(ParseQuery.CachePolicy.NETWORK_ONLY);
+        query.setCachePolicy(ParseQuery.CachePolicy.CACHE_THEN_NETWORK);
         query.include(InboxItem.KEY_INBOX_POST);
         query.getInBackground(inboxId, new GetCallback<InboxItem>() {
             public void done(InboxItem item, ParseException e) {

@@ -139,7 +139,7 @@ public class MapFragment extends SupportMapFragment implements LocationProvider.
     public LatLng addMarkerForPost(ParseProxyObject post, boolean withAnimation) {
         double[] latLng = post.getParseGeoPointArray(Post.KEY_POST_LOCATION);
         LatLng point = new LatLng(latLng[0], latLng[1]);
-        Marker marker = addMarkerAtLatLng(point);
+        Marker marker = addMarkerAtLatLng(point, post.getInt(Post.KEY_POST_UPVOTECOUNT), false);
         mPostMarkerGetter.putPostMarker(post, marker);
 
         if (withAnimation) {
@@ -149,15 +149,30 @@ public class MapFragment extends SupportMapFragment implements LocationProvider.
         return point;
     }
 
-    private Marker addMarkerAtLatLng(LatLng latLng) {
-        BitmapDescriptor defaultMarker = BitmapDescriptorFactory.fromResource(R.drawable.walk_marker);
+    private Marker addMarkerAtLatLng(LatLng latLng, int upVoteCount, boolean isOwn) {
+        int resource;
+        if (isOwn) {
+            resource = R.drawable.walk_marker_green;
+        } else if (upVoteCount < 5) {
+            resource = R.drawable.walk_marker_0;
+        } else if (upVoteCount < 10) {
+            resource = R.drawable.walk_marker_5;
+        } else if (upVoteCount < 15) {
+            resource = R.drawable.walk_marker_10;
+        } else if (upVoteCount < 20) {
+            resource = R.drawable.walk_marker_15;
+        } else {
+            resource = R.drawable.walk_marker_20;
+        }
+
+        BitmapDescriptor defaultMarker = BitmapDescriptorFactory.fromResource(resource);
         return map.addMarker(new MarkerOptions()
                 .position(latLng)
                 .icon(defaultMarker));
     }
 
     public void markLatLng(LatLng latLng) {
-        addMarkerAtLatLng(latLng);
+        addMarkerAtLatLng(latLng, 0, true);
         CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(latLng, 17);
         map.moveCamera(cameraUpdate);
     }
