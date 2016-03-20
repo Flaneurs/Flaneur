@@ -38,24 +38,6 @@ public class InboxActivity extends AppCompatActivity implements InboxArrayAdapte
 
         mInboxItems = FlaneurApplication.getInstance().pickupService.getInbox();
 
-//        if (mInboxItems == null) {
-//            mInboxItems = new ArrayList<>();
-//            ParseQuery<InboxItem> query = ParseQuery.getQuery("InboxItem");
-//            query.whereEqualTo(InboxItem.KEY_INBOX_USER, User.currentUser());
-//            query.include(InboxItem.KEY_INBOX_POST);
-//            query.include(InboxItem.KEY_INBOX_POST + "." + Post.KEY_POST_AUTHOR);
-//            query.setCachePolicy(ParseQuery.CachePolicy.CACHE_ELSE_NETWORK);
-//            query.orderByDescending(InboxItem.KEY_INBOX_DATE + "," + InboxItem.KEY_INBOX_NEW);
-//            query.findInBackground(new FindCallback<InboxItem>() {
-//                @Override
-//                public void done(List<InboxItem> objects, ParseException e) {
-//                    Log.e("PickupService", "Updating cached inbox");
-//                    mInboxItems.addAll(objects);
-//                    mAdapter.notifyDataSetChanged();
-//                }
-//            });
-//        }
-
         mAdapter = new InboxArrayAdapter(this, mInboxItems, this);
         mLayoutManager = new LinearLayoutManager(this);
         rvInboxItems.setLayoutManager(mLayoutManager);
@@ -96,7 +78,7 @@ public class InboxActivity extends AppCompatActivity implements InboxArrayAdapte
         Pair<View, String> p2 = Pair.create((View)view.tvUsername, "userName");
         Pair<View, String> p3 = Pair.create((View) view.ivImageThumb, "image");
         ActivityOptionsCompat options = ActivityOptionsCompat.
-                makeSceneTransitionAnimation(this, p1, p2, p3);
+                makeSceneTransitionAnimation(this, p1, p2);
 
         startActivity(i, options.toBundle());
     }

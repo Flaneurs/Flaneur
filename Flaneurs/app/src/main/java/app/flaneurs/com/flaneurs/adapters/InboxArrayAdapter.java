@@ -10,8 +10,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.parse.ParseFile;
-import com.parse.ParseImageView;
 
 import java.util.List;
 
@@ -34,7 +34,7 @@ public class InboxArrayAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
     private final int NEW_HEADER = 0, NEW_ITEM = 1, OLD_HEADER = 2, OLD_ITEM = 3;
 
-    private int mNewItemCount = 0;
+    public int mNewItemCount = 0;
 
     InboxViewHolder.IMyViewHolderClicks mClickListener = new InboxViewHolder.IMyViewHolderClicks() {
         @Override
@@ -50,10 +50,12 @@ public class InboxArrayAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         mContext = context;
 
         // TODO: Make more efficient
-        for(InboxItem item : mInboxItems) {
-            if (item.getNew()) {
-                Log.e("test", "Adding new test");
-                mNewItemCount++;
+        if (mInboxItems != null) {
+            for (InboxItem item : mInboxItems) {
+                if (item.getNew()) {
+                    Log.e("test", "Adding new test");
+                    mNewItemCount++;
+                }
             }
         }
     }
@@ -72,11 +74,11 @@ public class InboxArrayAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             default:
             case NEW_ITEM:
                 View v2 = inflator.inflate(R.layout.flan_inbox_item, parent, false);
-                viewHolder = new InboxViewHolder(v2, mClickListener);
+                viewHolder = new InboxViewHolder(v2, mClickListener, true);
                 break;
             case OLD_ITEM:
                 View v3 = inflator.inflate(R.layout.flan_inbox_item, parent, false);
-                viewHolder = new InboxViewHolder(v3, mClickListener);
+                viewHolder = new InboxViewHolder(v3, mClickListener, false);
                 break;
 
         }
@@ -114,7 +116,7 @@ public class InboxArrayAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                 configureInboxView((InboxViewHolder) holder, post, author, inboxItem, true);
                 break;
             case OLD_ITEM:
-                final InboxItem inboxItem1 = mInboxItems.get(position-1);
+                final InboxItem inboxItem1 = mInboxItems.get(position-2);
                 final Post post1 = inboxItem1.getPost();
                 final User author1 = post1.getAuthor();
 
@@ -130,13 +132,17 @@ public class InboxArrayAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         } else {
             holder.ivImageThumb.setVisibility(View.VISIBLE);
             ParseFile parseFile = post.getImage();
-            holder.ivImageThumb.setParseFile(parseFile);
-            holder.ivImageThumb.loadInBackground();
+            Glide.with(mContext)
+                    .load(parseFile.getUrl())
+                    .skipMemoryCache(true)
+                    .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                    .dontTransform()
+                    .into(holder.ivImageThumb);
+
         }
         String username = author.getUsername();
         holder.tvUsername.setText(username);
         Glide.with(mContext).load(author.getProfileUrl()).into(holder.ivInboxImage);
-
 
         holder.tvCreationTime.setText(Utils.getPrettyTime(inboxItem.getPickUpTime()));
         holder.tvLocation.setText(post.getAddress());
@@ -186,20 +192,28 @@ public class InboxArrayAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         public TextView tvLocation;
 
         @Bind(R.id.ivImageThumb)
-        public ParseImageView ivImageThumb;
+        public ImageView ivImageThumb;
 
         IMyViewHolderClicks mListener;
-
-        public InboxViewHolder(View itemView, IMyViewHolderClicks listener) {
+        boolean mIsNew;
+        public InboxViewHolder(View itemView, IMyViewHolderClicks listener, boolean isNew) {
             super(itemView);
             ButterKnife.bind(this, itemView);
             itemView.setOnClickListener(this);
             mListener = listener;
+            mIsNew = isNew;
         }
 
         @Override
         public void onClick(View v) {
-            mListener.onInboxClicked(this, getAdapterPosition());
+            int position = getAdapterPosition();
+            if (mIsNew) {
+                position -= 1;
+            } else {
+                position -= 2;
+
+            }
+            mListener.onInboxClicked(this, position);
             ivNew.setVisibility(View.GONE);
         }
 

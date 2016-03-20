@@ -1,8 +1,6 @@
 package app.flaneurs.com.flaneurs.activities;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.CoordinatorLayout;
@@ -15,17 +13,14 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
 
-import com.google.android.gms.maps.model.LatLng;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.parse.GetCallback;
-import com.parse.GetDataCallback;
 import com.parse.ParseException;
-import com.parse.ParseFile;
-import com.parse.ParseGeoPoint;
 import com.parse.ParseQuery;
 
 import app.flaneurs.com.flaneurs.R;
 import app.flaneurs.com.flaneurs.adapters.CommentAdapter;
-import app.flaneurs.com.flaneurs.fragments.MapFragment;
 import app.flaneurs.com.flaneurs.models.InboxItem;
 import app.flaneurs.com.flaneurs.models.Post;
 import app.flaneurs.com.flaneurs.models.User;
@@ -151,30 +146,13 @@ public class DetailActivity extends AppCompatActivity implements CommentAdapter.
         };
         rvComments.setItemAnimator(animator);
 
+        Glide.with(this)
+                .load(item.getImage().getUrl()).
+                skipMemoryCache(true)
+                .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                .into(ivPicturePreview);
 
-        loadImages(item.getImage(), ivPicturePreview);
         ctCollapsingToolbar.setTitle(item.getAddress());
-        ParseGeoPoint location = item.getLocation();
-        LatLng point = new LatLng(location.getLatitude(), location.getLongitude());
-        getSupportFragmentManager().beginTransaction().replace(R.id.flMap, MapFragment.newInstance(false, true, point, null)).commit();
-    }
-
-    private void loadImages(ParseFile thumbnail, final ImageView img) {
-        if (thumbnail != null) {
-            thumbnail.getDataInBackground(new GetDataCallback() {
-                @Override
-                public void done(byte[] data, ParseException e) {
-                    if (e == null) {
-                        Bitmap bmp = BitmapFactory.decodeByteArray(data, 0, data.length);
-                      if (mInboxItem == null) {
-                          // Blur image
-                          bmp = Bitmap.createScaledBitmap(bmp, 10, 10, false);
-                      }
-                        img.setImageBitmap(bmp);
-                    }
-                }
-            });
-        }
     }
 
     public void onUpVoteButtonClicked(View view) {
