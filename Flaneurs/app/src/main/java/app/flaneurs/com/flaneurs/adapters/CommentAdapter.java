@@ -5,6 +5,7 @@ package app.flaneurs.com.flaneurs.adapters;
  */
 
 import android.content.Context;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -17,15 +18,18 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.google.android.gms.maps.model.LatLng;
 import com.ocpsoft.pretty.time.PrettyTime;
 import com.parse.FindCallback;
 import com.parse.ParseException;
+import com.parse.ParseGeoPoint;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import app.flaneurs.com.flaneurs.R;
+import app.flaneurs.com.flaneurs.fragments.MapFragment;
 import app.flaneurs.com.flaneurs.models.Comment;
 import app.flaneurs.com.flaneurs.models.Post;
 import app.flaneurs.com.flaneurs.models.User;
@@ -175,6 +179,11 @@ public class CommentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         } else {
             view.tvCaption.setText("Go find this drop to see its contents!");
         }
+
+        ParseGeoPoint location = post.getLocation();
+        LatLng point = new LatLng(location.getLatitude(), location.getLongitude());
+        ((AppCompatActivity)mContext).getSupportFragmentManager().beginTransaction().replace(R.id.flMap, MapFragment.newInstance(false, true, point, null)).commit();
+
     }
 
     private void configureCommentView(CommentViewHolder view, final Comment comment) {
