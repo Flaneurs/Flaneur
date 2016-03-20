@@ -5,7 +5,6 @@
     android:layout_height="match_parent"
     tools:context="app.flaneurs.com.flaneurs.activities.ComposeActivity">
 
-
     <ImageView
         android:id="@+id/ivPicturePreview"
         android:layout_width="match_parent"
@@ -17,6 +16,8 @@
 
     <EditText
         android:id="@+id/etCaption"
+        android:hint="@string/compose_hint_text"
+        android:layout_margin="5dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/ivPicturePreview" />
@@ -26,14 +27,19 @@
         android:layout_width="match_parent"
         android:layout_height="300dp"
         android:layout_alignParentBottom="true"
-        android:layout_below="@+id/etCaption" />
+        android:layout_below="@+id/etCaption"
+        android:layout_above="@+id/postButton"/>
 
     <Button
-        android:layout_width="wrap_content"
+        android:id="@+id/postButton"
+        android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:onClick="onPostButtonClicked"
-        android:text="Post" />
+        android:textSize="18sp"
+        android:background="@drawable/post_button"
+        android:textColor="#ffffff"
+        android:text="@string/compose_post_string" />
 
 </RelativeLayout>

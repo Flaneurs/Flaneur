@@ -9,5 +9,7 @@
     <string name="profile_label">Profile</string>
 
     <string name="facebook_app_id">1681929948730169</string>
+    <string name="compose_hint_text">What\'s happening?</string>
+    <string name="compose_post_string">Post</string>
 
 </resources>
