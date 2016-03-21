@@ -58,6 +58,7 @@ public class ProfileActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        overridePendingTransition(R.anim.from_middle, R.anim.to_middle);
         setContentView(R.layout.activity_profile);
         ButterKnife.bind(this);
 
