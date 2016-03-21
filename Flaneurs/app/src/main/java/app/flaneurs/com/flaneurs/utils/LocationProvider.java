@@ -71,7 +71,6 @@ public class LocationProvider implements
                 .setFastestInterval(FASTEST_INTERVAL);
 
         mContext = context;
-        connect();
     }
 
     public void connect() {

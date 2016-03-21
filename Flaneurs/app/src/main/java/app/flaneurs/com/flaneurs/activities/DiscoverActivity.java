@@ -145,6 +145,7 @@ public class DiscoverActivity extends AppCompatActivity implements LocationProvi
     @NeedsPermission({ Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION})
     void getMyLocation() {
         mLocationProvider = FlaneurApplication.getInstance().locationProvider;
+        mLocationProvider.connect();
         mLocationProvider.addListener(this);
     }
 
