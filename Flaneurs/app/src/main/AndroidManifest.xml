@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="app.flaneurs.com.flaneurs" >
+    package="app.flaneurs.com.flaneurs">
 
     <uses-sdk
         android:minSdkVersion="21"
@@ -26,45 +26,17 @@
     -->
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-
-    <android:uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
 
     <application
         android:name=".FlaneurApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:supportsRtl="true"
-         >
-        <activity
-            android:name=".activities.DiscoverActivity"
-            android:theme="@style/AppTheme"
-            android:label="@string/discover_label" />
-        <activity
-            android:name=".activities.LoginActivity"
-            android:theme="@style/AppTheme.NoActionBar.GreenStatusBar"
-            android:label="@string/app_name" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-        <activity
-            android:name=".activities.InboxActivity"
-            android:theme="@style/AppTheme"
-            android:label="@string/inbox_label" />
-        <activity
-            android:name=".activities.ComposeActivity"
-            android:theme="@style/AppTheme.NoActionBar.ClearStatusBar"
-            android:label="@string/compose_label" />
-        <activity
-            android:name=".activities.ProfileActivity"
-            android:theme="@style/AppTheme.NoActionBar.ClearStatusBar"
-            android:label="@string/profile_label" />
+        android:supportsRtl="true">
 
         <meta-data
-            android:name="com.google.android.maps.v2.API_KEY"
+            android:name="com.google.android.geo.API_KEY"
             android:value="@string/gmaps_api_key" />
         <meta-data
             android:name="com.parse.APPLICATION_ID"
@@ -77,13 +49,39 @@
             android:value="@string/facebook_app_id" />
 
         <activity
+            android:name=".activities.DiscoverActivity"
+            android:label="@string/discover_label"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".activities.LoginActivity"
+            android:label="@string/app_name"
+            android:theme="@style/AppTheme.NoActionBar.GreenStatusBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".activities.InboxActivity"
+            android:label="@string/inbox_label"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".activities.ComposeActivity"
+            android:label="@string/compose_label"
+            android:theme="@style/AppTheme.NoActionBar.ClearStatusBar" />
+        <activity
+            android:name=".activities.ProfileActivity"
+            android:label="@string/profile_label"
+            android:theme="@style/AppTheme.NoActionBar.ClearStatusBar" />
+        <activity
             android:name="com.facebook.FacebookActivity"
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
             android:label="@string/app_name"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
-        <activity android:name=".activities.DetailActivity"
-            android:theme="@style/AppTheme.NoActionBar.ClearStatusBar">
-        </activity>
-    </application>
+        <activity
+            android:name=".activities.DetailActivity"
+            android:theme="@style/AppTheme.NoActionBar.ClearStatusBar" />
 
+    </application>
 </manifest>

@@ -46,8 +46,8 @@ public class FlanArrayAdapter extends RecyclerView.Adapter<FlanArrayAdapter.Flan
 
     @Override
     public FlanViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        LayoutInflater inflator = LayoutInflater.from(parent.getContext());
-        View view = inflator.inflate(R.layout.flan_stream_item, parent, false);
+        LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+        View view = inflater.inflate(R.layout.flan_stream_item, parent, false);
         FlanViewHolder viewHolder = new FlanViewHolder(view, new FlanViewHolder.IMyViewHolderClicks() {
             @Override
             public void onFlanClicked(View caller, int position) {
