@@ -54,7 +54,7 @@ public class Utils {
         destination.setLatitude(destinationGeoPoint.getLatitude());
         destination.setLongitude(destinationGeoPoint.getLongitude());
         float distanceInMeters = current.distanceTo(destination);
-        String pretty = distanceInMeters + "m away";
+        String pretty = String.format("%.02fm away", distanceInMeters);
         return pretty;
     }
 

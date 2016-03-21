@@ -1,26 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rlBackground"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
     <com.github.siyamed.shapeimageview.DiamondImageView xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/ivProfileImage"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_alignParentLeft="true"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_marginLeft="5dp"
-        android:layout_marginRight="10dp"
+        android:layout_marginBottom="5dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginStart="15dp"
         android:layout_marginTop="5dp"
         android:adjustViewBounds="true"
         android:scaleType="fitXY"
         android:src="@drawable/profile_photo_placeholder"
-        app:riv_border_color="#333333"
-        app:siBorderWidth="2dip"
-        app:siBorderColor="@color/inverse_text"
         android:transitionName="profile"
-        />
+        app:siBorderColor="@color/primary"
+        app:siBorderWidth="2dip" />
 
     <TextView
         android:id="@+id/tvUsername"
@@ -29,11 +28,9 @@
         android:layout_alignParentTop="true"
         android:layout_marginTop="5dp"
         android:layout_toEndOf="@+id/ivProfileImage"
-        android:layout_toRightOf="@+id/ivProfileImage"
         android:text="Username"
         android:textStyle="bold"
-        android:transitionName="userName"
-        />
+        android:transitionName="userName" />
 
     <TextView
         android:id="@+id/tvStreamCreationTime"
@@ -41,7 +38,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_alignParentTop="true"
-        android:layout_marginRight="10dp"
+        android:layout_marginEnd="15dp"
         android:layout_marginTop="5dp"
         android:text="1m ago"
         android:textAppearance="?android:attr/textAppearanceSmall" />
@@ -52,8 +49,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_below="@id/tvStreamCreationTime"
-        android:layout_marginRight="10dp"
-        android:layout_marginTop="5dp"
+        android:layout_marginEnd="15dp"
         android:text="10m away"
 
         android:textAppearance="?android:attr/textAppearanceSmall" />
@@ -63,16 +59,15 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/tvUsername"
-        android:layout_marginTop="5dp"
         android:layout_toEndOf="@+id/ivProfileImage"
-        android:transitionName="location"
-        android:text="San Francisco, CA" />
+        android:text="San Francisco, CA"
+        android:transitionName="location" />
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/tvStreamLocation"
-        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
         android:layout_toEndOf="@+id/ivProfileImage"
         android:gravity="right"
         android:orientation="horizontal">
@@ -80,27 +75,37 @@
         <ImageView
             android:layout_width="16dp"
             android:layout_height="16dp"
-            android:layout_marginLeft="20dp"
-            android:src="@mipmap/ic_inbox_orange"/>
+            android:layout_marginStart="20dp"
+            android:src="@mipmap/ic_inbox_orange" />
 
         <TextView
             android:id="@+id/tvStreamViewCount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="2dp"
+            android:layout_marginStart="2dp"
             android:text="10" />
 
         <ImageView
             android:layout_width="16dp"
             android:layout_height="16dp"
-            android:layout_marginLeft="20dp"
-            android:src="@mipmap/ic_upvote_orange"/>
+            android:layout_marginStart="20dp"
+            android:src="@mipmap/ic_upvote_orange" />
+
         <TextView
             android:id="@+id/tvStreamUpvotes"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="2dp"
+            android:layout_marginStart="2dp"
             android:text="12" />
 
     </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginBottom="1dp"
+        android:layout_marginEnd="2dp"
+        android:layout_marginStart="2dp"
+        android:background="@color/divider" />
+
 </RelativeLayout>

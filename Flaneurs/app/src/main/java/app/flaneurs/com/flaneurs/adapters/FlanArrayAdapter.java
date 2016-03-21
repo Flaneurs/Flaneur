@@ -1,12 +1,14 @@
 package app.flaneurs.com.flaneurs.adapters;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.location.Location;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -79,6 +81,12 @@ public class FlanArrayAdapter extends RecyclerView.Adapter<FlanArrayAdapter.Flan
             });
         }
 
+        if (position % 2 == 0) {
+            holder.rlBackground.setBackgroundColor(Color.parseColor("#C8E6C9"));
+        } else {
+            holder.rlBackground.setBackgroundColor(Color.parseColor("#ffffff"));
+        }
+
         holder.ivProfileImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -110,6 +118,9 @@ public class FlanArrayAdapter extends RecyclerView.Adapter<FlanArrayAdapter.Flan
     }
 
     public static class FlanViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+        @Bind(R.id.rlBackground)
+        RelativeLayout rlBackground;
+
         @Bind(R.id.ivProfileImage)
         ImageView ivProfileImage;
 
@@ -130,7 +141,6 @@ public class FlanArrayAdapter extends RecyclerView.Adapter<FlanArrayAdapter.Flan
 
         @Bind(R.id.tvStreamDistanceAway)
         TextView tvStreamDistanceAway;
-
 
         IMyViewHolderClicks mListener;
 
