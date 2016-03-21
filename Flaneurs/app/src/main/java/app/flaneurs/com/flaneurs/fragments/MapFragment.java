@@ -4,6 +4,7 @@ import android.Manifest;
 import android.location.Location;
 import android.os.Bundle;
 import android.os.SystemClock;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -98,8 +99,12 @@ public class MapFragment extends SupportMapFragment implements LocationProvider.
         if (mGoogleMap != null) {
             Log.d(TAG, "Map Fragment was loaded properly.");
 
-            int topPadding = (shouldTrackLocation || shouldLockMap) ? 0 : 50;
-            int bottomPadding = (shouldTrackLocation) ? 130 : 0;
+
+            DisplayMetrics metrics = new DisplayMetrics();
+            getActivity().getWindowManager().getDefaultDisplay().getMetrics(metrics);
+
+            int topPadding = (shouldTrackLocation || shouldLockMap) ? 0 : (int) (50.0/1280 * metrics.heightPixels);
+            int bottomPadding = (shouldTrackLocation) ? (int) (130.0/1280 * metrics.heightPixels) : 0;
             mGoogleMap.setPadding(0, topPadding, 0, bottomPadding);
             if (shouldLockMap) {
                 mGoogleMap.getUiSettings().setAllGesturesEnabled(false);
