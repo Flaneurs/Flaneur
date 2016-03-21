@@ -2,7 +2,9 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="?android:attr/selectableItemBackgroundBorderless">
+    style="@style/SelectableItemBackground"
+    android:layout_marginBottom="6dp"
+    android:background="@color/cardview_light_background">
 
 
     <ImageView
@@ -15,6 +17,7 @@
         android:adjustViewBounds="true"
         android:scaleType="centerCrop"
         android:transitionName="image"
+        android:elevation="2dp"
         />
 
     <TextView
@@ -93,5 +96,12 @@
         android:text="1m ago"
         android:transitionName="pickupTime"
         android:textAppearance="?android:attr/textAppearanceSmall" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:layout_marginTop="4dp"
+        android:background="@drawable/shadow"
+        android:layout_below="@id/ivInboxImage"></View>
 
 </RelativeLayout>

@@ -16,7 +16,6 @@ import app.flaneurs.com.flaneurs.FlaneurApplication;
 import app.flaneurs.com.flaneurs.R;
 import app.flaneurs.com.flaneurs.adapters.InboxArrayAdapter;
 import app.flaneurs.com.flaneurs.models.InboxItem;
-import app.flaneurs.com.flaneurs.utils.DividerItemDecoration;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
@@ -46,7 +45,7 @@ public class InboxActivity extends AppCompatActivity implements InboxArrayAdapte
         mAdapter = new InboxArrayAdapter(this, mInboxItems, this);
         mLayoutManager = new LinearLayoutManager(this);
         rvInboxItems.setLayoutManager(mLayoutManager);
-        rvInboxItems.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL_LIST));
+//        rvInboxItems.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL_LIST));
         rvInboxItems.setAdapter(mAdapter);
 
         ItemTouchHelper.SimpleCallback simpleItemTouchCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {

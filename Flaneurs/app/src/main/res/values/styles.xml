@@ -20,7 +20,7 @@
 
     <style name="ExpandedAppBar" parent="@android:style/TextAppearance.Medium">
         <item name="android:textSize">24sp</item>
-        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textColor">@android:color/transparent</item>
         <item name="android:textStyle">normal</item>
     </style>
 
@@ -28,5 +28,14 @@
         <item name="android:textColor">@android:color/white</item>
     </style>
 
+
+    <style name="SelectableItemTheme">
+        <item name="android:colorControlHighlight">@color/accent</item>
+    </style>
+
+    <style name="SelectableItemBackground">
+        <item name="android:theme">@style/SelectableItemTheme</item>
+        <item name="android:background">?attr/selectableItemBackground</item>
+    </style>
 
 </resources>
