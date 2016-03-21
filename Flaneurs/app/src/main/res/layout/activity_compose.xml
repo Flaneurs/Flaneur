@@ -36,26 +36,29 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="13dp"
             android:layout_marginEnd="5dp"
+            android:layout_marginStart="13dp"
             android:text="@string/location_prefix_text" />
 
-        <TextView
-            android:id="@+id/tvLocation"
+        <Button
+            android:id="@+id/btnLocation"
             android:layout_width="wrap_content"
-            android:textColor="@color/primary_dark"
+            android:layout_height="wrap_content"
+            android:background="#00000000"
+            android:minHeight="0dp"
+            android:onClick="onLocationClicked"
             android:text="@string/text_location_placeholder"
-            android:layout_height="wrap_content" />
+            android:textColor="@color/primary_dark" />
 
     </LinearLayout>
 
     <View
-        android:layout_above="@+id/flMap"
-        android:layout_marginBottom="1dp"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_marginStart="2dp"
+        android:layout_above="@+id/flMap"
+        android:layout_marginBottom="1dp"
         android:layout_marginEnd="2dp"
+        android:layout_marginStart="2dp"
         android:background="@color/divider" />
 
     <FrameLayout

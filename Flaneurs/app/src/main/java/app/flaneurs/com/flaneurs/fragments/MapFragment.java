@@ -99,7 +99,6 @@ public class MapFragment extends SupportMapFragment implements LocationProvider.
         if (mGoogleMap != null) {
             Log.d(TAG, "Map Fragment was loaded properly.");
 
-
             DisplayMetrics metrics = new DisplayMetrics();
             getActivity().getWindowManager().getDefaultDisplay().getMetrics(metrics);
 
@@ -177,6 +176,7 @@ public class MapFragment extends SupportMapFragment implements LocationProvider.
     }
 
     public void markLatLng(LatLng latLng) {
+        mGoogleMap.clear();
         addMarkerAtLatLng(latLng, 0, true);
         CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(latLng, 17);
         mGoogleMap.moveCamera(cameraUpdate);
