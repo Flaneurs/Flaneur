@@ -93,8 +93,7 @@ public class ComposeActivity extends AppCompatActivity {
     public void onLocationClicked(View v) {
         // Construct an intent for the place picker
         try {
-            PlacePicker.IntentBuilder intentBuilder =
-                    new PlacePicker.IntentBuilder();
+            PlacePicker.IntentBuilder intentBuilder = new PlacePicker.IntentBuilder();
             Intent intent = intentBuilder.build(this);
             // Start the intent by requesting a result,
             // identified by a request code.
