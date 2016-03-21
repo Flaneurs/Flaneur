@@ -44,6 +44,7 @@ import app.flaneurs.com.flaneurs.services.PickupService;
 import app.flaneurs.com.flaneurs.utils.BadgeDrawable;
 import app.flaneurs.com.flaneurs.utils.LocationProvider;
 import app.flaneurs.com.flaneurs.utils.ParseProxyObject;
+import app.flaneurs.com.flaneurs.utils.RevealLayout;
 import app.flaneurs.com.flaneurs.utils.Utils;
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -59,11 +60,19 @@ public class DiscoverActivity extends AppCompatActivity implements LocationProvi
     @Bind(R.id.psTabs)
     PagerSlidingTabStrip slidingTabStrip;
 
+    @Bind(R.id.reveal_layout)
+    RevealLayout mRevealLayout;
+
+    @Bind(R.id.reveal_view)
+    View mRevealView;
+
     private LocationProvider mLocationProvider;
     private MapFragment mMapFragment;
     private StreamFragment mStreamFragment;
 
     private Location mLocation;
+
+    private FloatingActionButton mFab;
 
     public final String APP_TAG = "flaneurs";
     public final static int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 1034;
@@ -158,11 +167,51 @@ public class DiscoverActivity extends AppCompatActivity implements LocationProvi
 
         slidingTabStrip.setViewPager(viewPager);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
+        mFab = (FloatingActionButton) findViewById(R.id.fab);
+        mFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                onLaunchCamera();
+                mFab.setClickable(false);
+                mFab.setVisibility(View.INVISIBLE);
+
+                int[] location = new int[2];
+                mFab.getLocationOnScreen(location);
+                location[0] += mFab.getWidth() / 2;
+                location[1] -= mFab.getHeight() / 2;
+
+                // create Intent to take a picture and return control to the calling application
+                final Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                intent.putExtra(MediaStore.EXTRA_OUTPUT, getPhotoFileUri(photoFileName)); // set the image file name
+
+                mRevealView.setVisibility(View.VISIBLE);
+                mRevealLayout.setVisibility(View.VISIBLE);
+
+                mRevealLayout.show(location[0], location[1]); // Expand from center of FAB. Actually, it just plays reveal animation.
+                mFab.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        // If you call startActivityForResult() using an intent that no app can handle, your app will crash.
+                        // So as long as the result is not null, it's safe to use the intent.
+                        if (intent.resolveActivity(getPackageManager()) != null) {
+                            // Start the image capture intent to take photo
+                            startActivityForResult(intent, CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
+                        }
+                        /**
+                         * Without using R.anim.hold, the screen will flash because of transition
+                         * of Activities.
+                         */
+                        overridePendingTransition(0, R.anim.hold);
+                    }
+                }, 600); // 600 is default duration of reveal animation in RevealLayout
+                mFab.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        mFab.setClickable(true);
+                        mFab.setVisibility(View.VISIBLE);
+                        mRevealLayout.setVisibility(View.INVISIBLE);
+                        mRevealView.setVisibility(View.INVISIBLE);
+                    }
+                }, 960); // Or some numbers larger than 600.
             }
         });
     }
