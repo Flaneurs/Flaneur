@@ -16,5 +16,6 @@
     <string name="info_views_text">Views:</string>
     <string name="info_upvotes_text">Upvotes:</string>
     <string name="info_address_placeholder">Address</string>
+    <string name="unknown_address_text">Unknown Location</string>
 
 </resources>

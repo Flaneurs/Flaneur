@@ -307,15 +307,20 @@ public class MapFragment extends SupportMapFragment implements LocationProvider.
 
             // Populate fields
             TextView tvInfoWindowAddress = (TextView) v.findViewById(R.id.tvInfoWindowAddress);
-            tvInfoWindowAddress.setText(post.getString(Post.KEY_POST_ADDRESS));
+            String addressString = post.getString(Post.KEY_POST_ADDRESS);
+            if (addressString == null || addressString.length() == 0) {
+                tvInfoWindowAddress.setText(R.string.unknown_address_text);
+            } else {
+                tvInfoWindowAddress.setText(addressString);
+            }
 
             TextView tvInfowWindowViews = (TextView) v.findViewById(R.id.tvInfoWindowViews);
             String viewCountString = String.format("%d", post.getInt(Post.KEY_POST_VIEWCOUNT));
             tvInfowWindowViews.setText(viewCountString);
 
-            TextView tvInfoWindowViews = (TextView) v.findViewById(R.id.tvInfoWindowUpvotes);
+            TextView tvInfoWindowUpvotes = (TextView) v.findViewById(R.id.tvInfoWindowUpvotes);
             String upvoteCountString = String.format("%d", post.getInt(Post.KEY_POST_UPVOTECOUNT));
-            tvInfoWindowViews.setText(upvoteCountString);
+            tvInfoWindowUpvotes.setText(upvoteCountString);
 
             // Return info window contents
             return v;
