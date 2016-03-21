@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context=".DiscoverActivity">
+    tools:context=".DiscoverActivity"
+    android:background="@color/inverse_text">
 
     <com.astuetz.PagerSlidingTabStrip
         android:id="@+id/psTabs"

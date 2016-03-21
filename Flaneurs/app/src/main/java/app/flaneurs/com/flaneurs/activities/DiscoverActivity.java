@@ -1,6 +1,7 @@
 package app.flaneurs.com.flaneurs.activities;
 
 import android.Manifest;
+import android.animation.Animator;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -15,10 +16,13 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.transition.Explode;
+import android.transition.Transition;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewAnimationUtils;
 import android.widget.Toast;
 
 import com.astuetz.PagerSlidingTabStrip;
@@ -81,20 +85,56 @@ public class DiscoverActivity extends AppCompatActivity implements LocationProvi
 
     private MenuItem mInboxItem;
 
+    private Transition.TransitionListener mEnterTransitionListener;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_discover);
         ButterKnife.bind(this);
         DiscoverActivityPermissionsDispatcher.getMyLocationWithCheck(this);
-
         FlaneurApplication.getInstance().pickupService.onColdLaunch();
 
         LocalBroadcastManager.getInstance(this).registerReceiver(mMessageReceiver,
                 new IntentFilter(PickupService.PICKUP_EVENT));
 
-       // ParseQuery.clearAllCachedResults();
-    }
+
+
+
+        mFab = (FloatingActionButton) findViewById(R.id.fab);
+        mFab.setVisibility(View.INVISIBLE);
+
+
+        mEnterTransitionListener = new Transition.TransitionListener() {
+            @Override
+            public void onTransitionStart(Transition transition) {
+
+            }
+
+            @Override
+            public void onTransitionEnd(Transition transition) {
+                enterReveal();
+            }
+
+            @Override
+            public void onTransitionCancel(Transition transition) {
+
+            }
+
+            @Override
+            public void onTransitionPause(Transition transition) {
+
+            }
+
+            @Override
+            public void onTransitionResume(Transition transition) {
+
+            }
+        };
+        getWindow().setEnterTransition(new Explode());
+
+        getWindow().getEnterTransition().addListener(mEnterTransitionListener);    }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
@@ -167,7 +207,6 @@ public class DiscoverActivity extends AppCompatActivity implements LocationProvi
 
         slidingTabStrip.setViewPager(viewPager);
 
-        mFab = (FloatingActionButton) findViewById(R.id.fab);
         mFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -326,5 +365,32 @@ public class DiscoverActivity extends AppCompatActivity implements LocationProvi
         // Update LayerDrawable's BadgeDrawable
         int newInboxCount = FlaneurApplication.getInstance().pickupService.getNewItemsCount();
         BadgeDrawable.setBadgeCount(DiscoverActivity.this, icon, newInboxCount);
+    }
+
+    void enterReveal() {
+
+
+
+
+
+
+
+        // previously invisible view
+        final View myView = mFab;
+
+        // get the center for the clipping circle
+        int cx = myView.getMeasuredWidth() / 2;
+        int cy = myView.getMeasuredHeight() / 2;
+
+        // get the final radius for the clipping circle
+        int finalRadius = Math.max(myView.getWidth(), myView.getHeight()) / 2;
+
+        // create the animator for this view (the start radius is zero)
+        Animator anim =
+                ViewAnimationUtils.createCircularReveal(myView, cx, cy, 0, finalRadius);
+
+        // make the view visible and start the animation
+        myView.setVisibility(View.VISIBLE);
+        anim.start();
     }
 }
