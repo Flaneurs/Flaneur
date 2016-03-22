@@ -129,8 +129,9 @@ public class CommentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             case HEADER:
                 if (payloads != null && !payloads.isEmpty()) {
                     updateHeaderView((HeaderViewHolder) holder, mPost);
+                } else {
+                    configureHeaderView((HeaderViewHolder) holder, mPost);
                 }
-                configureHeaderView((HeaderViewHolder) holder, mPost);
                 break;
             case COMMENT:
                 final Comment comment = mComments.get(position - 1);

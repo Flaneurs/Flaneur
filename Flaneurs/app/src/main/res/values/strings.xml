@@ -18,5 +18,9 @@
     <string name="info_address_placeholder">Address</string>
     <string name="unknown_address_text">Unknown Location</string>
     <string name="add_comment_hint">Add a public comment...</string>
+    <string name="login_sign_in">Sign In</string>
+    <string name="login_sign_up">Don\'t have an account? Sign Up</string>
+    <string name="login_username">Username</string>
+    <string name="login_password">Password</string>
 
 </resources>

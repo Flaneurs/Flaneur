@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<app.flaneurs.com.flaneurs.utils.RevealLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/reveal_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:visibility="invisible">
+
+    <View
+        android:id="@+id/reveal_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/accent"
+        android:visibility="invisible" />
+
+</app.flaneurs.com.flaneurs.utils.RevealLayout>
