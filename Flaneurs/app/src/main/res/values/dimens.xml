@@ -5,4 +5,5 @@
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="profile_view_height">160dp</dimen>
     <dimen name="fullImageSize">400dp</dimen>
+    <dimen name="loginPadding">20dp</dimen>
 </resources>

@@ -3,8 +3,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/primary"
-    tools:context="app.flaneurs.com.flaneurs.activities.LoginActivity">
+    android:background="@drawable/bg"
+    android:id="@+id/rootLayout"
+    tools:context="app.flaneurs.com.flaneurs.activities.LoginActivity"
+    >
 
     <ImageView
         android:id="@+id/ivLogo"
@@ -21,19 +23,77 @@
         android:layout_centerHorizontal="true"
       android:layout_below="@id/ivLogo"
         android:paddingTop="14dp"
-        android:src="@drawable/walkabout_text" />
+        android:src="@drawable/walkabout_text"
+        android:id="@+id/imageViewText" />
+
+
+
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="Don't have an account? Sign Up"
+        android:id="@+id/tvSignUp"
+        android:textColor="@color/inverse_text"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="7dp"/>
+
+    <EditText
+        android:layout_width="match_parent"
+        android:paddingLeft="@dimen/loginPadding"
+        android:paddingRight="@dimen/loginPadding"
+        android:layout_height="wrap_content"
+        android:inputType="textEmailAddress"
+        android:ems="10"
+        android:layout_marginTop="9dp"
+        android:hint="Username"
+        android:id="@+id/editText1"
+        android:textColorHint="@color/inverse_text_alpha"
+        android:layout_below="@+id/imageViewText"
+        android:layout_centerHorizontal="true" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:paddingLeft="@dimen/loginPadding"
+        android:paddingRight="@dimen/loginPadding"
+        android:layout_height="wrap_content"
+        android:inputType="textPassword"
+        android:ems="10"
+        android:hint="Password"
+        android:id="@+id/editText2"
+        android:textColorHint="@color/inverse_text_alpha"
+        android:layout_below="@+id/editText1"
+        android:layout_centerHorizontal="true" />
 
     <Button
         android:id="@+id/btnLogin"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="90dp"
+        android:background="@color/transparent_button"
+        android:onClick="onLoginButtonClicked"
+        android:layout_marginTop="12dp"
+        android:drawableLeft="@drawable/f"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="60dp"
+        android:padding="3dp"
+        android:text="Sign In With Facebook             "
+        android:textColor="@color/inverse_text" />
+
+    <Button
+        android:id="@+id/btnLoginEmail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="25dp"
+        android:layout_above="@id/btnLogin"
         android:background="@color/transparent_button"
         android:onClick="onLoginButtonClicked"
         android:padding="3dp"
-        android:text="Login With Facebook"
-        android:layout_alignParentBottom="true"
+        android:text="Sign In"
         android:textColor="@color/inverse_text" />
 
     <app.flaneurs.com.flaneurs.utils.RevealLayoutDiamond
@@ -42,12 +102,12 @@
         android:layout_height="match_parent"
         android:visibility="invisible">
 
-    <View
-        android:id="@+id/reveal_view"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/inverse_text"
-        android:visibility="invisible" />
+        <View
+            android:id="@+id/reveal_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/inverse_text"
+            android:visibility="invisible" />
     </app.flaneurs.com.flaneurs.utils.RevealLayoutDiamond>
 
 </RelativeLayout>

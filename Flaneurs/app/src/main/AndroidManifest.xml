@@ -55,7 +55,7 @@
         <activity
             android:name=".activities.LoginActivity"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar.GreenStatusBar">
+            android:theme="@style/AppTheme.NoActionBar.ClearStatusBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
