@@ -30,6 +30,7 @@ import app.flaneurs.com.flaneurs.models.User;
 import app.flaneurs.com.flaneurs.utils.ControllableAppBarLayout;
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import jp.wasabeef.glide.transformations.BlurTransformation;
 
 public class DetailActivity extends AppCompatActivity implements CommentAdapter.ICommentInteractionListener {
 
@@ -172,19 +173,19 @@ public class DetailActivity extends AppCompatActivity implements CommentAdapter.
         DefaultItemAnimator animator = new DefaultItemAnimator() {
             @Override
             public boolean canReuseUpdatedViewHolder(RecyclerView.ViewHolder viewHolder) {
-                if (viewHolder.getItemViewType() == 0) {
-                    return true;
-                } else {
-                    return false;
-                }
+                return (viewHolder.getItemViewType() == 0);
             }
         };
         rvComments.setItemAnimator(animator);
 
-        Glide.with(this)
-                .load(item.getImage().getUrl())
-//
-                .into(ivPicturePreview);
+        if (isRevealed) {
+            Glide.with(this).load(item.getImage().getUrl())
+                    .into(ivPicturePreview);
+        } else {
+            Glide.with(this).load(item.getImage().getUrl())
+                    .bitmapTransform(new BlurTransformation(this, 25, 5))
+                    .into(ivPicturePreview);
+        }
 
         ctCollapsingToolbar.setTitle(item.getAddress());
     }
@@ -221,13 +222,6 @@ public class DetailActivity extends AppCompatActivity implements CommentAdapter.
     }
 
     void enterReveal() {
-
-
-
-
-
-
-
         // previously invisible view
         final View myView = mFab;
 
@@ -239,8 +233,7 @@ public class DetailActivity extends AppCompatActivity implements CommentAdapter.
         int finalRadius = Math.max(myView.getWidth(), myView.getHeight()) / 2;
 
         // create the animator for this view (the start radius is zero)
-        Animator anim =
-                ViewAnimationUtils.createCircularReveal(myView, cx, cy, 0, finalRadius);
+        Animator anim = ViewAnimationUtils.createCircularReveal(myView, cx, cy, 0, finalRadius);
 
         // make the view visible and start the animation
         myView.setVisibility(View.VISIBLE);
@@ -259,8 +252,7 @@ public class DetailActivity extends AppCompatActivity implements CommentAdapter.
         int initialRadius = myView.getWidth() / 2;
 
         // create the animation (the final radius is zero)
-        Animator anim =
-                ViewAnimationUtils.createCircularReveal(myView, cx, cy, initialRadius, 0);
+        Animator anim = ViewAnimationUtils.createCircularReveal(myView, cx, cy, initialRadius, 0);
 
         // make the view invisible when the animation is done
         anim.addListener(new AnimatorListenerAdapter() {
@@ -269,7 +261,6 @@ public class DetailActivity extends AppCompatActivity implements CommentAdapter.
                 super.onAnimationEnd(animation);
                 myView.setVisibility(View.INVISIBLE);
                 supportFinishAfterTransition();
-
             }
         });
 
@@ -281,5 +272,4 @@ public class DetailActivity extends AppCompatActivity implements CommentAdapter.
     public void onBackPressed() {
         exitReveal();
     }
-
 }
