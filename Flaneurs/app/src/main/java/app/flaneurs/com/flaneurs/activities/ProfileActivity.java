@@ -116,23 +116,5 @@ public class ProfileActivity extends AppCompatActivity {
         tvDrops.setText("" + user.getDrops());
         tvUpvotes.setText("" + user.getUpVotes());
         tvProfileName.setText(user.getUsername());
-        animateProfileViews();
-    }
-
-    private void animateProfileViews() {
-        int colorFrom = getResources().getColor(R.color.inverse_text);
-        int colorTo = getResources().getColor(R.color.primary_dark);
-        ValueAnimator colorAnimation = ValueAnimator.ofObject(new ArgbEvaluator(), colorFrom, colorTo);
-        colorAnimation.setDuration(2000); // milliseconds
-        colorAnimation.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-
-            @Override
-            public void onAnimationUpdate(ValueAnimator animator) {
-                tvDropsDesc.setTextColor((int) animator.getAnimatedValue());
-                tvUpvotesDesc.setTextColor((int) animator.getAnimatedValue());
-            }
-
-        });
-        colorAnimation.start();
     }
 }
