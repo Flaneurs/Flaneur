@@ -150,9 +150,9 @@ public class DetailActivity extends AppCompatActivity implements CommentAdapter.
         });
 
         if (mIsLiked) {
-            mFab.setImageDrawable(ContextCompat.getDrawable(DetailActivity.this, R.drawable.ic_action_heart_full));
+            mFab.setImageDrawable(ContextCompat.getDrawable(DetailActivity.this, R.drawable.ic_favorite_white_48dp));
         } else {
-            mFab.setImageDrawable(ContextCompat.getDrawable(DetailActivity.this, R.drawable.ic_action_heart_empty));
+            mFab.setImageDrawable(ContextCompat.getDrawable(DetailActivity.this, R.drawable.ic_favorite_border_white_48dp));
         }
     }
 
@@ -206,7 +206,7 @@ public class DetailActivity extends AppCompatActivity implements CommentAdapter.
             return;
         }
 
-        mFab.setImageDrawable(ContextCompat.getDrawable(DetailActivity.this, R.drawable.ic_action_heart_full));
+        mFab.setImageDrawable(ContextCompat.getDrawable(DetailActivity.this, R.drawable.ic_favorite_white_48dp));
         adapter.onUpvote();
         if (mIsLiked) {
             return;
