@@ -17,5 +17,6 @@
     <string name="info_upvotes_text">Upvotes:</string>
     <string name="info_address_placeholder">Address</string>
     <string name="unknown_address_text">Unknown Location</string>
+    <string name="add_comment_hint">Add a public comment...</string>
 
 </resources>
