@@ -11,11 +11,13 @@
     <com.astuetz.PagerSlidingTabStrip
         android:id="@+id/psTabs"
         android:layout_width="match_parent"
-        android:layout_height="53dp"
+        android:layout_height="56dip"
         android:textColor="@color/primary"
         app:pstsIndicatorColor="@color/primary_dark"
         app:pstsShouldExpand="true"
-        app:pstsTextAllCaps="true" />
+        app:pstsIndicatorHeight="5dp"
+        app:pstsTextAllCaps="true"
+        />
 
     <android.support.v4.view.ViewPager
         android:id="@+id/vpViewPager"
