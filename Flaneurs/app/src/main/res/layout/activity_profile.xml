@@ -74,7 +74,7 @@
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="20dp"
                     android:adjustViewBounds="true"
-                    android:scaleType="fitXY"
+                    android:scaleType="centerCrop"
                     android:src="@drawable/profile_photo_placeholder"
                      />
                 <app.flaneurs.com.flaneurs.utils.AutoResizeTextView
@@ -132,6 +132,7 @@
         android:id="@+id/psTabs"
         android:layout_width="match_parent"
         android:layout_height="48dp"
+        app:pstsIndicatorHeight="5dp"
         android:layout_below="@id/rlProfile"
         android:textColor="@color/primary"
         app:pstsIndicatorColor="@color/primary_dark"
