@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -110,6 +111,9 @@ public class FlanArrayAdapter extends RecyclerView.Adapter<FlanArrayAdapter.Flan
     }
 
     public static class FlanViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+        @Bind(R.id.rlBackground)
+        RelativeLayout rlBackground;
+
         @Bind(R.id.ivProfileImage)
         ImageView ivProfileImage;
 
@@ -130,7 +134,6 @@ public class FlanArrayAdapter extends RecyclerView.Adapter<FlanArrayAdapter.Flan
 
         @Bind(R.id.tvStreamDistanceAway)
         TextView tvStreamDistanceAway;
-
 
         IMyViewHolderClicks mListener;
 
