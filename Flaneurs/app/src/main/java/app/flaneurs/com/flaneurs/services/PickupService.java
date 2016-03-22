@@ -79,6 +79,7 @@ public class PickupService implements LocationProvider.ILocationListener {
     }
 
     private void queryForPosts() {
+        Log.d("PickupService", "make query");
         ParseQuery<Post> query = ParseQuery.getQuery("Post");
         ParseGeoPoint current = new ParseGeoPoint(mCurrentLocation.getLatitude(), mCurrentLocation.getLongitude());
         query.whereNear(Post.KEY_POST_LOCATION, current);
@@ -155,9 +156,11 @@ public class PickupService implements LocationProvider.ILocationListener {
 
       //  query.setCachePolicy(ParseQuery.CachePolicy.CACHE_THEN_NETWORK);
         query.orderByDescending(InboxItem.KEY_INBOX_NEW + "," + InboxItem.KEY_INBOX_DATE);
+        Log.d("PickupService", "make query");
         query.findInBackground(new FindCallback<InboxItem>() {
             @Override
             public void done(List<InboxItem> objects, ParseException e) {
+                Log.d("PickupService", "query returned");
                 if (objects == null) {
                     return;
                 }

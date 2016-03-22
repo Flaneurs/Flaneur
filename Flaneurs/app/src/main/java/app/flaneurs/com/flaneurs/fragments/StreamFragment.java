@@ -106,9 +106,11 @@ public class StreamFragment extends Fragment implements FlanArrayAdapter.IFlanIn
         query.orderByDescending(Post.KEY_POST_DATE);
        // query.setCachePolicy(ParseQuery.CachePolicy.CACHE_THEN_NETWORK);
         query.include(Post.KEY_POST_AUTHOR);
+        Log.d("StreamFragment", "make query");
         query.findInBackground(new FindCallback<Post>() {
             @Override
             public void done(List<Post> objects, ParseException e) {
+                Log.d("StreamFragment", "query returned");
                 if (objects != null)
                     onParseResultsReceived(objects);
             }
@@ -121,6 +123,7 @@ public class StreamFragment extends Fragment implements FlanArrayAdapter.IFlanIn
         query.orderByDescending(Post.KEY_POST_DATE);
         //query.setCachePolicy(ParseQuery.CachePolicy.CACHE_THEN_NETWORK);
         query.whereEqualTo(Post.KEY_POST_AUTHOR, user);
+        Log.d("StreamFragment", "make query");
         query.findInBackground(new FindCallback<Post>() {
             @Override
             public void done(List<Post> objects, ParseException e) {

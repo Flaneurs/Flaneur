@@ -60,6 +60,8 @@ import permissions.dispatcher.RuntimePermissions;
 @RuntimePermissions
 public class DiscoverActivity extends AppCompatActivity implements LocationProvider.ILocationListener {
 
+    public static final String TAG = DiscoverActivity.class.getSimpleName();
+
     @Bind(R.id.vpViewPager)
     ViewPager viewPager;
 
@@ -88,6 +90,8 @@ public class DiscoverActivity extends AppCompatActivity implements LocationProvi
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.d(TAG, "onCreate");
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_discover);
         ButterKnife.bind(this);
@@ -97,110 +101,12 @@ public class DiscoverActivity extends AppCompatActivity implements LocationProvi
         LocalBroadcastManager.getInstance(this).registerReceiver(mMessageReceiver,
                 new IntentFilter(PickupService.PICKUP_EVENT));
 
-        ViewGroup vg = (ViewGroup)(getWindow().getDecorView().getRootView());
+        ViewGroup vg = (ViewGroup) (getWindow().getDecorView().getRootView());
         LayoutInflater myinflater = getLayoutInflater();
         View customView = myinflater.inflate(R.layout.reveal_layout, null);
         vg.addView(customView);
 
-        mRevealLayout = (RevealLayout) customView.findViewById(R.id.reveal_layout);
-        mRevealView = customView.findViewById(R.id.reveal_view);
-
-        mFab = (FloatingActionButton) findViewById(R.id.fab);
-        mFab.setVisibility(View.INVISIBLE);
-
-        mEnterTransitionListener = new Transition.TransitionListener() {
-            @Override
-            public void onTransitionStart(Transition transition) {
-
-            }
-
-            @Override
-            public void onTransitionEnd(Transition transition) {
-                enterReveal();
-            }
-
-            @Override
-            public void onTransitionCancel(Transition transition) {
-
-            }
-
-            @Override
-            public void onTransitionPause(Transition transition) {
-
-            }
-
-            @Override
-            public void onTransitionResume(Transition transition) {
-
-            }
-        };
-        getWindow().setEnterTransition(new Explode());
-        getWindow().getEnterTransition().addListener(mEnterTransitionListener);
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        DiscoverActivityPermissionsDispatcher.onRequestPermissionsResult(this, requestCode, grantResults);
-    }
-
-    @NeedsPermission({ Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION})
-    void getMyLocation() {
-        mLocationProvider = FlaneurApplication.getInstance().locationProvider;
-        mLocationProvider.connect();
-        mLocationProvider.addListener(this);
-    }
-
-    @Override
-    public void onLocationChanged(Location location) {
-        if (mLocation == null) {
-            ParseGeoPoint currentPoint = new ParseGeoPoint(location.getLatitude(), location.getLongitude());
-
-            ParseQuery<Post> query = ParseQuery.getQuery("Post");
-            query.whereNear(Post.KEY_POST_LOCATION, currentPoint);
-            query.setLimit(20);
-            query.include(Post.KEY_POST_AUTHOR);
-           // query.setCachePolicy(ParseQuery.CachePolicy.CACHE_THEN_NETWORK);
-            query.findInBackground(new FindCallback<Post>() {
-                @Override
-                public void done(List<Post> objects, ParseException e) {
-                    if (objects != null && objects.size() > 0)
-                        ParseObject.pinAllInBackground(objects);
-                        configureViewWithPosts(objects);
-                }
-            });
-        }
-        mLocation = location;
-    }
-
-    private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            String address = intent.getStringExtra(PickupService.PICKUP_ADDRESS);
-            String postId = intent.getStringExtra(PickupService.PICKUP_POST_ID);
-            Utils.fireLocalNotification(DiscoverActivity.this, address);
-            updateInboxIcon();
-            Log.v("DiscoverActivity", "Sending local notif for pickup at " + address);
-
-            mMapFragment.onPostPickup(postId);
-        }
-    };
-
-    @Override
-    protected void onDestroy() {
-        // Unregister since the activity is about to be closed.
-        LocalBroadcastManager.getInstance(this).unregisterReceiver(mMessageReceiver);
-        super.onDestroy();
-    }
-
-    private void configureViewWithPosts(List<Post> posts) {
-        ArrayList<ParseProxyObject> postsProxy = new ArrayList<>();
-        // Build ArrayList of ParseProxyObjects to pass into MapFragment
-        for (Post post : posts) {
-            postsProxy.add(new ParseProxyObject(post));
-        }
-
-        mMapFragment = MapFragment.newInstance(true, false, null, postsProxy);
+        mMapFragment = MapFragment.newInstance(true, false, null, null);
 
         StreamFragment.StreamConfiguration streamConfiguration = new StreamFragment.StreamConfiguration();
         streamConfiguration.setStreamType(StreamFragment.StreamType.AllPosts);
@@ -210,6 +116,11 @@ public class DiscoverActivity extends AppCompatActivity implements LocationProvi
 
         slidingTabStrip.setViewPager(viewPager);
 
+        mRevealLayout = (RevealLayout) customView.findViewById(R.id.reveal_layout);
+        mRevealView = customView.findViewById(R.id.reveal_view);
+
+        mFab = (FloatingActionButton) findViewById(R.id.fab);
+        mFab.setVisibility(View.INVISIBLE);
         mFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -255,6 +166,108 @@ public class DiscoverActivity extends AppCompatActivity implements LocationProvi
                 }, 960); // Or some numbers larger than 600.
             }
         });
+
+        mEnterTransitionListener = new Transition.TransitionListener() {
+            @Override
+            public void onTransitionStart(Transition transition) {
+
+            }
+
+            @Override
+            public void onTransitionEnd(Transition transition) {
+                enterReveal();
+            }
+
+            @Override
+            public void onTransitionCancel(Transition transition) {
+
+            }
+
+            @Override
+            public void onTransitionPause(Transition transition) {
+
+            }
+
+            @Override
+            public void onTransitionResume(Transition transition) {
+
+            }
+        };
+        getWindow().setEnterTransition(new Explode());
+        getWindow().getEnterTransition().addListener(mEnterTransitionListener);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        Log.d(TAG, "onRequestPermissionsResult");
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        DiscoverActivityPermissionsDispatcher.onRequestPermissionsResult(this, requestCode, grantResults);
+    }
+
+    @NeedsPermission({Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION})
+    void getMyLocation() {
+        Log.d(TAG, "getMyLocation");
+        mLocationProvider = FlaneurApplication.getInstance().locationProvider;
+        mLocationProvider.connect();
+        mLocationProvider.addListener(this);
+    }
+
+    @Override
+    public void onLocationChanged(Location location) {
+        Log.d(TAG, String.format("onLocationChanged: %s", location.toString()));
+        if (mLocation == null) {
+            Log.d(TAG, "mLocation is null!");
+            ParseGeoPoint currentPoint = new ParseGeoPoint(location.getLatitude(), location.getLongitude());
+            Log.d(TAG, String.format("currentPoint: %s", currentPoint.toString()));
+            ParseQuery<Post> query = ParseQuery.getQuery("Post");
+            query.whereNear(Post.KEY_POST_LOCATION, currentPoint);
+            query.setLimit(20);
+            query.include(Post.KEY_POST_AUTHOR);
+            // query.setCachePolicy(ParseQuery.CachePolicy.CACHE_THEN_NETWORK);
+            Log.d(TAG, "make query");
+            query.findInBackground(new FindCallback<Post>() {
+                @Override
+                public void done(List<Post> objects, ParseException e) {
+                    Log.d(TAG, "query returned");
+                    if (objects != null && objects.size() > 0) {
+                        ParseObject.pinAllInBackground(objects);
+                        configureViewWithPosts(objects);
+                    }
+                }
+            });
+        }
+        mLocation = location;
+    }
+
+    private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String address = intent.getStringExtra(PickupService.PICKUP_ADDRESS);
+            String postId = intent.getStringExtra(PickupService.PICKUP_POST_ID);
+            Utils.fireLocalNotification(DiscoverActivity.this, address);
+            updateInboxIcon();
+            Log.v("DiscoverActivity", "Sending local notif for pickup at " + address);
+
+            mMapFragment.onPostPickup(postId);
+        }
+    };
+
+    @Override
+    protected void onDestroy() {
+        // Unregister since the activity is about to be closed.
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(mMessageReceiver);
+        super.onDestroy();
+    }
+
+    private void configureViewWithPosts(List<Post> posts) {
+        Log.d(TAG, "configureViewWithPosts");
+        // Build ArrayList of ParseProxyObjects to pass into MapFragment
+        ArrayList<ParseProxyObject> postsProxy = new ArrayList<>();
+        for (Post post : posts) {
+            postsProxy.add(new ParseProxyObject(post));
+        }
+
+        mMapFragment.populateMapWithPosts(postsProxy);
     }
 
     @Override
