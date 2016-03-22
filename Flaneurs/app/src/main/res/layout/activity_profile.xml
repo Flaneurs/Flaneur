@@ -31,14 +31,16 @@
                 android:layout_height="match_parent"
                 android:layout_weight="0.33">
                 <ImageView
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:src="@mipmap/ic_upvote"
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:src="@drawable/ic_favorite_small"
                     android:scaleType="fitXY"
                     android:layout_toLeftOf="@+id/tvUpvotes"
                     android:layout_alignBottom="@+id/tvUpvotes"
                     android:layout_marginTop="3dp"
-                    />
+                    android:maxHeight="10dp"
+                    android:layout_marginRight="5dp"
+                    android:maxWidth="10dp" />
                 <TextView
                     android:id="@+id/tvUpvotesDesc"
                     android:layout_width="wrap_content"
