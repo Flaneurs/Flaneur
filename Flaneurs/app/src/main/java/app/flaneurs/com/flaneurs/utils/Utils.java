@@ -53,8 +53,8 @@ public class Utils {
         Location destination = new Location("");
         destination.setLatitude(destinationGeoPoint.getLatitude());
         destination.setLongitude(destinationGeoPoint.getLongitude());
-        float distanceInMeters = current.distanceTo(destination);
-        String pretty = String.format("%.02fm away", distanceInMeters);
+        int distanceInMeters = Math.round(current.distanceTo(destination));
+        String pretty = String.format("%dm away", distanceInMeters);
         return pretty;
     }
 

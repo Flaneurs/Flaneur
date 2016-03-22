@@ -1,7 +1,6 @@
 package app.flaneurs.com.flaneurs.adapters;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.location.Location;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -79,12 +78,6 @@ public class FlanArrayAdapter extends RecyclerView.Adapter<FlanArrayAdapter.Flan
                     Glide.with(mContext).load(author.getProfileUrl()).asBitmap().into(holder.ivProfileImage);
                 }
             });
-        }
-
-        if (position % 2 == 0) {
-            holder.rlBackground.setBackgroundColor(Color.parseColor("#C8E6C9"));
-        } else {
-            holder.rlBackground.setBackgroundColor(Color.parseColor("#ffffff"));
         }
 
         holder.ivProfileImage.setOnClickListener(new View.OnClickListener() {
