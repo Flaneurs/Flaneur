@@ -3,6 +3,7 @@ package app.flaneurs.com.flaneurs.activities;
 import android.app.ActivityOptions;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
@@ -125,7 +126,14 @@ public class LoginActivity extends AppCompatActivity {
 editText2.setVisibility(View.INVISIBLE);
         imageViewText.setVisibility(View.INVISIBLE);
 
-        moveViewToScreenCenter(ivLogo);
+
+
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                moveViewToScreenCenter(ivLogo);
+            }
+        }, 600/* 1sec delay */);
 
 
 
@@ -181,7 +189,7 @@ editText2.setVisibility(View.INVISIBLE);
 
     private void moveViewToScreenCenter( View view )
     {
-        RelativeLayout root = (RelativeLayout) findViewById( R.id.rootLayout );
+        RelativeLayout root = (RelativeLayout) findViewById(R.id.rootLayout );
         DisplayMetrics dm = new DisplayMetrics();
         this.getWindowManager().getDefaultDisplay().getMetrics(dm);
         int statusBarOffset = dm.heightPixels - root.getMeasuredHeight();
@@ -195,6 +203,7 @@ editText2.setVisibility(View.INVISIBLE);
         thingCenter = yDest - originalPos[1];
         TranslateAnimation anim = new TranslateAnimation( 0, xDest - originalPos[0] , 0, yDest - originalPos[1] );
         anim.setDuration(800);
+
         anim.setInterpolator(new DecelerateInterpolator());
         anim.setFillAfter(true);
         anim.setAnimationListener(new Animation.AnimationListener() {
