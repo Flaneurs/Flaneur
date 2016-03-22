@@ -51,7 +51,7 @@
         <activity
             android:name=".activities.DiscoverActivity"
             android:label="@string/discover_label"
-            android:theme="@style/AppTheme" />
+            android:theme="@style/AppTheme.ClearStatusBar" />
         <activity
             android:name=".activities.LoginActivity"
             android:label="@string/app_name"
