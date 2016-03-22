@@ -19,10 +19,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.transition.Explode;
 import android.transition.Transition;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewAnimationUtils;
+import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.astuetz.PagerSlidingTabStrip;
@@ -64,10 +66,7 @@ public class DiscoverActivity extends AppCompatActivity implements LocationProvi
     @Bind(R.id.psTabs)
     PagerSlidingTabStrip slidingTabStrip;
 
-    @Bind(R.id.reveal_layout)
     RevealLayout mRevealLayout;
-
-    @Bind(R.id.reveal_view)
     View mRevealView;
 
     private LocationProvider mLocationProvider;
@@ -87,7 +86,6 @@ public class DiscoverActivity extends AppCompatActivity implements LocationProvi
 
     private Transition.TransitionListener mEnterTransitionListener;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -99,12 +97,16 @@ public class DiscoverActivity extends AppCompatActivity implements LocationProvi
         LocalBroadcastManager.getInstance(this).registerReceiver(mMessageReceiver,
                 new IntentFilter(PickupService.PICKUP_EVENT));
 
+        ViewGroup vg = (ViewGroup)(getWindow().getDecorView().getRootView());
+        LayoutInflater myinflater = getLayoutInflater();
+        View customView = myinflater.inflate(R.layout.reveal_layout, null);
+        vg.addView(customView);
 
-
+        mRevealLayout = (RevealLayout) customView.findViewById(R.id.reveal_layout);
+        mRevealView = customView.findViewById(R.id.reveal_view);
 
         mFab = (FloatingActionButton) findViewById(R.id.fab);
         mFab.setVisibility(View.INVISIBLE);
-
 
         mEnterTransitionListener = new Transition.TransitionListener() {
             @Override
@@ -133,8 +135,8 @@ public class DiscoverActivity extends AppCompatActivity implements LocationProvi
             }
         };
         getWindow().setEnterTransition(new Explode());
-
-        getWindow().getEnterTransition().addListener(mEnterTransitionListener);    }
+        getWindow().getEnterTransition().addListener(mEnterTransitionListener);
+    }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
@@ -217,7 +219,6 @@ public class DiscoverActivity extends AppCompatActivity implements LocationProvi
                 int[] location = new int[2];
                 mFab.getLocationOnScreen(location);
                 location[0] += mFab.getWidth() / 2;
-                location[1] -= mFab.getHeight() / 2;
 
                 // create Intent to take a picture and return control to the calling application
                 final Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
@@ -369,13 +370,6 @@ public class DiscoverActivity extends AppCompatActivity implements LocationProvi
     }
 
     void enterReveal() {
-
-
-
-
-
-
-
         // previously invisible view
         final View myView = mFab;
 
