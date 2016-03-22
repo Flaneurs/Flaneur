@@ -1,9 +1,16 @@
 package app.flaneurs.com.flaneurs.activities;
 
+import android.animation.ArgbEvaluator;
+import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
+import android.content.Context;
 import android.graphics.Color;
+import android.graphics.drawable.TransitionDrawable;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.util.AttributeSet;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -37,6 +44,12 @@ public class ProfileActivity extends AppCompatActivity {
 
     @Bind(R.id.tvUpvotes)
     TextView tvUpvotes;
+
+    @Bind(R.id.tvDropsDesc)
+    TextView tvDropsDesc;
+
+    @Bind(R.id.tvUpvotesDesc)
+    TextView tvUpvotesDesc;
 
     @Bind(R.id.vpViewPager)
     ViewPager viewPager;
@@ -81,6 +94,7 @@ public class ProfileActivity extends AppCompatActivity {
                 setupProfileView(objects.get(0).getAuthor(), objects);
             }
         });
+
     }
 
     private void setupProfileView(User user, List<Post> posts) {

@@ -34,15 +34,26 @@
                     android:layout_width="24dp"
                     android:layout_height="24dp"
                     android:src="@mipmap/ic_upvote"
+                    android:scaleType="fitXY"
                     android:layout_toLeftOf="@+id/tvUpvotes"
                     android:layout_alignBottom="@+id/tvUpvotes"
                     android:layout_marginTop="3dp"
                     />
                 <TextView
+                    android:id="@+id/tvUpvotesDesc"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:layout_centerInParent="true"
+                    android:text="upvotes"
+                    android:textSize="16dp"
+                    android:textColor="@color/inverse_text" />
+                <TextView
                     android:id="@+id/tvUpvotes"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center"
+                    android:layout_above="@id/tvUpvotesDesc"
                     android:layout_centerInParent="true"
                     android:text="0"
                     android:textColor="@color/inverse_text" />
@@ -69,14 +80,13 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_alignParentBottom="true"
-                    android:layout_marginBottom="10dp"
+                    android:layout_marginBottom="15dp"
                     android:gravity="center"
                     android:text="Kamran Pirwani"
                     android:textStyle="bold"
                     android:textColor="@android:color/white"
                     android:maxLines="1"
-
-                    android:textSize="17sp"
+                    android:textSize="19sp"
                     />
             </RelativeLayout>
             <RelativeLayout
@@ -84,21 +94,33 @@
                 android:layout_height="match_parent"
                 android:layout_weight="0.33">
                 <TextView
+                    android:id="@+id/tvDropsDesc"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:gravity="center"
+                    android:layout_marginTop="1dp"
+                    android:text="drops"
+                    android:textSize="16sp"
+                    android:textColor="@color/inverse_text" />
+                <TextView
                     android:id="@+id/tvDrops"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="3dp"
-                    android:layout_centerInParent="true"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="2dp"
                     android:gravity="center"
                     android:text="0"
-                    android:textColor="@color/inverse_text"/>
+                    android:textColor="@color/inverse_text"
+                    android:layout_above="@+id/tvDropsDesc"
+                    android:layout_toEndOf="@+id/imageView" />
                 <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
                     android:src="@drawable/walk_marker"
-                    android:layout_toLeftOf="@+id/tvDrops"
                     android:layout_alignBottom="@+id/tvDrops"
-                    />
+                    android:layout_alignStart="@+id/tvDropsDesc"
+                    android:id="@+id/imageView" />
             </RelativeLayout>
         </LinearLayout>
 
