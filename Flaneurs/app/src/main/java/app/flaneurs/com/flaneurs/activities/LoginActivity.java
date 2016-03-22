@@ -4,10 +4,20 @@ import android.app.ActivityOptions;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Spannable;
+import android.text.SpannableStringBuilder;
+import android.text.style.StyleSpan;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.DecelerateInterpolator;
+import android.view.animation.TranslateAnimation;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.facebook.AccessToken;
 import com.facebook.GraphRequest;
@@ -47,11 +57,38 @@ public class LoginActivity extends AppCompatActivity {
     @Bind(R.id.btnLogin)
     Button btnLogin;
 
+    @Bind(R.id.tvSignUp)
+    TextView tvSignUp;
+
+    @Bind(R.id.btnLoginEmail)
+    Button btnLoginEmail;
+
+    @Bind(R.id.editText1)
+    EditText editText1;
+
+    @Bind(R.id.editText2)
+    EditText editText2;
+
+    @Bind(R.id.rootLayout)
+    RelativeLayout rootLayout;
+
+    @Bind(R.id.imageViewText)
+    ImageView imageViewText;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
+
+        final SpannableStringBuilder sb = new SpannableStringBuilder("Don't have an account? Sign up");
+
+        final StyleSpan bss = new StyleSpan(android.graphics.Typeface.BOLD); // Span to make text bold
+        sb.setSpan(bss, 22, 30, Spannable.SPAN_INCLUSIVE_INCLUSIVE); // make first 4 characters Bold
+
+
+      tvSignUp.setText(sb);
+
+
 
         if (User.currentUser() != null) {
             // TODO: disable for video
@@ -82,59 +119,17 @@ public class LoginActivity extends AppCompatActivity {
 
         btnLogin.setClickable(false);
         btnLogin.setVisibility(View.INVISIBLE);
+        btnLoginEmail.setVisibility(View.INVISIBLE);
+        tvSignUp.setVisibility(View.INVISIBLE);
+        editText1.setVisibility(View.INVISIBLE);
+editText2.setVisibility(View.INVISIBLE);
+        imageViewText.setVisibility(View.INVISIBLE);
+
+        moveViewToScreenCenter(ivLogo);
 
 
-        btnLogin.postDelayed(new Runnable() {
-            @Override
-            public void run () {
-                int[] location = new int[2];
-                ivLogo.getLocationOnScreen(location);
-                location[0] += ivLogo.getWidth() / 2;
-                location[1] += (ivLogo.getHeight() / 5) * 3;
 
-                // create Intent to take a picture and return control to the calling application
-                final Intent intent = new Intent(LoginActivity.this, DiscoverActivity.class);
 
-                mRevealView.setVisibility(View.VISIBLE);
-                mRevealLayout.setVisibility(View.VISIBLE);
-
-                mRevealLayout.show(location[0], location[1]); // Expand from center of FAB. Actually, it just plays reveal animation.
-                btnLogin.postDelayed(new
-
-                                             Runnable() {
-                                                 @Override
-                                                 public void run() {
-                                                     // If you call startActivityForResult() using an intent that no app can handle, your app will crash.
-                                                     // So as long as the result is not null, it's safe to use the intent.
-                                                     if (intent.resolveActivity(getPackageManager()) != null) {
-                                                         // Start the image capture intent to take photo
-
-                                                         finishLogin();
-                                                     }
-                                                     /**
-                                                      * Without using R.anim.hold, the screen will flash because of transition
-                                                      * of Activities.
-                                                      */
-                                                     overridePendingTransition(0, R.anim.hold);
-                                                 }
-                                             }
-
-                        , 600); // 600 is default duration of reveal animation in RevealLayout
-                btnLogin.postDelayed(new
-
-                                             Runnable() {
-                                                 @Override
-                                                 public void run() {
-                                                     btnLogin.setClickable(true);
-                                                     btnLogin.setVisibility(View.VISIBLE);
-                                                     mRevealLayout.setVisibility(View.INVISIBLE);
-                                                     mRevealView.setVisibility(View.INVISIBLE);
-                                                 }
-                                             }
-
-                        , 960); // Or some numbers larger than 600.
-            }
-        }, 700);
 
     }
 
@@ -180,4 +175,100 @@ public class LoginActivity extends AppCompatActivity {
         Intent i = new Intent(this, DiscoverActivity.class);
         startActivity(i,
                 ActivityOptions.makeSceneTransitionAnimation(LoginActivity.this).toBundle());    }
+
+
+    int thingCenter = 0;
+
+    private void moveViewToScreenCenter( View view )
+    {
+        RelativeLayout root = (RelativeLayout) findViewById( R.id.rootLayout );
+        DisplayMetrics dm = new DisplayMetrics();
+        this.getWindowManager().getDefaultDisplay().getMetrics(dm);
+        int statusBarOffset = dm.heightPixels - root.getMeasuredHeight();
+
+        int originalPos[] = new int[2];
+        view.getLocationOnScreen( originalPos );
+
+        int xDest = dm.widthPixels/2;
+        xDest -= (view.getMeasuredWidth()/2);
+        int yDest = dm.heightPixels/2 - (view.getMeasuredHeight()/2) - statusBarOffset;
+        thingCenter = yDest - originalPos[1];
+        TranslateAnimation anim = new TranslateAnimation( 0, xDest - originalPos[0] , 0, yDest - originalPos[1] );
+        anim.setDuration(800);
+        anim.setInterpolator(new DecelerateInterpolator());
+        anim.setFillAfter(true);
+        anim.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+doCoolAnimation();
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        });
+        view.startAnimation(anim);
+    }
+
+
+    void doCoolAnimation() {
+        btnLogin.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                int[] location = new int[2];
+                ivLogo.getLocationOnScreen(location);
+                location[0] += ivLogo.getWidth() / 2;
+                location[1] += thingCenter + (ivLogo.getHeight() / 5) * 4;
+
+                // create Intent to take a picture and return control to the calling application
+                final Intent intent = new Intent(LoginActivity.this, DiscoverActivity.class);
+
+                mRevealView.setVisibility(View.VISIBLE);
+                mRevealLayout.setVisibility(View.VISIBLE);
+
+                mRevealLayout.show(location[0], location[1]); // Expand from center of FAB. Actually, it just plays reveal animation.
+                btnLogin.postDelayed(new
+
+                                             Runnable() {
+                                                 @Override
+                                                 public void run() {
+                                                     // If you call startActivityForResult() using an intent that no app can handle, your app will crash.
+                                                     // So as long as the result is not null, it's safe to use the intent.
+                                                     if (intent.resolveActivity(getPackageManager()) != null) {
+                                                         // Start the image capture intent to take photo
+
+                                                         finishLogin();
+                                                     }
+                                                     /**
+                                                      * Without using R.anim.hold, the screen will flash because of transition
+                                                      * of Activities.
+                                                      */
+                                                     overridePendingTransition(0, R.anim.hold);
+                                                 }
+                                             }
+
+                        , 600); // 600 is default duration of reveal animation in RevealLayout
+                btnLogin.postDelayed(new
+
+                                             Runnable() {
+                                                 @Override
+                                                 public void run() {
+                                                     btnLogin.setClickable(true);
+                                                     btnLogin.setVisibility(View.VISIBLE);
+                                                     mRevealLayout.setVisibility(View.INVISIBLE);
+                                                     mRevealView.setVisibility(View.INVISIBLE);
+                                                 }
+                                             }
+
+                        , 960); // Or some numbers larger than 600.
+            }
+        }, 700);
+    }
+
 }
