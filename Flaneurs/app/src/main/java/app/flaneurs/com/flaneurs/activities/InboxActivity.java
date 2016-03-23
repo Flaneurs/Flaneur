@@ -94,11 +94,17 @@ public class InboxActivity extends AppCompatActivity implements InboxArrayAdapte
         i.putExtra(DetailActivity.INBOX_ID, item.getObjectId());
         i.putExtra(DetailActivity.IS_NEW, isNew);
         i.putExtra(DetailActivity.IS_LIKED, isLiked);
+if (!isNew) {
+    Pair<View, String> p3 = Pair.create((View) view.ivImageThumb, "image");
+    ActivityOptionsCompat options = ActivityOptionsCompat.
+            makeSceneTransitionAnimation(this, p3);
 
-        Pair<View, String> p3 = Pair.create((View) view.ivImageThumb, "image");
-        ActivityOptionsCompat options = ActivityOptionsCompat.
-                makeSceneTransitionAnimation(this, p3);
+    startActivity(i, options.toBundle());
+} else {
+    ActivityOptionsCompat options = ActivityOptionsCompat.
+            makeSceneTransitionAnimation(this);
 
-        startActivity(i, options.toBundle());
+    startActivity(i, options.toBundle());
+}
     }
 }
