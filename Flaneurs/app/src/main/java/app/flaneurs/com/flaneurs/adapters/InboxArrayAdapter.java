@@ -146,7 +146,7 @@ public class InboxArrayAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         holder.tvUsername.setText(username);
         Glide.with(mContext).load(author.getProfileUrl()).into(holder.ivInboxImage);
 
-        holder.tvCreationTime.setText(Utils.getPrettyTime(inboxItem.getPickUpTime()));
+        holder.tvCreationTime.setText(Utils.getPrettyTime(post.getCreatedTime()));
         holder.tvLocation.setText(post.getAddress());
         holder.tvCaption.setText(post.getCaption());
         if (inboxItem.getNew() == true) {
