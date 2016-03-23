@@ -28,6 +28,7 @@ public class Post extends ParseObject {
     public static final String KEY_POST_VIEWCOUNT = "KEY_POST_VIEWCOUNT";
     public static final String KEY_POST_UPVOTECOUNT = "KEY_POST_UPVOTECOUNT";
     public static final String KEY_POST_IMAGE = "KEY_POST_IMAGE";
+    public static final String KEY_POST_IMAGE_URL = "KEY_POST_IMAGE_URL";
     public static final String KEY_POST_ADDRESS = "KEY_POST_ADDRESS";
 
     private List<Comment> commentList;
@@ -53,6 +54,10 @@ public class Post extends ParseObject {
         setViewCount(viewCount);
     }
 
+    public String getImageUrl() {
+        return getString(KEY_POST_IMAGE_URL);
+    }
+
     public void setAuthor(ParseUser author) {
         put(KEY_POST_AUTHOR, author);
     }
@@ -65,8 +70,12 @@ public class Post extends ParseObject {
         put(KEY_POST_LOCATION, location);
     }
 
-    public ParseFile getImage() {
-        return getParseFile(KEY_POST_IMAGE);
+    public String getImage() {
+        if ((getImageUrl()) != null) {
+            return getImageUrl();
+        } else {
+            return getParseFile(KEY_POST_IMAGE).getUrl();
+        }
     }
 
     public void setImage(ParseFile file) {
