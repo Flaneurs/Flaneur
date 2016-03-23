@@ -76,6 +76,10 @@ public class InboxActivity extends AppCompatActivity implements InboxArrayAdapte
         if (isNew) {
             mInboxItems.remove(item);
             mInboxItems.add(item);
+            mAdapter.mNewItemCount--;
+            mAdapter.notifyDataSetChanged();
+            FlaneurApplication.getInstance().pickupService.decrementNew();
+
         }
         item.setNew(false);
         item.saveEventually();
@@ -85,7 +89,6 @@ public class InboxActivity extends AppCompatActivity implements InboxArrayAdapte
             e.printStackTrace();
         }
 
-        FlaneurApplication.getInstance().pickupService.decrementNew();
 
         Intent i = new Intent(this, DetailActivity.class);
         i.putExtra(DetailActivity.INBOX_ID, item.getObjectId());
