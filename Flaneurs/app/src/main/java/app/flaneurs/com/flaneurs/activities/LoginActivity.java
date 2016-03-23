@@ -42,7 +42,6 @@ import java.util.Arrays;
 import java.util.List;
 
 import app.flaneurs.com.flaneurs.R;
-import app.flaneurs.com.flaneurs.models.InboxItem;
 import app.flaneurs.com.flaneurs.models.Post;
 import app.flaneurs.com.flaneurs.models.User;
 import app.flaneurs.com.flaneurs.utils.RevealLayoutDiamond;
@@ -109,26 +108,15 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-        ParseQuery<User> query1 = ParseQuery.getQuery("User");
-        // query.setCachePolicy(ParseQuery.CachePolicy.CACHE_THEN_NETWORK);
+        ParseQuery<User> query1 = ParseQuery.getQuery("_User");
         query1.findInBackground(new FindCallback<User>() {
             @Override
             public void done(List<User> objects, ParseException e) {
                 if (objects != null && objects.size() > 0)
+                    Log.e("Pinning all users", "cpunt: " + objects.size());
                     ParseObject.pinAllInBackground(objects);
             }
         });
-
-        ParseQuery<InboxItem> query2 = ParseQuery.getQuery("Inbox");
-        // query.setCachePolicy(ParseQuery.CachePolicy.CACHE_THEN_NETWORK);
-        query2.findInBackground(new FindCallback<InboxItem>() {
-            @Override
-            public void done(List<InboxItem> objects, ParseException e) {
-                if (objects != null && objects.size() > 0)
-                    ParseObject.pinAllInBackground(objects);
-            }
-        });
-
 
         if (User.currentUser() != null) {
             // TODO: disable for video

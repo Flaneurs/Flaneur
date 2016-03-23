@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import com.parse.FindCallback;
 import com.parse.ParseException;
+import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
@@ -113,7 +114,9 @@ public class StreamFragment extends Fragment implements FlanArrayAdapter.IFlanIn
             public void done(List<Post> objects, ParseException e) {
                 Log.d(TAG, "post query returned");
                 if (objects != null)
-                    onParseResultsReceived(objects);
+                    ParseObject.pinAllInBackground(objects);
+
+                onParseResultsReceived(objects);
             }
         });
     }
@@ -130,7 +133,9 @@ public class StreamFragment extends Fragment implements FlanArrayAdapter.IFlanIn
             public void done(List<Post> objects, ParseException e) {
                 Log.d(TAG, "post query returned");
                 if (objects != null)
-                    onParseResultsReceived(objects);
+                    ParseObject.pinAllInBackground(objects);
+
+                onParseResultsReceived(objects);
             }
         });
     }

@@ -78,11 +78,9 @@ public class ProfileActivity extends AppCompatActivity {
 
         ParseQuery<User> query2 = ParseQuery.getQuery("_User");
         query2.whereEqualTo("objectId", userId);
-
+        query2.fromLocalDatastore();
         query1.whereMatchesQuery(Post.KEY_POST_AUTHOR, query2);
         query1.include(Post.KEY_POST_AUTHOR);
-        query1.fromLocalDatastore();
-
         //query1.setCachePolicy(ParseQuery.CachePolicy.CACHE_ELSE_NETWORK);
         query1.fromLocalDatastore();
         Log.d(TAG, "make post query");

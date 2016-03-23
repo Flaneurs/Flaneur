@@ -96,6 +96,7 @@ public class PickupService implements LocationProvider.ILocationListener {
         query.findInBackground(new FindCallback<Post>() {
             @Override
             public void done(List<Post> objects, ParseException e) {
+
                 Log.d(TAG, "post query returned");
                 if (e != null) {
                     return;
@@ -166,7 +167,7 @@ public class PickupService implements LocationProvider.ILocationListener {
                     return;
                 }
                 ParseObject.pinAllInBackground(objects);
-                Log.e(TAG, "Updating cached inbox");
+                Log.e(TAG, "Updating cached inbox: " + objects.size());
                 currentSessionInbox = objects;
 
                 for (InboxItem item : currentSessionInbox) {
@@ -176,6 +177,18 @@ public class PickupService implements LocationProvider.ILocationListener {
                 }
             }
         });
+
+
+        ParseQuery<User> query1 = ParseQuery.getQuery("_User");
+        query1.findInBackground(new FindCallback<User>() {
+            @Override
+            public void done(List<User> objects, ParseException e) {
+                if (objects != null && objects.size() > 0)
+                    Log.e("Pinning all users", "cpunt: " + objects.size());
+                ParseObject.pinAllInBackground(objects);
+            }
+        });
+
     }
 
     public void onHide(InboxItem item) {
