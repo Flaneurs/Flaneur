@@ -30,6 +30,8 @@ import jp.wasabeef.glide.transformations.BlurTransformation;
 import jp.wasabeef.glide.transformations.ColorFilterTransformation;
 
 public class ProfileActivity extends AppCompatActivity {
+    public static final String TAG = ProfileActivity.class.getSimpleName();
+
     @Bind(R.id.ivProfileImage)
     com.github.siyamed.shapeimageview.DiamondImageView ivProfileImage;
 
@@ -80,13 +82,14 @@ public class ProfileActivity extends AppCompatActivity {
         query1.whereMatchesQuery(Post.KEY_POST_AUTHOR, query2);
         query1.include(Post.KEY_POST_AUTHOR);
         query1.fromLocalDatastore();
-        //query1.setCachePolicy(ParseQuery.CachePolicy.CACHE_ELSE_NETWORK);
 
-        Log.d("ProfileActivity", "make query");
+        //query1.setCachePolicy(ParseQuery.CachePolicy.CACHE_ELSE_NETWORK);
+        query1.fromLocalDatastore();
+        Log.d(TAG, "make post query");
         query1.findInBackground(new FindCallback<Post>() {
             @Override
             public void done(List<Post> objects, ParseException e) {
-
+                Log.d(TAG, "post query returned");
                 setupProfileView(objects.get(0).getAuthor(), objects);
             }
         });

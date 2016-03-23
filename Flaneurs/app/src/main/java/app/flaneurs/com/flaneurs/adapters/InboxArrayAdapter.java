@@ -134,9 +134,9 @@ public class InboxArrayAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             holder.ivImageThumb.setVisibility(View.VISIBLE);
             holder.tvCaption.setVisibility(View.VISIBLE);
 
-            ParseFile parseFile = post.getImage();
+            String imageUrl = post.getImage();
             Glide.with(mContext)
-                    .load(parseFile.getUrl())
+                    .load(imageUrl)
                     .into(holder.ivImageThumb);
 
         }
