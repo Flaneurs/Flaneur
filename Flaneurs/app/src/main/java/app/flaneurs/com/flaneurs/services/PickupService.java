@@ -26,6 +26,7 @@ import app.flaneurs.com.flaneurs.utils.LocationProvider;
  */
 public class PickupService implements LocationProvider.ILocationListener {
 
+    public static final String TAG = PickupService.class.getSimpleName();
     public static String PICKUP_ADDRESS = "PICKUP_ADDRESS";
     public static String PICKUP_POST_ID = "PICKUP_POST_ID";
     public static String PICKUP_EVENT = "PICKUP_EVENT";
@@ -79,7 +80,6 @@ public class PickupService implements LocationProvider.ILocationListener {
     }
 
     private void queryForPosts() {
-        Log.d("PickupService", "make query");
         ParseQuery<Post> query = ParseQuery.getQuery("Post");
         ParseGeoPoint current = new ParseGeoPoint(mCurrentLocation.getLatitude(), mCurrentLocation.getLongitude());
         query.whereNear(Post.KEY_POST_LOCATION, current);
@@ -92,14 +92,16 @@ public class PickupService implements LocationProvider.ILocationListener {
 
         query.whereDoesNotMatchKeyInQuery("objectId", "KEY_INBOX_ID", inboxQuery);
 
+        Log.d(TAG, "make post query");
         query.findInBackground(new FindCallback<Post>() {
             @Override
             public void done(List<Post> objects, ParseException e) {
+                Log.d(TAG, "post query returned");
                 if (e != null) {
                     return;
                 }
 
-                Log.e("PickupService", "Queried and got posts:  " + objects.size());
+                Log.e(TAG, "Queried and got posts:  " + objects.size());
                 if (objects.isEmpty()) {
                     return;
                 }
@@ -156,16 +158,16 @@ public class PickupService implements LocationProvider.ILocationListener {
 
       //  query.setCachePolicy(ParseQuery.CachePolicy.CACHE_THEN_NETWORK);
         query.orderByDescending(InboxItem.KEY_INBOX_NEW + "," + InboxItem.KEY_INBOX_DATE);
-        Log.d("PickupService", "make query");
+        Log.d(TAG, "make inbox query");
         query.findInBackground(new FindCallback<InboxItem>() {
             @Override
             public void done(List<InboxItem> objects, ParseException e) {
-                Log.d("PickupService", "query returned");
+                Log.d(TAG, "inbox query returned");
                 if (objects == null) {
                     return;
                 }
                 ParseObject.pinAllInBackground(objects);
-                Log.e("PickupService", "Updating cached inbox");
+                Log.e(TAG, "Updating cached inbox");
                 currentSessionInbox = objects;
 
                 for (InboxItem item : currentSessionInbox) {

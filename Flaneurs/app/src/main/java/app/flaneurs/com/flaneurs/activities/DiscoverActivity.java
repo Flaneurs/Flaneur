@@ -224,11 +224,11 @@ public class DiscoverActivity extends AppCompatActivity implements LocationProvi
             query.setLimit(20);
             query.include(Post.KEY_POST_AUTHOR);
             // query.setCachePolicy(ParseQuery.CachePolicy.CACHE_THEN_NETWORK);
-            Log.d(TAG, "make query");
+            Log.d(TAG, "make post query");
             query.findInBackground(new FindCallback<Post>() {
                 @Override
                 public void done(List<Post> objects, ParseException e) {
-                    Log.d(TAG, "query returned");
+                    Log.d(TAG, "post query returned");
                     if (objects != null && objects.size() > 0) {
                         ParseObject.pinAllInBackground(objects);
                         configureViewWithPosts(objects);
