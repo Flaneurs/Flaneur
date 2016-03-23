@@ -190,10 +190,9 @@ public class DetailActivity extends AppCompatActivity implements CommentAdapter.
         rvComments.setItemAnimator(animator);
 
         if (isRevealed) {
-            Glide.with(this).load(item.getImage().getUrl())
-                    .into(ivPicturePreview);
+            Glide.with(this).load(item.getImage()).into(ivPicturePreview);
         } else {
-            Glide.with(this).load(item.getImage().getUrl())
+            Glide.with(this).load(item.getImage())
                     .bitmapTransform(new BlurTransformation(this, 25, 5))
                     .into(ivPicturePreview);
         }
