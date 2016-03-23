@@ -153,7 +153,6 @@ public class PickupService implements LocationProvider.ILocationListener {
         query.include(InboxItem.KEY_INBOX_POST);
         query.include(InboxItem.KEY_INBOX_POST + "." + Post.KEY_POST_AUTHOR);
 
-      //  query.setCachePolicy(ParseQuery.CachePolicy.CACHE_THEN_NETWORK);
         query.orderByDescending(InboxItem.KEY_INBOX_NEW + "," + InboxItem.KEY_INBOX_DATE);
         query.findInBackground(new FindCallback<InboxItem>() {
             @Override

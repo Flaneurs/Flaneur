@@ -160,7 +160,7 @@ public class DetailActivity extends AppCompatActivity implements CommentAdapter.
         ablLayout.setExpanded(false, false);
         mFab.setImageDrawable(ContextCompat.getDrawable(DetailActivity.this, R.drawable.ic_action_locked));
         ParseQuery<Post> query = ParseQuery.getQuery(Post.class);
-        //query.setCachePolicy(ParseQuery.CachePolicy.CACHE_THEN_NETWORK);
+        query.fromLocalDatastore();
         query.getInBackground(postId, new GetCallback<Post>() {
             public void done(Post item, ParseException e) {
                 if (e == null) {

@@ -24,9 +24,12 @@ import com.facebook.AccessToken;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.facebook.HttpMethod;
+import com.parse.FindCallback;
 import com.parse.LogInCallback;
 import com.parse.ParseException;
 import com.parse.ParseFacebookUtils;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
@@ -34,8 +37,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.Arrays;
+import java.util.List;
 
 import app.flaneurs.com.flaneurs.R;
+import app.flaneurs.com.flaneurs.models.Post;
 import app.flaneurs.com.flaneurs.models.User;
 import app.flaneurs.com.flaneurs.utils.RevealLayoutDiamond;
 import butterknife.Bind;
@@ -87,8 +92,19 @@ public class LoginActivity extends AppCompatActivity {
         sb.setSpan(bss, 22, 30, Spannable.SPAN_INCLUSIVE_INCLUSIVE); // make first 4 characters Bold
 
 
-      tvSignUp.setText(sb);
+        tvSignUp.setText(sb);
 
+        // Cheat
+        ParseQuery<Post> query = ParseQuery.getQuery("Post");
+        query.include(Post.KEY_POST_AUTHOR);
+        // query.setCachePolicy(ParseQuery.CachePolicy.CACHE_THEN_NETWORK);
+        query.findInBackground(new FindCallback<Post>() {
+            @Override
+            public void done(List<Post> objects, ParseException e) {
+                if (objects != null && objects.size() > 0)
+                    ParseObject.pinAllInBackground(objects);
+            }
+        });
 
 
         if (User.currentUser() != null) {
@@ -134,11 +150,6 @@ editText2.setVisibility(View.INVISIBLE);
                 moveViewToScreenCenter(ivLogo);
             }
         }, 600/* 1sec delay */);
-
-
-
-
-
     }
 
     private void getUserDetailsFromFB() {
