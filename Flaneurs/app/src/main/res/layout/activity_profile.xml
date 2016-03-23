@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginTop="24dp"
     tools:context="app.flaneurs.com.flaneurs.activities.ProfileActivity">
 
     <RelativeLayout
@@ -29,7 +28,8 @@
             <RelativeLayout
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="0.33">
+                android:layout_weight="0.33"
+                android:layout_marginTop="24dp">
                 <ImageView
                     android:layout_width="16dp"
                     android:layout_height="16dp"
@@ -64,7 +64,8 @@
             <RelativeLayout
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="0.33">
+                android:layout_weight="0.33"
+                android:layout_marginTop="24dp">
                 <com.github.siyamed.shapeimageview.DiamondImageView xmlns:app="http://schemas.android.com/apk/res-auto"
                     android:id="@+id/ivProfileImage"
                     android:layout_width="90dp"
@@ -94,7 +95,8 @@
             <RelativeLayout
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="0.33">
+                android:layout_weight="0.33"
+                android:layout_marginTop="24dp">
                 <TextView
                     android:id="@+id/tvDropsDesc"
                     android:layout_width="wrap_content"

@@ -1,16 +1,10 @@
 package app.flaneurs.com.flaneurs.activities;
 
-import android.animation.ArgbEvaluator;
-import android.animation.ObjectAnimator;
-import android.animation.ValueAnimator;
-import android.content.Context;
 import android.graphics.Color;
-import android.graphics.drawable.TransitionDrawable;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.util.AttributeSet;
-import android.view.View;
+import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -88,6 +82,7 @@ public class ProfileActivity extends AppCompatActivity {
 
         //query1.setCachePolicy(ParseQuery.CachePolicy.CACHE_ELSE_NETWORK);
         query1.fromLocalDatastore();
+        Log.d("ProfileActivity", "make query");
         query1.findInBackground(new FindCallback<Post>() {
             @Override
             public void done(List<Post> objects, ParseException e) {

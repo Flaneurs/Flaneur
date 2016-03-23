@@ -3,6 +3,7 @@ package app.flaneurs.com.flaneurs.fragments;
 import android.Manifest;
 import android.location.Location;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.SystemClock;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -58,6 +59,7 @@ public class MapFragment extends SupportMapFragment implements LocationProvider.
     private LatLng point;
 
     public static MapFragment newInstance(boolean shouldTrackLocation, boolean shouldLockMap, LatLng latLng, ArrayList<ParseProxyObject> parseProxyObjects) {
+        Log.d(TAG, "newInstance");
         MapFragment mapFragment = new MapFragment();
         Bundle args = new Bundle();
         args.putBoolean(ARG_SHOULD_TRACK_LOCATION, shouldTrackLocation);
@@ -70,6 +72,7 @@ public class MapFragment extends SupportMapFragment implements LocationProvider.
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        Log.d(TAG, "onCreate");
         super.onCreate(savedInstanceState);
 
         Bundle arguments = getArguments();
@@ -89,12 +92,14 @@ public class MapFragment extends SupportMapFragment implements LocationProvider.
         getMapAsync(new OnMapReadyCallback() {
             @Override
             public void onMapReady(GoogleMap googleMap) {
+                Log.d(TAG, "onMapReady");
                 loadMap(googleMap);
             }
         });
     }
 
     protected void loadMap(GoogleMap googleMap) {
+        Log.d(TAG, "loadMap");
         mGoogleMap = googleMap;
         if (mGoogleMap != null) {
             Log.d(TAG, "Map Fragment was loaded properly.");
@@ -137,6 +142,19 @@ public class MapFragment extends SupportMapFragment implements LocationProvider.
         } else {
             Toast.makeText(getContext(), "Error - Map was null!", Toast.LENGTH_SHORT).show();
             Log.d(TAG, "Map was null.");
+        }
+    }
+
+    public void populateMapWithPosts(ArrayList<ParseProxyObject> posts) {
+        Handler handler = new Handler();
+        for (int i=0; i<posts.size(); i++) {
+            final ParseProxyObject post = posts.get(i);
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    addMarkerForPost(post, true);
+                }
+            }, 50 * i);
         }
     }
 
@@ -245,9 +263,6 @@ public class MapFragment extends SupportMapFragment implements LocationProvider.
                 if (t > 0.0) {
                     // Post this event again 15ms from now
                     handler.postDelayed(this, 15);
-                } else {
-                    // done elapsing, show window
-                    marker.showInfoWindow();
                 }
             }
         });
