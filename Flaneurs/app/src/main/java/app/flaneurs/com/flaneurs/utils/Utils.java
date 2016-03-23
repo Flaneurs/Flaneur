@@ -67,7 +67,7 @@ public class Utils {
         NotificationCompat.Builder mBuilder =
                 new NotificationCompat.Builder(context)
                         .setSmallIcon(R.drawable.ic_stat_name)
-                        .setContentTitle("Flanuers")
+                        .setContentTitle("WalkAbout")
                         .setContentText("New pickup at " + address)
                         .setWhen(System.currentTimeMillis())
                         .setAutoCancel(true);
