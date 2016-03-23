@@ -160,7 +160,7 @@ public class PickupService implements LocationProvider.ILocationListener {
         query.findInBackground(new FindCallback<InboxItem>() {
             @Override
             public void done(List<InboxItem> objects, ParseException e) {
-                Log.d("PickupService", "query returned");
+                Log.d("PickupService", "inbox query returned");
                 if (objects == null) {
                     return;
                 }
