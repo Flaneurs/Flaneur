@@ -79,13 +79,14 @@ public class ProfileActivity extends AppCompatActivity {
 
         query1.whereMatchesQuery(Post.KEY_POST_AUTHOR, query2);
         query1.include(Post.KEY_POST_AUTHOR);
-
-        //query1.setCachePolicy(ParseQuery.CachePolicy.CACHE_ELSE_NETWORK);
         query1.fromLocalDatastore();
+        //query1.setCachePolicy(ParseQuery.CachePolicy.CACHE_ELSE_NETWORK);
+
         Log.d("ProfileActivity", "make query");
         query1.findInBackground(new FindCallback<Post>() {
             @Override
             public void done(List<Post> objects, ParseException e) {
+
                 setupProfileView(objects.get(0).getAuthor(), objects);
             }
         });

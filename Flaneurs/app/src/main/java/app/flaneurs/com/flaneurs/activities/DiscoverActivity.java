@@ -32,6 +32,7 @@ import com.facebook.appevents.AppEventsLogger;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseGeoPoint;
+import com.parse.ParseObject;
 import com.parse.ParseQuery;
 
 import java.io.File;
@@ -222,7 +223,6 @@ public class DiscoverActivity extends AppCompatActivity implements LocationProvi
             query.whereNear(Post.KEY_POST_LOCATION, currentPoint);
             query.setLimit(20);
             query.include(Post.KEY_POST_AUTHOR);
- query.fromLocalDatastore();	
             Log.d(TAG, "make query");
             query.findInBackground(new FindCallback<Post>() {
                 @Override

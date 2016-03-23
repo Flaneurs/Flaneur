@@ -123,10 +123,10 @@ public class LocationProvider implements
         if (location != null) {
             mCurrentLocation = location;
 
-            Toast.makeText(mContext, "GPS location was found!", Toast.LENGTH_SHORT).show();
+          //  Toast.makeText(mContext, "GPS location was found!", Toast.LENGTH_SHORT).show();
             this.fireOnLocationChanged(location);
         } else {
-            Toast.makeText(mContext, "Current location was null, enable GPS on emulator!", Toast.LENGTH_SHORT).show();
+          //  Toast.makeText(mContext, "Current location was null, enable GPS on emulator!", Toast.LENGTH_SHORT).show();
             Log.d(TAG, "Current location was null.");
         }
 
@@ -141,10 +141,10 @@ public class LocationProvider implements
     @Override
     public void onConnectionSuspended(int i) {
         if (i == CAUSE_SERVICE_DISCONNECTED) {
-            Toast.makeText(mContext, "Disconnected. Please re-connect.", Toast.LENGTH_SHORT).show();
+          //  Toast.makeText(mContext, "Disconnected. Please re-connect.", Toast.LENGTH_SHORT).show();
             Log.d(TAG, "Location services connection suspended - Service Disconnected.");
         } else if (i == CAUSE_NETWORK_LOST) {
-            Toast.makeText(mContext, "Network lost. Please re-connect.", Toast.LENGTH_SHORT).show();
+          //  Toast.makeText(mContext, "Network lost. Please re-connect.", Toast.LENGTH_SHORT).show();
             Log.d(TAG, "Location services connection suspended - Network Lost.");
         }
     }

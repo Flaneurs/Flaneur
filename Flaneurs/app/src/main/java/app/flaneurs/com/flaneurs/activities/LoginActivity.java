@@ -8,8 +8,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.style.StyleSpan;
+import android.transition.Explode;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.DecelerateInterpolator;
@@ -40,6 +42,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import app.flaneurs.com.flaneurs.R;
+import app.flaneurs.com.flaneurs.models.InboxItem;
 import app.flaneurs.com.flaneurs.models.Post;
 import app.flaneurs.com.flaneurs.models.User;
 import app.flaneurs.com.flaneurs.utils.RevealLayoutDiamond;
@@ -101,6 +104,26 @@ public class LoginActivity extends AppCompatActivity {
         query.findInBackground(new FindCallback<Post>() {
             @Override
             public void done(List<Post> objects, ParseException e) {
+                if (objects != null && objects.size() > 0)
+                    ParseObject.pinAllInBackground(objects);
+            }
+        });
+
+        ParseQuery<User> query1 = ParseQuery.getQuery("User");
+        // query.setCachePolicy(ParseQuery.CachePolicy.CACHE_THEN_NETWORK);
+        query1.findInBackground(new FindCallback<User>() {
+            @Override
+            public void done(List<User> objects, ParseException e) {
+                if (objects != null && objects.size() > 0)
+                    ParseObject.pinAllInBackground(objects);
+            }
+        });
+
+        ParseQuery<InboxItem> query2 = ParseQuery.getQuery("Inbox");
+        // query.setCachePolicy(ParseQuery.CachePolicy.CACHE_THEN_NETWORK);
+        query2.findInBackground(new FindCallback<InboxItem>() {
+            @Override
+            public void done(List<InboxItem> objects, ParseException e) {
                 if (objects != null && objects.size() > 0)
                     ParseObject.pinAllInBackground(objects);
             }
@@ -269,7 +292,8 @@ doCoolAnimation();
                                                       * Without using R.anim.hold, the screen will flash because of transition
                                                       * of Activities.
                                                       */
-                                                     overridePendingTransition(0, R.anim.hold);
+                                                     getWindow().setEnterTransition(new Explode());
+                                                     overridePendingTransition(R.anim.explode, R.anim.hold);
                                                  }
                                              }
 
@@ -280,9 +304,9 @@ doCoolAnimation();
                                                  @Override
                                                  public void run() {
                                                      btnLogin.setClickable(true);
-                                                     btnLogin.setVisibility(View.VISIBLE);
-                                                     mRevealLayout.setVisibility(View.INVISIBLE);
-                                                     mRevealView.setVisibility(View.INVISIBLE);
+                                                     //btnLogin.setVisibility(View.VISIBLE);
+                                                     //mRevealLayout.setVisibility(View.INVISIBLE);
+                                                     //mRevealView.setVisibility(View.INVISIBLE);
                                                  }
                                              }
 
@@ -290,5 +314,24 @@ doCoolAnimation();
             }
         }, 700);
     }
+
+    public boolean onKeyUp(int keyCode, KeyEvent event) {
+       // if (keyCode == KeyEvent.KEYCODE_MENU) {
+            btnLogin.setClickable(true);
+            btnLogin.setVisibility(View.VISIBLE);
+            btnLoginEmail.setVisibility(View.VISIBLE);
+            tvSignUp.setVisibility(View.VISIBLE);
+            editText1.setVisibility(View.VISIBLE);
+            editText2.setVisibility(View.VISIBLE);
+            imageViewText.setVisibility(View.VISIBLE);
+            mRevealLayout.setVisibility(View.INVISIBLE);
+            mRevealView.setVisibility(View.INVISIBLE);
+        ivLogo.clearAnimation();
+            return true;
+       // }
+       // return super.onKeyUp(keyCode, event);
+    }
+
+
 
 }

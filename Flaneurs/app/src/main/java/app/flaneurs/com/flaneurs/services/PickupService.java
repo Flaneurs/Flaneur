@@ -164,7 +164,7 @@ public class PickupService implements LocationProvider.ILocationListener {
                     return;
                 }
                 ParseObject.pinAllInBackground(objects);
-                Log.e("PickupService", "Updating cached inbox");
+                Log.e("PickupService", "Updating cached inbox with:" + objects.size());
                 currentSessionInbox = objects;
 
                 for (InboxItem item : currentSessionInbox) {
