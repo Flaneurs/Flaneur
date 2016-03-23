@@ -134,8 +134,20 @@ public class ComposeActivity extends AppCompatActivity {
             }
         });
 
+        try {
+            newPost.pin();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
         currentUser.incrementDrops();
         currentUser.saveEventually();
+
+        try {
+            currentUser.pin();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
 
         Intent data = new Intent();
         data.putExtra(Post.KEY_POST, new ParseProxyObject(newPost));

@@ -17,6 +17,7 @@ import android.support.v7.widget.RecyclerView;
 import android.transition.Transition;
 import android.view.View;
 import android.view.ViewAnimationUtils;
+import android.view.WindowManager;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.ImageView;
@@ -79,6 +80,7 @@ public class DetailActivity extends AppCompatActivity implements CommentAdapter.
         setContentView(R.layout.activity_detail);
         ButterKnife.bind(this);
         Bundle extras = getIntent().getExtras();
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
 
         String postId = extras.getString(POST_ID);
         String inboxId = extras.getString(INBOX_ID);
@@ -214,14 +216,38 @@ public class DetailActivity extends AppCompatActivity implements CommentAdapter.
             User author = (User) mPost.getAuthor().fetchIfNeeded();
             author.incrementUpVotes();
             author.saveEventually();
+
+            try {
+                author.pin();
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
         } catch (ParseException e) {
             e.printStackTrace();
         }
         mPost.incrementUpVote();
         mPost.saveEventually();
+
+        try {
+            mPost.pin();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
         mInboxItem.setUpvoted(true);
         mInboxItem.saveEventually();
+
+        try {
+            mInboxItem.pin();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
         adapter.onUpvote();
+
+
+
+
     }
 
     @Override

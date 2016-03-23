@@ -10,7 +10,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.parse.ParseFile;
 
 import java.util.List;
 
@@ -118,7 +117,7 @@ public class InboxArrayAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                 final InboxItem inboxItem1 = mInboxItems.get(position - 2);
                 final Post post1 = inboxItem1.getPost();
                 final User author1 = post1.getAuthor();
-
+                
                 configureInboxView((InboxViewHolder) holder, post1, author1, inboxItem1, false);
                 break;
 
@@ -134,12 +133,15 @@ public class InboxArrayAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             holder.ivImageThumb.setVisibility(View.VISIBLE);
             holder.tvCaption.setVisibility(View.VISIBLE);
 
-            String imageUrl = post.getImage();
-            Glide.with(mContext)
-                    .load(imageUrl)
-                    .into(holder.ivImageThumb);
+
 
         }
+
+        String imageUrl = post.getImage();
+        Glide.with(mContext)
+                .load(imageUrl)
+                .into(holder.ivImageThumb);
+
         String username = author.getUsername();
         holder.tvUsername.setText(username);
         Glide.with(mContext).load(author.getProfileUrl()).into(holder.ivInboxImage);
@@ -172,7 +174,7 @@ public class InboxArrayAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
     @Override
     public int getItemCount() {
-        return mInboxItems.size();
+        return mInboxItems.size() + 2;
     }
 
     public static class InboxViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {

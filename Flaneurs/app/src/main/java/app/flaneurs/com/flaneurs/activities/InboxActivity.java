@@ -8,7 +8,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.transition.Explode;
 import android.view.View;
+
+import com.parse.ParseException;
 
 import java.util.List;
 
@@ -38,6 +41,7 @@ public class InboxActivity extends AppCompatActivity implements InboxArrayAdapte
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_inbox);
         ButterKnife.bind(this);
+        getWindow().setEnterTransition(new Explode());
 
 
         mInboxItems = FlaneurApplication.getInstance().pickupService.getInbox();
@@ -66,6 +70,7 @@ public class InboxActivity extends AppCompatActivity implements InboxArrayAdapte
 
     @Override
     public void openInboxDetailView(InboxItem item, InboxArrayAdapter.InboxViewHolder view) {
+        getWindow().setEnterTransition(null);
         boolean isNew = item.getNew();
         boolean isLiked = item.getUpvoted();
         if (isNew) {
@@ -74,6 +79,11 @@ public class InboxActivity extends AppCompatActivity implements InboxArrayAdapte
         }
         item.setNew(false);
         item.saveEventually();
+        try {
+            item.pin();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
 
         FlaneurApplication.getInstance().pickupService.decrementNew();
 

@@ -189,7 +189,7 @@ editText2.setVisibility(View.INVISIBLE);
     }
 
     private void saveNewUser() {
-        User parseUser = User.currentUser();
+        final User parseUser = User.currentUser();
         parseUser.setUsername(mName);
         parseUser.setProfileUrl(mPictureUrl);
 
@@ -197,8 +197,15 @@ editText2.setVisibility(View.INVISIBLE);
         parseUser.saveInBackground(new SaveCallback() {
             @Override
             public void done(ParseException e) {
+                try {
+                    parseUser.pin();
+                } catch (ParseException w2) {
+                    w2.printStackTrace();
+                }
             }
         });
+
+
     }
 
     private void finishLogin() {
