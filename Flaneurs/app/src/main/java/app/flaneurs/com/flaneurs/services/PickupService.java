@@ -131,7 +131,7 @@ public class PickupService implements LocationProvider.ILocationListener {
             currentSessionInboxPosts.add(post);
 
             if (currentSessionInbox != null) {
-                currentSessionInbox.add(inboxItem);
+                currentSessionInbox.add(0,inboxItem);
             }
             sendNotification(post);
         }
