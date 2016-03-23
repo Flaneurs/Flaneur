@@ -174,6 +174,10 @@ public class InboxArrayAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
     @Override
     public int getItemCount() {
+        if (mInboxItems == null) {
+            return 0;
+        }
+
         return mInboxItems.size() + 2;
     }
 
