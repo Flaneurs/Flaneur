@@ -165,7 +165,7 @@ public class InboxArrayAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     }
 
     public void remove(int position) {
-        InboxItem item = mInboxItems.remove(position);
+        InboxItem item = mInboxItems.remove(position - 2);
         item.setHidden(true);
         item.saveEventually();
         FlaneurApplication.getInstance().pickupService.onHide(item);
