@@ -344,6 +344,8 @@ public class DiscoverActivity extends AppCompatActivity implements LocationProvi
 
         // Get the notifications MenuItem and LayerDrawable (layer-list)
         mInboxItem = menu.findItem(R.id.miInbox);
+
+        updateInboxIcon();
         return true;
     }
 
@@ -373,13 +375,22 @@ public class DiscoverActivity extends AppCompatActivity implements LocationProvi
     }
 
     private void updateInboxIcon() {
+        Log.e("test", "Updateding menu icon");
         if (mInboxItem == null) {
             return;
         }
+
         LayerDrawable icon = (LayerDrawable) mInboxItem.getIcon();
         // Update LayerDrawable's BadgeDrawable
         int newInboxCount = FlaneurApplication.getInstance().pickupService.getNewItemsCount();
+
+        Log.e("test", "updated menu icon: "+ newInboxCount);
+
         BadgeDrawable.setBadgeCount(DiscoverActivity.this, icon, newInboxCount);
+
+
+        mInboxItem.setVisible(true);
+        invalidateOptionsMenu();
     }
 
     void enterReveal() {
