@@ -131,14 +131,15 @@ public class ComposeActivity extends AppCompatActivity {
 
         newPost.saveInBackground(new SaveCallback() {
             public void done(ParseException e) {
+                try {
+                    newPost.pin();
+                } catch (ParseException e1) {
+                    e1.printStackTrace();
+                }
             }
         });
 
-        try {
-            newPost.pin();
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
+
 
         currentUser.incrementDrops();
         currentUser.saveEventually();

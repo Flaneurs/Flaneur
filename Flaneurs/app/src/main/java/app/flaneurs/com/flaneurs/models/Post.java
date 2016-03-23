@@ -169,6 +169,9 @@ public class Post extends ParseObject {
     public boolean equals(Object o) {
         if (o instanceof Post) {
             Post toCompare = (Post) o;
+            if (toCompare == null) {
+                return false;
+            }
             return this.getObjectId().equals(toCompare.getObjectId());
         }
         return false;
