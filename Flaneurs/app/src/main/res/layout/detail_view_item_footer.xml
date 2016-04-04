@@ -8,7 +8,7 @@
         android:layout_height="1dp"
         android:background="@color/divider" />
 
-    <com.makeramen.roundedimageview.RoundedImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+    <com.github.siyamed.shapeimageview.DiamondImageView xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/ivProfileImage"
         android:layout_width="50dp"
         android:layout_height="50dp"
@@ -20,10 +20,8 @@
         android:adjustViewBounds="true"
         android:scaleType="fitXY"
         android:src="@drawable/profile_photo_placeholder"
-        app:riv_border_color="#333333"
-        app:riv_border_width="0dip"
-        app:riv_corner_radius="4dip"
-        app:riv_mutate_background="true" />
+        app:siBorderColor="@color/primary"
+        app:siBorderWidth="2dip" />
 
     <EditText
         android:id="@+id/etComment"

@@ -10,5 +10,6 @@
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Header"
         android:id="@+id/tvHeader"
-        android:paddingLeft="4dp"/>
+        android:layout_marginTop="4dp"
+        android:paddingLeft="9dp"/>
 </LinearLayout>

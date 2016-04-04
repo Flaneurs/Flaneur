@@ -32,8 +32,8 @@
 
     <com.github.siyamed.shapeimageview.DiamondImageView xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/ivInboxImage"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
        android:layout_below="@id/ivImageThumb"
         android:layout_marginBottom="5dp"
         android:layout_marginLeft="5dp"
@@ -90,7 +90,6 @@
         android:layout_marginRight="10dp"
         android:layout_marginTop="5dp"
         android:layout_below="@id/ivImageThumb"
-
         android:text="1m ago"
         android:transitionName="pickupTime"
         android:textAppearance="?android:attr/textAppearanceSmall" />
@@ -98,7 +97,7 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="10dp"
-        android:layout_marginTop="4dp"
+        android:layout_marginTop="2dp"
         android:background="@drawable/shadow"
         android:layout_below="@id/ivInboxImage"></View>
 
