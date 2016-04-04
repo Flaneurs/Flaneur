@@ -54,7 +54,8 @@ public class Utils {
         destination.setLatitude(destinationGeoPoint.getLatitude());
         destination.setLongitude(destinationGeoPoint.getLongitude());
         int distanceInMeters = Math.round(current.distanceTo(destination));
-        String pretty = String.format("%dm away", distanceInMeters);
+        double miles = Utils.convertMetersToMiles(distanceInMeters);
+        String pretty = String.format("%f mi away", miles);
         return pretty;
     }
 
@@ -88,5 +89,10 @@ public class Utils {
         NotificationManager mNotifyMgr =
                 (NotificationManager) context.getSystemService(context.NOTIFICATION_SERVICE);
         mNotifyMgr.notify(mNotificationId, mBuilder.build());
+    }
+
+    public static double convertMetersToMiles(int meters) {
+        double miles = 0.000621371 * meters;
+        return miles;
     }
 }
