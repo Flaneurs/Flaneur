@@ -3,6 +3,9 @@ package app.flaneurs.com.flaneurs.adapters;
 import android.content.Context;
 import android.location.Location;
 import android.support.v7.widget.RecyclerView;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -93,8 +96,11 @@ public class FlanArrayAdapter extends RecyclerView.Adapter<FlanArrayAdapter.Flan
         holder.tvViewCount.setText(flan.getViewCount() + "");
 
         String pretty = Utils.getPrettyDistance(mCurrentLocation, flan.getLocation());
-        holder.tvStreamDistanceAway.setText(pretty);
-        holder.tvLocation.setText(flan.getAddress());
+        String locationString = flan.getAddress() + " (" + pretty +  ")";
+//        holder.tvStreamDistanceAway.setText(pretty);
+        SpannableString str = new SpannableString(locationString);
+        str.setSpan(new ForegroundColorSpan(mContext.getResources().getColor(R.color.divider)), flan.getAddress().length() + 1, locationString.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        holder.tvLocation.setText(str);
     }
 
     @Override

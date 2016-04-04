@@ -13,6 +13,7 @@ import com.ocpsoft.pretty.time.PrettyTime;
 import com.parse.ParseGeoPoint;
 
 import java.io.IOException;
+import java.text.DecimalFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -54,7 +55,8 @@ public class Utils {
         destination.setLatitude(destinationGeoPoint.getLatitude());
         destination.setLongitude(destinationGeoPoint.getLongitude());
         int distanceInMeters = Math.round(current.distanceTo(destination));
-        String pretty = String.format("%dm away", distanceInMeters);
+        double miles = Utils.convertMetersToMiles(distanceInMeters);
+        String pretty = String.format("%f mi away", miles);
         return pretty;
     }
 
@@ -90,6 +92,13 @@ public class Utils {
         mNotifyMgr.notify(mNotificationId, mBuilder.build());
     }
 
+    public static double convertMetersToMiles(int meters) {
+        double miles = 0.000621371 * meters;
+        String format = new DecimalFormat("#.##").format(miles);
+        double result = Double.valueOf(format);
+        return result;
+    }
+    
     public static String toTitleCase(String str) {
 
         if (str == null) {
