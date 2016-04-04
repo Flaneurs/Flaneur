@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.animation.AnticipateInterpolator;
 import android.view.animation.BounceInterpolator;
+import android.view.animation.LinearInterpolator;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -165,6 +166,7 @@ public class MapFragment extends SupportMapFragment implements LocationProvider.
         mPostMarkerGetter.putPostMarker(post, marker);
 
         if (withAnimation) {
+            marker.setAlpha(0);
             dropPinEffect(marker);
         }
 
@@ -243,10 +245,12 @@ public class MapFragment extends SupportMapFragment implements LocationProvider.
         // Handler allows us to repeat a code block after a specified delay
         final android.os.Handler handler = new android.os.Handler();
         final long start = SystemClock.uptimeMillis();
-        final long duration = 1500;
+        final long bounceDuration = 1500;
+        final long fadeDuration = 750;
 
         // Use the bounce interpolator
-        final android.view.animation.Interpolator interpolator = new BounceInterpolator();
+        final android.view.animation.Interpolator bounceInterpolator = new BounceInterpolator();
+        final android.view.animation.Interpolator linearInterpolator = new LinearInterpolator();
 
         // Animate marker with a bounce updating its position every 15 ms
         handler.post(new Runnable() {
@@ -255,12 +259,17 @@ public class MapFragment extends SupportMapFragment implements LocationProvider.
                 long elapsed = SystemClock.uptimeMillis() - start;
 
                 // Calculate t for bounce based on elapsed time
-                float t = Math.max(1 - interpolator.getInterpolation((float) elapsed / duration), 0);
-
+                float tb_init = Math.max(1 - bounceInterpolator.getInterpolation((float) elapsed / bounceDuration), 0);
+                float tb = ((float)elapsed/bounceDuration < 0.66) ? tb_init : tb_init * 0.1f;
                 // Set the anchor
-                marker.setAnchor(0.5f, 1.0f + 8 * t);
+                marker.setAnchor(0.5f, 1.0f + 8 * tb);
 
-                if (t > 0.0) {
+                // Calculate t for fade based on elapsed time
+                float ta = Math.min(linearInterpolator.getInterpolation((float) elapsed / fadeDuration), 1);
+                // Update alpha
+                marker.setAlpha(ta);
+
+                if (tb > 0.0 || ta < 1.0) {
                     // Post this event again 15ms from now
                     handler.postDelayed(this, 15);
                 }
@@ -288,6 +297,7 @@ public class MapFragment extends SupportMapFragment implements LocationProvider.
 
                 // Set the anchor
                 marker.setAnchor(0.5f, 1.0f + 8 * t);
+                marker.setAlpha(1-t);
 
                 if (t < 1.0) {
                     // Post this event again 15ms from now
