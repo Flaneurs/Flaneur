@@ -11,37 +11,36 @@
         android:singleLine="true"
         android:text="@string/info_address_placeholder"
         android:textColor="@color/primary"
+        android:textSize="16sp"
         android:textStyle="bold" />
 
     <View
         android:layout_width="match_parent"
-        android:background="@color/primary"
-        android:layout_height="1dp" />
+        android:layout_height="1dp"
+        android:background="@color/primary" />
 
     <LinearLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
             android:layout_marginEnd="3dp"
-            android:text="@string/info_views_text"
-            android:textColor="@color/secondary_text" />
+            android:background="@drawable/ic_views" />
 
         <TextView
             android:id="@+id/tvInfoWindowViews"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="5dp"
+            android:layout_marginEnd="15dp"
             android:textColor="@color/secondary_text" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="3dp"
-            android:text="@string/info_upvotes_text"
-            android:textColor="@color/secondary_text" />
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:background="@drawable/ic_heart" />
 
         <TextView
             android:id="@+id/tvInfoWindowUpvotes"
