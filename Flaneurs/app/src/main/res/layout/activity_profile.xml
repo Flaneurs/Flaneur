@@ -31,34 +31,40 @@
                 android:layout_weight="0.33"
                 android:layout_marginTop="24dp">
                 <ImageView
-                    android:layout_width="16dp"
-                    android:layout_height="16dp"
+                    android:id="@+id/ivUpvotes"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
                     android:src="@drawable/ic_favorite_small"
                     android:scaleType="fitXY"
                     android:layout_toLeftOf="@+id/tvUpvotes"
                     android:layout_alignBottom="@+id/tvUpvotes"
                     android:layout_marginTop="3dp"
                     android:maxHeight="10dp"
-                    android:layout_marginRight="5dp"
-                    android:maxWidth="10dp" />
+                    android:maxWidth="10dp"
+                    android:layout_marginBottom="2dp"
+                    android:layout_marginRight="2dp" />
                 <TextView
                     android:id="@+id/tvUpvotesDesc"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:layout_centerInParent="true"
-                    android:text="upvotes"
+                    android:text="UPVOTES"
                     android:textSize="16dp"
-                    android:textColor="@color/inverse_text" />
+                    android:textColor="@color/inverse_text"
+                    android:alpha="0.75" />
                 <TextView
                     android:id="@+id/tvUpvotes"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:layout_above="@id/tvUpvotesDesc"
-                    android:layout_centerInParent="true"
                     android:text="0"
-                    android:textColor="@color/inverse_text" />
+                    android:textColor="@color/inverse_text"
+                    android:textSize="18sp"
+                    android:layout_centerVertical="true"
+                    android:layout_alignRight="@+id/tvUpvotesDesc"
+                    android:layout_marginRight="14dp" />
             </RelativeLayout>
 
             <RelativeLayout
@@ -104,27 +110,30 @@
                     android:layout_centerInParent="true"
                     android:gravity="center"
                     android:layout_marginTop="1dp"
-                    android:text="drops"
+                    android:text="DROPS"
                     android:textSize="16sp"
-                    android:textColor="@color/inverse_text" />
+                    android:textColor="@color/inverse_text"
+                    android:alpha="0.75" />
                 <TextView
                     android:id="@+id/tvDrops"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginRight="2dp"
+                    android:layout_marginLeft="1dp"
+                    android:layout_marginRight="4dp"
                     android:gravity="center"
                     android:text="0"
                     android:textColor="@color/inverse_text"
                     android:layout_above="@+id/tvDropsDesc"
-                    android:layout_toEndOf="@+id/imageView" />
+                    android:textSize="18sp"
+                    android:layout_alignRight="@+id/tvDropsDesc" />
                 <ImageView
+                    android:id="@+id/ivDrops"
                     android:layout_width="20dp"
                     android:layout_height="20dp"
                     android:src="@drawable/walk_marker"
                     android:layout_alignBottom="@+id/tvDrops"
-                    android:layout_alignStart="@+id/tvDropsDesc"
-                    android:id="@+id/imageView" />
+                    android:layout_marginBottom="3dp"
+                    android:layout_toLeftOf="@+id/tvDrops" />
             </RelativeLayout>
         </LinearLayout>
 

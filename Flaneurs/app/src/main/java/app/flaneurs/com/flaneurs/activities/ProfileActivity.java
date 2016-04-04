@@ -1,5 +1,6 @@
 package app.flaneurs.com.flaneurs.activities;
 
+import android.animation.ValueAnimator;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
@@ -43,6 +44,12 @@ public class ProfileActivity extends AppCompatActivity {
 
     @Bind(R.id.tvDropsDesc)
     TextView tvDropsDesc;
+
+    @Bind(R.id.ivUpvotes)
+    ImageView ivUpvotes;
+
+    @Bind(R.id.ivDrops)
+    ImageView ivDrops;
 
     @Bind(R.id.tvUpvotesDesc)
     TextView tvUpvotesDesc;
@@ -110,8 +117,27 @@ public class ProfileActivity extends AppCompatActivity {
         slidingTabStrip.setViewPager(viewPager);
         Glide.with(this).load(user.getProfileUrl()).asBitmap().into(ivProfileImage);
         Glide.with(getApplicationContext()).load(user.getCoverPhotoUrl()).bitmapTransform(new BlurTransformation(this, 3), new ColorFilterTransformation(this, Color.argb(150, 0, 0, 0))).into(ivCoverPhoto);
-        tvDrops.setText("" + user.getDrops());
-        tvUpvotes.setText("" + user.getUpVotes());
         tvProfileName.setText(user.getUsername());
+        animateTextView(0, user.getDrops(), tvDrops);
+        animateTextView(0, user.getUpVotes(), tvUpvotes);
     }
+
+    public void animateTextView(int initialValue, int finalValue, final TextView  textview) {
+
+        ValueAnimator valueAnimator = ValueAnimator.ofInt((int)initialValue, (int)finalValue);
+        valueAnimator.setDuration(1100);
+
+        valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator valueAnimator) {
+
+                textview.setText(valueAnimator.getAnimatedValue().toString());
+
+            }
+
+        });
+
+        valueAnimator.start();
+    }
+
 }
