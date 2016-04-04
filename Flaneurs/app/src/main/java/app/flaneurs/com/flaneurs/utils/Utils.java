@@ -13,6 +13,7 @@ import com.ocpsoft.pretty.time.PrettyTime;
 import com.parse.ParseGeoPoint;
 
 import java.io.IOException;
+import java.text.DecimalFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -93,7 +94,9 @@ public class Utils {
 
     public static double convertMetersToMiles(int meters) {
         double miles = 0.000621371 * meters;
-        return miles;
+        String format = new DecimalFormat("#.##").format(miles);
+        double result = Double.valueOf(format);
+        return result;
     }
     
     public static String toTitleCase(String str) {
