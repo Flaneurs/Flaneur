@@ -178,9 +178,10 @@ public class CommentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         view.tvLocation.setText(post.getAddress());
 
         if (mIsRevealed) {
-            view.tvCaption.setText(post.getCaption());
+            view.tvCaption.setText(Utils.toTitleCase(post.getCaption()));
         } else {
             view.tvCaption.setText("Go find this drop to see its contents!");
+            view.tvCaption.setTextColor(mContext.getColor(R.color.locked_text_color));
         }
 
         ParseGeoPoint location = post.getLocation();
