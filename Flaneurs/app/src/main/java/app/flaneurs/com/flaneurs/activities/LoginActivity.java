@@ -133,9 +133,11 @@ public class LoginActivity extends AppCompatActivity {
                 } else if (user.isNew()) {
                     Log.d("Flanuers", "User signed up and logged in through Facebook!");
                     getUserDetailsFromFB();
+                } else {
+
                 }
                 //TODO: Remove once we have all authed once and have better pictures
-                getUserDetailsFromFB();
+               // getUserDetailsFromFB();
             }
         });
     }
@@ -204,8 +206,6 @@ editText2.setVisibility(View.INVISIBLE);
                 }
             }
         });
-
-
     }
 
     private void finishLogin() {
