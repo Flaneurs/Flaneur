@@ -2,6 +2,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="app.flaneurs.com.flaneurs">
 
+    <uses-permission android:name="android.permission.CAMERA" />
+
+    <uses-feature android:name="android.hardware.camera2" />
+
     <uses-sdk
         android:minSdkVersion="21"
         android:targetSdkVersion="21" />
@@ -83,5 +87,6 @@
             android:name=".activities.DetailActivity"
             android:theme="@style/AppTheme.NoActionBar.ClearStatusBar" />
 
+        <activity android:name="com.desmond.squarecamera.CameraActivity"/>
     </application>
 </manifest>

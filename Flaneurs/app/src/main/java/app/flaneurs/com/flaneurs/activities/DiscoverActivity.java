@@ -28,6 +28,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.astuetz.PagerSlidingTabStrip;
+import com.desmond.squarecamera.CameraActivity;
 import com.facebook.appevents.AppEventsLogger;
 import com.parse.FindCallback;
 import com.parse.ParseException;
@@ -146,7 +147,12 @@ public class DiscoverActivity extends AppCompatActivity implements LocationProvi
                         // So as long as the result is not null, it's safe to use the intent.
                         if (intent.resolveActivity(getPackageManager()) != null) {
                             // Start the image capture intent to take photo
-                            startActivityForResult(intent, CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
+                            //startActivityForResult(intent, CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
+                            Intent startCustomCameraIntent = new Intent(DiscoverActivity.this, CameraActivity.class);
+                            startActivityForResult(startCustomCameraIntent, CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
+
+
+
                         }
                         /**
                          * Without using R.anim.hold, the screen will flash because of transition
