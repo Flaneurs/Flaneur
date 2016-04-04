@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.github.siyamed.shapeimageview.DiamondImageView;
 
 import java.util.List;
 
@@ -144,7 +145,8 @@ public class InboxArrayAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
         String username = author.getUsername();
         holder.tvUsername.setText(username);
-        Glide.with(mContext).load(author.getProfileUrl()).into(holder.ivInboxImage);
+        //Glide.with(mContext).load(author.getProfileUrl()).into(holder.ivInboxImage);
+        Glide.with(mContext).load(author.getProfileUrl()).asBitmap().into(holder.ivInboxImage);
 
         holder.tvCreationTime.setText(Utils.getPrettyTime(post.getCreatedTime()));
         holder.tvLocation.setText(post.getAddress());
@@ -183,7 +185,7 @@ public class InboxArrayAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
     public static class InboxViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         @Bind(R.id.ivInboxImage)
-        public ImageView ivInboxImage;
+        public DiamondImageView ivInboxImage;
 
         @Bind(R.id.ivNew)
         public ImageView ivNew;

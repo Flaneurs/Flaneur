@@ -159,7 +159,9 @@ public class CommentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             view.tvUsername.setText(username);
             view.ivProfileImage.setImageResource(0);
             if (author.getProfileUrl() != null) {
-                Glide.with(mContext).load(author.getProfileUrl()).into(view.ivProfileImage);
+                //Glide.with(mContext).load(author.getProfileUrl()).into(view.ivProfileImage);
+                Glide.with(mContext).load(author.getProfileUrl()).asBitmap().into(view.ivProfileImage);
+
             }
             view.ivProfileImage.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -190,7 +192,9 @@ public class CommentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     private void configureCommentView(CommentViewHolder view, final Comment comment) {
         try {
             User user = (User) comment.getAuthor().fetchIfNeeded();
-            Glide.with(mContext).load(user.getProfileUrl()).into(view.ivProfileImage);
+           // Glide.with(mContext).load(user.getProfileUrl()).into(view.ivProfileImage);
+            Glide.with(mContext).load(user.getProfileUrl()).asBitmap().into(view.ivProfileImage);
+
             view.tvUsername.setText(user.getUsername());
 
         } catch (ParseException e) {
@@ -211,7 +215,9 @@ public class CommentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     private void configureFooterView(FooterViewHolder view, User user) {
         view.ivProfileImage.setImageResource(0);
         if (user.getProfileUrl() != null) {
-            Glide.with(mContext).load(user.getProfileUrl()).into(view.ivProfileImage);
+            //Glide.with(mContext).load(user.getProfileUrl()).into(view.ivProfileImage);
+            Glide.with(mContext).load(user.getProfileUrl()).asBitmap().into(view.ivProfileImage);
+
         }
     }
 
@@ -257,7 +263,7 @@ public class CommentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         TextView tvCaption;
 
         @Bind(R.id.ivProfileImage)
-        ImageView ivProfileImage;
+        com.github.siyamed.shapeimageview.DiamondImageView ivProfileImage;
 
         @Bind(R.id.tvUsername)
         TextView tvUsername;
@@ -302,6 +308,7 @@ public class CommentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
             etComment.setOnEditorActionListener(new TextView.OnEditorActionListener() {
                 public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+
                     if (actionId == EditorInfo.IME_ACTION_SEND) {
                         mListener.onAddComment(etComment.getText().toString());
 
