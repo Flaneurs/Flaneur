@@ -6,6 +6,8 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.Bitmap;
+import android.graphics.Point;
 import android.graphics.drawable.LayerDrawable;
 import android.location.Location;
 import android.net.Uri;
@@ -19,6 +21,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.transition.Explode;
 import android.transition.Transition;
 import android.util.Log;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -29,6 +32,7 @@ import android.widget.Toast;
 
 import com.astuetz.PagerSlidingTabStrip;
 import com.desmond.squarecamera.CameraActivity;
+import com.desmond.squarecamera.ImageUtility;
 import com.facebook.appevents.AppEventsLogger;
 import com.parse.FindCallback;
 import com.parse.ParseException;
@@ -119,6 +123,11 @@ public class DiscoverActivity extends AppCompatActivity implements LocationProvi
 
         mRevealLayout = (RevealLayout) customView.findViewById(R.id.reveal_layout);
         mRevealView = customView.findViewById(R.id.reveal_view);
+
+        mSize = new Point();
+        Display display = getWindowManager().getDefaultDisplay();
+
+        display.getSize(mSize);
 
         mFab = (FloatingActionButton) findViewById(R.id.fab);
         mFab.setVisibility(View.INVISIBLE);
@@ -276,11 +285,18 @@ public class DiscoverActivity extends AppCompatActivity implements LocationProvi
         mMapFragment.populateMapWithPosts(postsProxy);
     }
 
+    private Point mSize;
+
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
                 Uri takenPhotoUri = getPhotoFileUri(photoFileName);
+                Uri photoUri = data.getData();
+                // Get the bitmap in according to the width of the device
+                Bitmap bitmap = ImageUtility.decodeSampledBitmapFromPath(photoUri.getPath(), mSize.x, mSize.x);
+
                 Intent i = new Intent(DiscoverActivity.this, ComposeActivity.class);
 
                 if (mLocation != null) {

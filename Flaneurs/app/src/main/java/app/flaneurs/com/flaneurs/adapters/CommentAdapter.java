@@ -181,11 +181,7 @@ public class CommentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         if (mIsRevealed) {
             view.tvCaption.setText(Utils.toTitleCase(post.getCaption()));
         } else {
-            view.tvCaption.setText("Go find this drop to see its contents!");
-
-
-
-
+            view.tvCaption.setText("Go find this drop to see it's contents!");
             view.tvCaption.setTextColor(ContextCompat.getColor(mContext, R.color.locked_text_color));
         }
 
@@ -223,7 +219,6 @@ public class CommentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         if (user.getProfileUrl() != null) {
             //Glide.with(mContext).load(user.getProfileUrl()).into(view.ivProfileImage);
             Glide.with(mContext).load(user.getProfileUrl()).asBitmap().into(view.ivProfileImage);
-
         }
     }
 
