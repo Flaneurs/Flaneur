@@ -5,6 +5,7 @@ package app.flaneurs.com.flaneurs.adapters;
  */
 
 import android.content.Context;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.KeyEvent;
@@ -181,7 +182,11 @@ public class CommentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             view.tvCaption.setText(Utils.toTitleCase(post.getCaption()));
         } else {
             view.tvCaption.setText("Go find this drop to see its contents!");
-            view.tvCaption.setTextColor(mContext.getColor(R.color.locked_text_color));
+
+
+
+
+            view.tvCaption.setTextColor(ContextCompat.getColor(mContext, R.color.locked_text_color));
         }
 
         ParseGeoPoint location = post.getLocation();
